@@ -1,0 +1,1 @@
+This repository contains the web application to manage 'Nerambum' virtual exhibition. It includes services such as Authentication, Exhibition services, Stall customization, Avatar customization, etc.
