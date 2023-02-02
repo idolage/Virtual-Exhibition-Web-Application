@@ -17,9 +17,9 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>services/exhibition</module>
-        <module>services/avatar</module>
         <module>services/stall</module>
         <module>services/auth</module>
+        <module>services/avatar</module>
     </modules>
 
     <dependencyManagement>
