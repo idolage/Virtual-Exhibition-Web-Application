@@ -34,8 +34,8 @@ public class ExhibitionController {
     }
 
     @PutMapping ("/api/exhibition/update")
-    public String updateExhibitions(@RequestBody Exhibition exhibition) throws InterruptedException, ExecutionException {
-        return exhibitionService.updateExhibition(exhibition);
+    public String updateExhibitions(@RequestBody Exhibition exhibition, @RequestParam String documentId) throws InterruptedException, ExecutionException {
+        return exhibitionService.updateExhibition(exhibition, documentId);
     }
 
     @DeleteMapping ("/api/exhibition/delete")

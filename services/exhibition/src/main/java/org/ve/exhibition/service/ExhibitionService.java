@@ -30,7 +30,6 @@ public class ExhibitionService {
         DocumentSnapshot documentSnapshot = documentSnapshotApiFuture.get();
         Exhibition exhibition;
         if(documentSnapshot.exists()){
-            System.out.println(documentSnapshot.toObject(Exhibition.class));
             exhibition = documentSnapshot.toObject(Exhibition.class);
             return exhibition;
         }
@@ -62,10 +61,10 @@ public class ExhibitionService {
         return null;
     }
 
-    public String updateExhibition(Exhibition exhibition)throws InterruptedException, ExecutionException{
+    public String updateExhibition(Exhibition exhibition, String documentId)throws InterruptedException, ExecutionException{
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionApiFuture = firestore.collection("exhibitions")
-                .document().set(exhibition);
+                .document(documentId).set(exhibition);
         return "Updated "+collectionApiFuture.get().getUpdateTime().toString();
     }
 
