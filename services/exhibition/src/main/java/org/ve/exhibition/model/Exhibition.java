@@ -8,4 +8,5 @@ import lombok.Setter;
 public class Exhibition {
     private String exhibitionName;
     private String exhibitionOwner;
+    private String datetime;
 }
