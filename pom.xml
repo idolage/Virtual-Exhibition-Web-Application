@@ -20,6 +20,7 @@
         <module>services/stall</module>
         <module>services/auth</module>
         <module>services/avatar</module>
+        <module>services/discovery-server</module>
     </modules>
 
     <dependencyManagement>
@@ -35,7 +36,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
-                <version>{spring.boot.starter.test.version}</version>
+                <version>${spring.boot.starter.test.version}</version>
                 <scope>test</scope>
             </dependency>
 
@@ -43,7 +44,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.24</version>
+                <version>${lombok.version}</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -58,7 +59,19 @@
             <dependency>
                 <groupId>com.googlecode.json-simple</groupId>
                 <artifactId>json-simple</artifactId>
-                <version>1.1</version>
+                <version>${json.simple.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+                <version>${spring.cloud.starter.netflix.eureka.server.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+                <version>${spring.cloud.starter.netflix.eureka.client.version}</version>
             </dependency>
 
         </dependencies>
@@ -70,6 +83,35 @@
         <spring.boot.starter.web.version>3.0.1</spring.boot.starter.web.version>
         <spring.boot.starter.test.version>3.0.1</spring.boot.starter.test.version>
         <firebase.admin.version>9.0.0</firebase.admin.version>
+        <lombok.version>1.18.24</lombok.version>
+        <json.simple.version>1.1</json.simple.version>
+        <spring.cloud.starter.netflix.eureka.server.version>3.1.4</spring.cloud.starter.netflix.eureka.server.version>
+        <spring.cloud.starter.netflix.eureka.client.version>3.1.4</spring.cloud.starter.netflix.eureka.client.version>
     </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <preparationGoals>clean install</preparationGoals>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
