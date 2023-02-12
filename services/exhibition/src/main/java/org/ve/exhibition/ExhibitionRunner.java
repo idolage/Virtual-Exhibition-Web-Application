@@ -5,6 +5,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 @SpringBootApplication
+@EnableEurekaClient
 public class ExhibitionRunner {
     public static void main(String []args) throws IOException{
         ClassLoader classLoader = ExhibitionRunner.class.getClassLoader();
