@@ -6,18 +6,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.ve.auth.model.Auth;
-import org.ve.auth.service.AuthService;
-
+import org.ve.auth.model.AuthAdmin;
+import org.ve.auth.service.AuthAdminService;
 import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthController {
-    private final AuthService authService;
-    @PostMapping("/api/auth/addAttendee")
+public class AuthAdminController {
+    private final AuthAdminService authAdminService;;
+    @PostMapping("api/auth/addAdmin")
     @ResponseStatus(HttpStatus.OK)
-    public String addAdmin(@RequestBody Auth auth) throws InterruptedException, ExecutionException {
-        return authService.addAdmin(auth);
+    public String addAdmin(@RequestBody AuthAdmin authAdmin) throws InterruptedException, ExecutionException {
+        return null;
+//        authAdminService.addAdmin(authAdmin);
     }
+
 }
