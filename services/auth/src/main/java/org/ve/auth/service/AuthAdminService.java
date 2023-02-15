@@ -5,6 +5,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,9 +18,8 @@ import java.util.Base64;
 import java.util.concurrent.ExecutionException;
 
 @Service
-@AllArgsConstructor
 public class AuthAdminService implements UserDetailsService{
-    private final AdminRepository adminRepository;
+    private AdminRepository adminRepository;
     private EmailValidator emailValidator;
     private final static  String USER_NOT_FOUND = "user with email %s not found";
     @Override
