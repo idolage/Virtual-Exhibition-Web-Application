@@ -21,6 +21,7 @@
         <module>services/auth</module>
         <module>services/avatar</module>
         <module>services/discovery-server</module>
+        <module>services/payment</module>
     </modules>
 
     <dependencyManagement>
@@ -74,12 +75,19 @@
                 <version>${spring.cloud.starter.netflix.eureka.client.version}</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-mongodb -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>${spring.boot.starter.data.mongodb}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
     <properties>
-        <maven.compiler.source>14</maven.compiler.source>
-        <maven.compiler.target>14</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <spring.boot.starter.web.version>3.0.1</spring.boot.starter.web.version>
         <spring.boot.starter.test.version>3.0.1</spring.boot.starter.test.version>
         <firebase.admin.version>9.0.0</firebase.admin.version>
@@ -87,6 +95,7 @@
         <json.simple.version>1.1</json.simple.version>
         <spring.cloud.starter.netflix.eureka.server.version>3.1.4</spring.cloud.starter.netflix.eureka.server.version>
         <spring.cloud.starter.netflix.eureka.client.version>3.1.4</spring.cloud.starter.netflix.eureka.client.version>
+        <spring.boot.starter.data.mongodb>3.0.1</spring.boot.starter.data.mongodb>
     </properties>
 
     <build>
@@ -109,6 +118,14 @@
                 <configuration>
                     <preparationGoals>clean install</preparationGoals>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
         </plugins>
