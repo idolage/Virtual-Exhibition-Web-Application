@@ -23,6 +23,7 @@
         <module>services/discovery-server</module>
         <module>services/payment</module>
         <module>services/api-gateway</module>
+        <module>services/ticket</module>
     </modules>
 
     <dependencyManagement>
