@@ -22,6 +22,7 @@
         <module>services/avatar</module>
         <module>services/discovery-server</module>
         <module>services/payment</module>
+        <module>services/api-gateway</module>
         <module>services/ticket</module>
     </modules>
 
@@ -101,6 +102,18 @@
                 <version>2.2.5.RELEASE</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-gateway -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-gateway</artifactId>
+                <version>${spring.cloud.starter.gateway.version}</version>
+            </dependency>
+
+
+
+
+
+
 
         </dependencies>
     </dependencyManagement>
@@ -116,6 +129,9 @@
         <spring.cloud.starter.netflix.eureka.server.version>3.1.4</spring.cloud.starter.netflix.eureka.server.version>
         <spring.cloud.starter.netflix.eureka.client.version>3.1.4</spring.cloud.starter.netflix.eureka.client.version>
         <spring.boot.starter.data.mongodb>3.0.1</spring.boot.starter.data.mongodb>
+        <spring.cloud.starter.gateway.version>3.1.4</spring.cloud.starter.gateway.version>
+
+
     </properties>
 
     <build>
