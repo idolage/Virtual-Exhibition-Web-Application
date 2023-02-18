@@ -30,18 +30,33 @@ public class ExhibitionController {
     }
 
     @GetMapping ("/api/exhibition/exhibitions")
+    @ResponseStatus(HttpStatus.OK)
     public List<Exhibition> getExhibitions() throws CancellationException {
         return exhibitionService.getExhibitions();
     }
 
+    @GetMapping("/api/exhibition/exhibitionId")
+    @ResponseStatus(HttpStatus.OK)
+    public Exhibition getExhibitionByExhibitionId(@RequestParam String exhibitionId) throws CancellationException, InterruptedException, ExecutionException{
+        return exhibitionService.getExhibitionByExhibitionId(exhibitionId);
+    }
+
     @PutMapping ("/api/exhibition/update")
+    @ResponseStatus(HttpStatus.OK)
     public String updateExhibitions(@RequestBody Exhibition exhibition, @RequestParam String documentId) throws InterruptedException, ExecutionException {
         return exhibitionService.updateExhibition(exhibition, documentId);
     }
 
     @DeleteMapping ("/api/exhibition/delete")
+    @ResponseStatus(HttpStatus.OK)
     public String deleteExhibition(@RequestParam String documentId) {
         return exhibitionService.deleteExhibition(documentId);
+    }
+
+    @PutMapping("/api/exhibition/start")
+    @ResponseStatus(HttpStatus.OK)
+    public String startExhibition(@RequestParam String documentId,@RequestParam boolean start) throws InterruptedException, ExecutionException {
+        return exhibitionService.startExhibition(documentId,start);
     }
 
     @GetMapping("/test")

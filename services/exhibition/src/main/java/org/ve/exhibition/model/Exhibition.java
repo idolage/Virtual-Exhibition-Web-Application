@@ -6,7 +6,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Exhibition {
+    private String id;
     private String exhibitionName;
-    private String exhibitionOwner;
+    private String exhibitionOwnerId;
+    private String exhibitionId;
+    private boolean start;
     private String datetime;
 }
