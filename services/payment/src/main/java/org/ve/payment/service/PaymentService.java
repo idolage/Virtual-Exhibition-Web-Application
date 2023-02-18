@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.ve.payment.dto.Exhibition;
+import org.ve.payment.dto.PaymentResponse;
 import org.ve.payment.model.Payment;
 import org.ve.payment.repository.PaymentRepository;
 
@@ -43,13 +45,21 @@ public class PaymentService {
 
     public ResponseEntity<?> getPayment(String documentId){
         Optional<Payment> payment = paymentRepository.findById(documentId);
-        try{
-            if(payment.isPresent()){
-
-            }
-            return new ResponseEntity<Optional<Payment>>(payment, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+        if(payment.isPresent()){
+            Exhibition exhibition = restTemplate
+                    .getForObject("http://EXHIBITION-SERVICE/api/exhibition?documentId="+
+                            payment.get().getExhibitionId(), Exhibition.class);
+            PaymentResponse paymentResponse = new PaymentResponse(
+                    payment.get().getId(),
+                    exhibition,
+                    payment.get().getUserId(),
+                    payment.get().getAmount(),
+                    payment.get().getTicket(),
+                    payment.get().getTimestamp()
+            );
+            return new ResponseEntity<>(paymentResponse, HttpStatus.OK);
+        } else{
+            return new ResponseEntity<>("No payment found",HttpStatus.NOT_FOUND);
         }
     }
 }
