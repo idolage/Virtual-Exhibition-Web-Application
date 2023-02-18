@@ -25,7 +25,7 @@ public class GatewayConfig {
                 .route("EXHIBITION-SERVICE", r -> r.path("/api/exhibition/**").uri("lb://EXHIBITION-SERVICE"))
                 .route("PAYMENT-SERVICE", r -> r.path("/api/payment/**").uri("lb://PAYMENT-SERVICE"))
                 .route("STALL-SERVICE", r -> r.path("/api/stall/**").uri("lb://STALL-SERVICE"))
-
+                .route("AGORA-TOKEN-SERVICE", r -> r.path("/api/agora/**").uri("lb://AGORA-TOKEN-SERVICE"))
                 .route("DISCOVERY-SERVER", r -> r.path("/eureka/web").filters(f -> f.setPath("/")).uri("http://localhost:8761"))
                 .route("DISCOVERY-SERVER-STATIC", r -> r.path("/eureka/**").uri("http://localhost:8761"))
                 .build();
