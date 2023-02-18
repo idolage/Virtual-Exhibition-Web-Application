@@ -8,8 +8,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Stall {
-    private int stallId;
-    private String stallOwner;
+    private String exhibitionId;
+    private String stallId;
+    private String stallOwnerId;
     private String stallColor;
+
 
 }
