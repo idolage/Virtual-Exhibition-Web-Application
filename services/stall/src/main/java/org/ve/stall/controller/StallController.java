@@ -23,20 +23,20 @@ public class StallController {
         String stallId= stall.getStallId();
         return stallService.addStall(stall,stallId);
     }
-    @PutMapping("/api/stall/upload-logo")
+    @PostMapping("/api/stall/upload-logo")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> uploadLogo(@RequestParam("file") MultipartFile file,@RequestParam String stallId) throws Exception {
-        return stallService.uploadLogo(file,stallId);
+    public ResponseEntity<String> uploadLogo(@RequestParam("file") MultipartFile file,@RequestParam String stallId,String stallOwnerId, String exhibitionId, String tier) throws Exception {
+        return stallService.uploadLogo(file,stallId,stallOwnerId,exhibitionId,tier);
     }
-    @PutMapping("/api/stall/upload-banner")
+    @PostMapping("/api/stall/upload-banner")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> uploadBanner(@RequestParam("file") MultipartFile file,@RequestParam String stallId) throws Exception {
-        return stallService.uploadBanner(file, stallId);
+    public ResponseEntity<String> uploadBanner(@RequestParam("file") MultipartFile file,@RequestParam String stallId,String stallOwnerId, String exhibitionId, String tier) throws Exception {
+        return stallService.uploadBanner(file,stallId,stallOwnerId,exhibitionId,tier);
     }
-    @PutMapping("/api/stall/upload-video")
+    @PostMapping("/api/stall/upload-video")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file ,@RequestParam String stallId) throws Exception {
-        return stallService.uploadVideo(file, stallId);
+    public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file ,@RequestParam String stallId,String stallOwnerId, String exhibitionId, String tier) throws Exception {
+        return stallService.uploadVideo(file, stallId,stallOwnerId,exhibitionId,tier);
     }
     @GetMapping ("/api/stall/get-stalls")
     @ResponseStatus(HttpStatus.OK)

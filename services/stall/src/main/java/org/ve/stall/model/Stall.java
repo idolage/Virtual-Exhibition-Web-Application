@@ -12,6 +12,7 @@ public class Stall {
     private String stallId;
     private String stallOwnerId;
     private String stallColor;
+    private String tier;
 
 
 }
