@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.ve.stall.StallRunner;
 import org.ve.stall.model.Stall;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
@@ -16,10 +17,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import org.json.simple.JSONObject;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -40,7 +44,7 @@ public class StallService {
                 .document(stallId).set(stall);
         return collectionApiFuture.get().getUpdateTime().toString();
     }
-    public ResponseEntity<String> uploadLogo(MultipartFile multipartFile, String stallId) throws IOException {
+    public ResponseEntity<String> uploadLogo(MultipartFile multipartFile, String stallId, String stallOwnerId, String exhibitionId, String tier) throws IOException {
         String objectName = generateFileName(multipartFile);
         ClassLoader classLoader = StallRunner.class.getClassLoader();
         File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
@@ -49,14 +53,12 @@ public class StallService {
         Path filePath = file2.toPath();
 
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).setProjectId(FIREBASE_PROJECT_ID).build().getService();
-        BlobId blobId = BlobId.of(FIREBASE_BUCKET, objectName);
+        String directoryPath =exhibitionId+"/"+tier+"/"+stallOwnerId+"/"+"logo";
+        BlobId blobId = BlobId.of(FIREBASE_BUCKET,directoryPath+"/"+objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
-        String url = "https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/"+objectName+"?alt=media";
 
         storage.create(blobInfo, Files.readAllBytes(filePath));
-        String DOWNLOAD_URL = null;
-        String imageUrl;
-        //imageUrl = String.format(DOWNLOAD_URL, URLEncoder.encode(objectName, StandardCharsets.UTF_8));
+        String url= String.format("https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/%s?alt=media", URLEncoder.encode(directoryPath + "/" + objectName, StandardCharsets.UTF_8));
         JSONObject obj=new JSONObject();
         obj.put("logoUrl",url);
         System.out.print(obj);
@@ -69,23 +71,21 @@ public class StallService {
 
     }
 
-    public ResponseEntity<String> uploadBanner(MultipartFile multipartFile, String stallId) throws IOException {
+    public ResponseEntity<String> uploadBanner(MultipartFile multipartFile, String stallId, String stallOwnerId, String exhibitionId, String tier) throws IOException {
         String objectName = generateFileName(multipartFile);
         ClassLoader classLoader = StallRunner.class.getClassLoader();
         File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
         FileInputStream serviceAccount = new FileInputStream(file.getAbsolutePath());
         File file2 = convertMultiPartToFile(multipartFile);
         Path filePath = file2.toPath();
-
+        String directoryPath =exhibitionId+"/"+tier+"/"+stallOwnerId+"/"+"banner";
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).setProjectId(FIREBASE_PROJECT_ID).build().getService();
-        BlobId blobId = BlobId.of(FIREBASE_BUCKET, objectName);
+        BlobId blobId = BlobId.of(FIREBASE_BUCKET, directoryPath+"/"+objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
-        String url = "https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/"+objectName+"?alt=media";
 
         storage.create(blobInfo, Files.readAllBytes(filePath));
-        String DOWNLOAD_URL = null;
-        String imageUrl;
-        //imageUrl = String.format(DOWNLOAD_URL, URLEncoder.encode(objectName, StandardCharsets.UTF_8));
+
+        String url= String.format("https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/%s?alt=media", URLEncoder.encode(directoryPath + "/" + objectName, StandardCharsets.UTF_8));
         JSONObject obj=new JSONObject();
         obj.put("bannerUrl",url);
         Firestore firestore = FirestoreClient.getFirestore();
@@ -96,20 +96,20 @@ public class StallService {
 
     }
 
-    public ResponseEntity<String> uploadVideo(MultipartFile multipartFile, String stallId) throws IOException {
+    public ResponseEntity<String> uploadVideo(MultipartFile multipartFile,String stallId, String stallOwnerId, String exhibitionId, String tier) throws IOException {
         String objectName = generateFileName(multipartFile);
         ClassLoader classLoader = StallRunner.class.getClassLoader();
         File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
         FileInputStream serviceAccount = new FileInputStream(file.getAbsolutePath());
         File file2 = convertMultiPartToFile(multipartFile);
         Path filePath = file2.toPath();
-
+        String directoryPath =exhibitionId+"/"+tier+"/"+stallOwnerId+"/"+"videos";
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).setProjectId(FIREBASE_PROJECT_ID).build().getService();
-        BlobId blobId = BlobId.of(FIREBASE_BUCKET, objectName);
+        BlobId blobId = BlobId.of(FIREBASE_BUCKET, directoryPath+"/"+objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
-        String url = "https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/"+objectName+"?alt=media";
-
         storage.create(blobInfo, Files.readAllBytes(filePath));
+
+        String url= String.format("https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/%s?alt=media", URLEncoder.encode(directoryPath + "/" + objectName, StandardCharsets.UTF_8));
         JSONObject obj=new JSONObject();
         obj.put("videoUrl",url);
         Firestore firestore = FirestoreClient.getFirestore();
@@ -164,6 +164,8 @@ public class StallService {
         {obj.put("stallOwnerId",stall.getStallOwnerId());}
         if(stall.getStallColor()!=null)
         {obj.put("stallColor",stall.getStallColor());}
+        if(stall.getTier()!=null)
+        {obj.put("tier",stall.getTier());}
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionApiFuture = firestore.collection("stalls")
                 .document(stallId).update(obj);
