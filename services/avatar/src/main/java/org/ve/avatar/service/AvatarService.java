@@ -1,13 +1,10 @@
 package org.ve.avatar.service;
 
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
-import com.google.firebase.cloud.FirestoreClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.ve.avatar.model.Avatar;
+import org.ve.avatar.repository.AvatarRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,64 +12,69 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 @Service
 public class AvatarService {
+    @Autowired
+    private AvatarRepository repository;
 
-    public String addAvatar(Avatar avatar) throws InterruptedException, ExecutionException{
-        Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionApiFuture = firestore.collection("avatars")
-                .document(avatar.getUserId()).set(avatar);
-        return collectionApiFuture.get().getUpdateTime().toString();
+    public String addAvatar(Avatar avatar) {
+       try {
+           repository.save(avatar);
+           return "Avatar Added Successfully";
+       }catch (Exception e){
+           e.printStackTrace();
+           return e.toString();
+       }
     }
 
-    public Avatar getAvatar(String documentId) throws InterruptedException, ExecutionException {
-        Firestore firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = firestore.collection("avatars").document(documentId);
-        ApiFuture<DocumentSnapshot> documentSnapshotApiFuture = documentReference.get();
-        DocumentSnapshot documentSnapshot = documentSnapshotApiFuture.get();
-        Avatar avatar;
-        if(documentSnapshot.exists()){
-            System.out.println(documentSnapshot.toObject(Avatar.class));
-            avatar = documentSnapshot.toObject(Avatar.class);
+    public Avatar getAvatar(String userId) {
+        try {
+            Avatar avatar=repository.findByUserId(userId);
             return avatar;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return null;
     }
 
     public List<Avatar> getAvatars() throws CancellationException {
-        Firestore firestore = FirestoreClient.getFirestore();
-        Iterable<DocumentReference> documentReference = firestore.collection("avatars").listDocuments();
-        List<DocumentSnapshot> documentSnapshotApiFuture = new ArrayList<DocumentSnapshot>();
-        documentReference.forEach((element)->{ApiFuture<DocumentSnapshot> documentSnapshot = element.get();
-            try {
-                documentSnapshotApiFuture.add(documentSnapshot.get());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-        });
-        List<Avatar> avatars = new ArrayList<>();
-        if(!documentSnapshotApiFuture.isEmpty()){
-            documentSnapshotApiFuture.forEach((element)->{
-                if(element.exists()){
-                    avatars.add(element.toObject(Avatar.class));
-                }
-            });
+        try {
+            List<Avatar> avatars=repository.findAll();
             return avatars;
+        } catch (Exception e) {
+            e.printStackTrace();
+
         }
         return null;
+
+
     }
 
     public String updateAvatar(Avatar avatar)throws InterruptedException, ExecutionException{
-        Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionApiFuture = firestore.collection("avatars")
-                .document(avatar.getUserId()).set(avatar);
-        return "Updated "+collectionApiFuture.get().getUpdateTime().toString();
-    }
 
-    public String deleteAvatar(String documentId){
-        Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionApiFuture = firestore.collection("avatars")
-                .document(documentId).delete();
-        return "Successfully deleted "+documentId;
+        Avatar existingAvatar=repository.findByUserId(avatar.getUserId());
+        if(existingAvatar!=null) {
+            existingAvatar.setUserId(avatar.getUserId());
+            existingAvatar.setAvatarId(avatar.getAvatarId());
+            existingAvatar.setGender(avatar.getGender());
+            existingAvatar.setHairColor(avatar.getHairColor());
+            existingAvatar.setBottomColor(avatar.getBottomColor());
+            existingAvatar.setTopColor(avatar.getTopColor());
+            existingAvatar.setShoeColor(avatar.getShoeColor());
+            existingAvatar.setBeardColor(avatar.getBeardColor());
+
+            try {
+                repository.save(existingAvatar);
+                return "Avatar updated successfully";
+            } catch (Exception e) {
+                e.printStackTrace();
+                return e.toString();
+            }
+        }
+        return "No matching record found";
+    }
+    @Transactional
+    public String deleteAvatar(String user_id){
+        repository.deleteByUserId(user_id);
+        return "Successfully deleted "+ user_id;
     }
 }

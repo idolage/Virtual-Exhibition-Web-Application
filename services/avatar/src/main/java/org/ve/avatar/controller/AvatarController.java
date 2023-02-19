@@ -17,13 +17,13 @@ public class AvatarController {
     private final AvatarService avatarService;
     @PostMapping ("/api/avatar/add")
     @ResponseStatus(HttpStatus.OK)
-    public String addAvatar(@RequestBody Avatar avatar) throws InterruptedException, ExecutionException{
+    public String addAvatar(@RequestBody Avatar avatar) {
         return avatarService.addAvatar(avatar);
     }
 
     @GetMapping ("/api/avatar")
     @ResponseStatus(HttpStatus.OK)
-    public Avatar getAvatar(@RequestParam String documentId) throws InterruptedException, ExecutionException{
+    public Avatar getAvatar(@RequestParam String documentId) {
         return avatarService.getAvatar(documentId);
     }
 
@@ -37,9 +37,9 @@ public class AvatarController {
         return avatarService.updateAvatar(avatar);
     }
 
-    @DeleteMapping ("/api/avatar/delete")
-    public String deleteAvatar(@RequestParam String documentId) {
-        return avatarService.deleteAvatar(documentId);
+    @DeleteMapping ("/api/avatar/delete/{user_id}")
+    public String deleteAvatar(@PathVariable String user_id) {
+        return avatarService.deleteAvatar(user_id);
     }
 
 
