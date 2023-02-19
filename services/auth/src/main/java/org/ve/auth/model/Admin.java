@@ -17,7 +17,7 @@ import java.util.Collections;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-public class AuthAdmin implements UserDetails{
+public class Admin implements UserDetails{
     @SequenceGenerator(
             name = "admin_sequence",
             sequenceName = "admin_sequence",
@@ -25,7 +25,7 @@ public class AuthAdmin implements UserDetails{
     )
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
+            strategy = GenerationType.AUTO,
             generator = "admin_sequence"
     )
     private Long id;
@@ -33,21 +33,19 @@ public class AuthAdmin implements UserDetails{
     private String name;
     private String contactNo;
     private String nic;
-    private String pwd;
+    private String password;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-    private Boolean locked;
-    private Boolean enabled;
+    private boolean locked = false;
+    private boolean enabled = false;
 
-    public AuthAdmin(String emailAddress, String name, String contactNo, String nic, String pwd, UserRole userRole, Boolean locked, Boolean enabled) {
+    public Admin(String emailAddress, String name, String contactNo, String nic, String password, UserRole userRole) {
         this.emailAddress = emailAddress;
         this.name = name;
         this.contactNo = contactNo;
         this.nic = nic;
-        this.pwd = pwd;
+        this.password = password;
         this.userRole = userRole;
-        this.locked = locked;
-        this.enabled = enabled;
     }
 
     @Override
@@ -58,7 +56,7 @@ public class AuthAdmin implements UserDetails{
 
     @Override
     public String getPassword() {
-        return pwd;
+        return password;
     }
 
     @Override
