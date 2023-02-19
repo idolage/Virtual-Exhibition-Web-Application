@@ -1,4 +1,4 @@
-package org.ve.auth.service.security.config;
+package org.ve.auth.security.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -9,20 +9,20 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.ve.auth.service.AuthAdminService;
+import org.ve.auth.service.AdminService;
 
 @Configuration
 @AllArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final AuthAdminService authAdminService;
+    private final AdminService authAdminService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/api/auth/registration/**")
+                    .antMatchers("/api/auth/**")
                     .permitAll()
                 .anyRequest()
                 .authenticated().and()
