@@ -88,36 +88,36 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
-                <version>5.8.0</version>
+                <version>${spring-security-core.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>2.6.6</version>
+                <version>${spring-boot-starter-data-jpa.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-mail</artifactId>
-                <version>2.2.5.RELEASE</version>
+                <version>${spring-boot-starter-mail.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt-api</artifactId>
-                <version>0.11.2</version>
+                <version>${jjwt-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt-impl</artifactId>
-                <version>0.10.5</version>
+                <version>${jjwt-impl.version}</version>
                 <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt-jackson</artifactId>
-                <version>0.10.5</version>
+                <version>${jjwt-jackson.version}</version>
                 <scope>runtime</scope>
             </dependency>
 
@@ -132,39 +132,32 @@
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
-                <version>0.9.1</version>
+                <version>${jjwt.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
-                <version>1.6</version>
+                <version>${commons-codec.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>javax.ws.rs-api</artifactId>
-                <version>2.1.1</version>
+                <version>${javax.ws.rs-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.googlecode.json-simple</groupId>
                 <artifactId>json-simple</artifactId>
-                <version>1.1.1</version>
+                <version>${json-simple.version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
             <dependency>
                 <groupId>com.mysql</groupId>
                 <artifactId>mysql-connector-j</artifactId>
-                <version>8.0.31</version>
+                <version>${mysql-connector-j.version}</version>
             </dependency>
-
-
-
-
-
-
-
 
 
         </dependencies>
@@ -182,6 +175,17 @@
         <spring.cloud.starter.netflix.eureka.client.version>3.1.4</spring.cloud.starter.netflix.eureka.client.version>
         <spring.boot.starter.data.mongodb>3.0.1</spring.boot.starter.data.mongodb>
         <spring.cloud.starter.gateway.version>3.1.4</spring.cloud.starter.gateway.version>
+        <spring-security-core.version>5.8.0</spring-security-core.version>
+        <spring-boot-starter-data-jpa.version>2.6.6</spring-boot-starter-data-jpa.version>
+        <spring-boot-starter-mail.version>2.2.5.RELEASE</spring-boot-starter-mail.version>
+        <jjwt-api.version>0.11.2</jjwt-api.version>
+        <jjwt-impl.version>0.10.5</jjwt-impl.version>
+        <jjwt-jackson.version>0.10.5</jjwt-jackson.version>
+        <jjwt.version>0.9.1</jjwt.version>
+        <commons-codec.version>1.6</commons-codec.version>
+        <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
+        <json-simple.version>1.1.1</json-simple.version>
+        <mysql-connector-j.version>8.0.31</mysql-connector-j.version>
 
 
     </properties>
