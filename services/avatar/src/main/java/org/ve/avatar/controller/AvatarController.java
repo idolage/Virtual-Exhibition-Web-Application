@@ -15,29 +15,29 @@ import java.util.concurrent.ExecutionException;
 @RequiredArgsConstructor
 public class AvatarController {
     private final AvatarService avatarService;
-    @PostMapping ("/api/avatar/add")
+    @PostMapping ("/api/avatars/add")
     @ResponseStatus(HttpStatus.OK)
     public String addAvatar(@RequestBody Avatar avatar) {
         return avatarService.addAvatar(avatar);
     }
 
-    @GetMapping ("/api/avatar/{user_id}")
+    @GetMapping ("/api/avatars/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public Avatar getAvatar(@PathVariable String user_id) {
-        return avatarService.getAvatar(user_id);
+    public Avatar getAvatar(@PathVariable String userId) {
+        return avatarService.getAvatar(userId);
     }
 
-    @GetMapping ("/api/avatar/avatars")
+    @GetMapping ("/api/avatars")
     public List<Avatar> getAvatars() throws CancellationException {
         return avatarService.getAvatars();
     }
 
-    @PutMapping ("/api/avatar/update")
+    @PutMapping ("/api/avatars/update")
     public String updateAvatars(@RequestBody Avatar avatar) throws InterruptedException, ExecutionException {
         return avatarService.updateAvatar(avatar);
     }
 
-    @DeleteMapping ("/api/avatar/delete/{user_id}")
+    @DeleteMapping ("/api/avatars/delete/{user_id}")
     public String deleteAvatar(@PathVariable String user_id) {
         return avatarService.deleteAvatar(user_id);
     }

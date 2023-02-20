@@ -17,43 +17,43 @@ import java.util.concurrent.ExecutionException;
 public class ExhibitionController {
     private final ExhibitionService exhibitionService;
 
-    @PostMapping ("/api/exhibition/add")
+    @PostMapping ("/api/exhibitions/add")
     @ResponseStatus(HttpStatus.OK)
     public String addExhibition(@RequestBody Exhibition exhibition) throws InterruptedException, ExecutionException{
         return exhibitionService.addExhibition(exhibition);
     }
 
-    @GetMapping ("/api/exhibition/{documentId}")
+    @GetMapping ("/api/exhibitions/{documentId}")
     @ResponseStatus(HttpStatus.OK)
     public Exhibition getExhibition(@PathVariable String documentId) throws InterruptedException, ExecutionException{
         return exhibitionService.getExhibition(documentId);
     }
 
-    @GetMapping ("/api/exhibition/exhibitions")
+    @GetMapping ("/api/exhibitions")
     @ResponseStatus(HttpStatus.OK)
     public List<Exhibition> getExhibitions() throws CancellationException {
         return exhibitionService.getExhibitions();
     }
 
-    @GetMapping("/api/exhibition/{exhibitionId}")
+    @GetMapping("/api/exhibitions/{exhibitionId}")
     @ResponseStatus(HttpStatus.OK)
     public Exhibition getExhibitionByExhibitionId(@PathVariable String exhibitionId) throws CancellationException, InterruptedException, ExecutionException{
         return exhibitionService.getExhibitionByExhibitionId(exhibitionId);
     }
 
-    @PutMapping ("/api/exhibition/update/{documentId}")
+    @PutMapping ("/api/exhibitions/update/{documentId}")
     @ResponseStatus(HttpStatus.OK)
     public String updateExhibitions(@RequestBody Exhibition exhibition, @PathVariable String documentId) throws InterruptedException, ExecutionException {
         return exhibitionService.updateExhibition(exhibition, documentId);
     }
 
-    @DeleteMapping ("/api/exhibition/delete/{documentId}")
+    @DeleteMapping ("/api/exhibitions/delete/{documentId}")
     @ResponseStatus(HttpStatus.OK)
     public String deleteExhibition(@PathVariable String documentId) {
         return exhibitionService.deleteExhibition(documentId);
     }
 
-    @PutMapping("/api/exhibition/start/{documentId}/{start}")
+    @PutMapping("/api/exhibitions/start/{documentId}/{start}")
     @ResponseStatus(HttpStatus.OK)
     public String startExhibition(@PathVariable String documentId,@PathVariable boolean start) throws InterruptedException, ExecutionException {
         return exhibitionService.startExhibition(documentId,start);
