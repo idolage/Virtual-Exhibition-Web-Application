@@ -21,10 +21,10 @@ public class AvatarController {
         return avatarService.addAvatar(avatar);
     }
 
-    @GetMapping ("/api/avatar")
+    @GetMapping ("/api/avatar/{user_id}")
     @ResponseStatus(HttpStatus.OK)
-    public Avatar getAvatar(@RequestParam String documentId) {
-        return avatarService.getAvatar(documentId);
+    public Avatar getAvatar(@PathVariable String user_id) {
+        return avatarService.getAvatar(user_id);
     }
 
     @GetMapping ("/api/avatar/avatars")

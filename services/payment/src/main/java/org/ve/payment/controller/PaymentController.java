@@ -27,9 +27,9 @@ public class PaymentController {
         return paymentService.getPayments();
     }
 
-    @GetMapping("/api/payment")
+    @GetMapping("/api/payment/{documentId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getPayment(@RequestParam String documentId){
+    public ResponseEntity<?> getPayment(@PathVariable String documentId){
         return paymentService.getPayment(documentId);
     }
 

@@ -38,17 +38,17 @@ public class StallController {
     public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file ,@RequestParam String stallId,String stallOwnerId, String exhibitionId, String tier) throws Exception {
         return stallService.uploadVideo(file, stallId,stallOwnerId,exhibitionId,tier);
     }
-    @GetMapping ("/api/stall/get-stalls")
+    @GetMapping ("/api/stall/get-stalls/{stallOwnerId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Stall> getStalls(@RequestParam String stallOwnerId) throws InterruptedException, ExecutionException{
+    public List<Stall> getStalls(@PathVariable String stallOwnerId) throws InterruptedException, ExecutionException{
         return stallService.getStalls(stallOwnerId);}
-    @PutMapping ("/api/stall/update")
-    public String updateTicket(@RequestBody Stall stall, @RequestParam String stallId) throws InterruptedException, ExecutionException {
+    @PutMapping ("/api/stall/update/{stallId}")
+    public String updateTicket(@RequestBody Stall stall, @PathVariable String stallId) throws InterruptedException, ExecutionException {
         return stallService.updateStall(stall,stallId);
     }
-    @DeleteMapping ("/api/stall/delete-stall")
+    @DeleteMapping ("/api/stall/delete-stall/{stallId}")
     @ResponseStatus(HttpStatus.OK)
-    public String deleteStall(@RequestParam String stallId) {
+    public String deleteStall(@PathVariable String stallId) {
         return stallService.deleteStall(stallId);
     }
 
