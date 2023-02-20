@@ -15,21 +15,21 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    @PostMapping("/api/payment/add")
+    @PostMapping("/api/payments/add")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> addPayment(@RequestBody Payment payment){
         return paymentService.addPayment(payment);
     }
 
-    @GetMapping("/api/payment/payments")
+    @GetMapping("/api/payments/payments")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getPayments(){
         return paymentService.getPayments();
     }
 
-    @GetMapping("/api/payment")
+    @GetMapping("/api/payments/{documentId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getPayment(@RequestParam String documentId){
+    public ResponseEntity<?> getPayment(@PathVariable String documentId){
         return paymentService.getPayment(documentId);
     }
 

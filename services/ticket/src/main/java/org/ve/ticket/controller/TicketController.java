@@ -14,19 +14,19 @@ import java.util.concurrent.ExecutionException;
 public class TicketController {
 
     private final TicketService ticketService;
-    @PostMapping("/api/ticket/issue")
+    @PostMapping("/api/tickets/issue")
     @ResponseStatus(HttpStatus.OK)
     public String issueTicket(@RequestBody Ticket ticket) throws InterruptedException, ExecutionException {
         return ticketService.issueTicket(ticket);
     }
 
-    @PutMapping ("/api/ticket/update")
-    public String updateTicket(@RequestBody Ticket ticket, @RequestParam String ticketId) throws InterruptedException, ExecutionException {
+    @PutMapping ("/api/tickets/update/{ticketId}")
+    public String updateTicket(@RequestBody Ticket ticket, @PathVariable String ticketId) throws InterruptedException, ExecutionException {
         return ticketService.updateTicket(ticket,ticketId);
     }
 
-    @DeleteMapping ("/api/ticket/delete")
-    public String deleteTicket(@RequestParam String ticketId) throws ExecutionException, InterruptedException {
+    @DeleteMapping ("/api/tickets/delete/{ticketId}")
+    public String deleteTicket(@PathVariable String ticketId) throws ExecutionException, InterruptedException {
         return ticketService.deleteTicket(ticketId);
     }
 }
