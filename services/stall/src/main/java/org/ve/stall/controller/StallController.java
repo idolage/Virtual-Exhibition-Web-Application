@@ -11,46 +11,49 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/stalls")
 
 public class StallController {
     private final StallService stallService;
 
-    @PostMapping("/api/stalls/add")
+    @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public String addStall(@RequestBody Stall stall) throws InterruptedException, ExecutionException{
         String stallId= stall.getStallId();
         return stallService.addStall(stall,stallId);
     }
-    @PostMapping("/api/stalls/upload-logo")
+    @PostMapping("/upload-logo/{stallId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> uploadLogo(@RequestParam("file") MultipartFile file,@RequestParam String stallId,String stallOwnerId, String exhibitionId, String tier) throws Exception {
+    public ResponseEntity<String> uploadLogo(@PathVariable String stallId,@RequestParam("file") MultipartFile file,String stallOwnerId, String exhibitionId, String tier) throws Exception {
         return stallService.uploadLogo(file,stallId,stallOwnerId,exhibitionId,tier);
     }
-    @PostMapping("/api/stalls/upload-banner")
+    @PostMapping("/upload-banner/{stallId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> uploadBanner(@RequestParam("file") MultipartFile file,@RequestParam String stallId,String stallOwnerId, String exhibitionId, String tier) throws Exception {
+    public ResponseEntity<String> uploadBanner(@PathVariable String stallId,@RequestParam("file") MultipartFile file,String stallOwnerId, String exhibitionId, String tier) throws Exception {
         return stallService.uploadBanner(file,stallId,stallOwnerId,exhibitionId,tier);
     }
-    @PostMapping("/api/stalls/upload-video")
+    @PostMapping("/upload-video/{stallId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> uploadVideo(@RequestParam("file") MultipartFile file ,@RequestParam String stallId,String stallOwnerId, String exhibitionId, String tier) throws Exception {
+    public ResponseEntity<String> uploadVideo(@PathVariable String stallId,@RequestParam("file") MultipartFile file,String stallOwnerId, String exhibitionId, String tier) throws Exception {
         return stallService.uploadVideo(file, stallId,stallOwnerId,exhibitionId,tier);
     }
-    @GetMapping ("/api/stalls/get-stalls/{stallOwnerId}")
+    @GetMapping ("/{stallOwnerId}")
     @ResponseStatus(HttpStatus.OK)
     public List<Stall> getStalls(@PathVariable String stallOwnerId) throws InterruptedException, ExecutionException{
         return stallService.getStalls(stallOwnerId);}
-    @PutMapping ("/api/stalls/update/{stallId}")
-    public String updateTicket(@RequestBody Stall stall, @PathVariable String stallId) throws InterruptedException, ExecutionException {
+    @PutMapping ("/{stallId}")
+    @ResponseStatus(HttpStatus.OK)
+    public String updateStall(@PathVariable String stallId,@RequestBody Stall stall) throws InterruptedException, ExecutionException {
         return stallService.updateStall(stall,stallId);
     }
-    @DeleteMapping ("/api/stalls/delete-stall/{stallId}")
+    @DeleteMapping ("/{stallId}")
     @ResponseStatus(HttpStatus.OK)
     public String deleteStall(@PathVariable String stallId) {
         return stallService.deleteStall(stallId);
     }
 
-    }
+}
 

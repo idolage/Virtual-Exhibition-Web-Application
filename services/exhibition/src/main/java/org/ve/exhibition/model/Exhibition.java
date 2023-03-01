@@ -11,5 +11,6 @@ public class Exhibition {
     private String exhibitionOwnerId;
     private String exhibitionId;
     private boolean start;
+    private boolean isOver;
     private String datetime;
 }

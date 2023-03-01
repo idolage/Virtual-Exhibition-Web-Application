@@ -12,32 +12,34 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 @RestController
+@CrossOrigin("*")
 @RequiredArgsConstructor
+@RequestMapping("/api/avatars")
 public class AvatarController {
     private final AvatarService avatarService;
-    @PostMapping ("/api/avatars/add")
+    @PostMapping ()
     @ResponseStatus(HttpStatus.OK)
     public String addAvatar(@RequestBody Avatar avatar) {
         return avatarService.addAvatar(avatar);
     }
 
-    @GetMapping ("/api/avatars/{userId}")
+    @GetMapping ("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public Avatar getAvatar(@PathVariable String userId) {
         return avatarService.getAvatar(userId);
     }
 
-    @GetMapping ("/api/avatars")
+    @GetMapping ()
     public List<Avatar> getAvatars() throws CancellationException {
         return avatarService.getAvatars();
     }
 
-    @PutMapping ("/api/avatars/update")
+    @PutMapping ()
     public String updateAvatars(@RequestBody Avatar avatar) throws InterruptedException, ExecutionException {
         return avatarService.updateAvatar(avatar);
     }
 
-    @DeleteMapping ("/api/avatars/delete/{user_id}")
+    @DeleteMapping ("/{user_id}")
     public String deleteAvatar(@PathVariable String user_id) {
         return avatarService.deleteAvatar(user_id);
     }

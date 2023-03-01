@@ -11,26 +11,27 @@ import org.ve.payment.service.PaymentService;
 @CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/payments")
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    @PostMapping("/api/payments/add")
+    @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> addPayment(@RequestBody Payment payment){
         return paymentService.addPayment(payment);
     }
 
-    @GetMapping("/api/payments/payments")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getPayments(){
         return paymentService.getPayments();
     }
 
-    @GetMapping("/api/payments/{documentId}")
+    @GetMapping("/{paymentId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getPayment(@PathVariable String documentId){
-        return paymentService.getPayment(documentId);
+    public ResponseEntity<?> getPayment(@PathVariable String paymentId){
+        return paymentService.getPayment(paymentId);
     }
 
     @GetMapping("/test")

@@ -14,49 +14,50 @@ import java.util.concurrent.ExecutionException;
 @CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/exhibitions")
 public class ExhibitionController {
     private final ExhibitionService exhibitionService;
 
-    @PostMapping ("/api/exhibitions/add")
+    @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public String addExhibition(@RequestBody Exhibition exhibition) throws InterruptedException, ExecutionException{
         return exhibitionService.addExhibition(exhibition);
     }
 
-    @GetMapping ("/api/exhibitions/{documentId}")
+    @GetMapping ("/{Id}")
     @ResponseStatus(HttpStatus.OK)
-    public Exhibition getExhibition(@PathVariable String documentId) throws InterruptedException, ExecutionException{
-        return exhibitionService.getExhibition(documentId);
+    public Exhibition getExhibition(@PathVariable String Id) throws InterruptedException, ExecutionException{
+        return exhibitionService.getExhibition(Id);
     }
 
-    @GetMapping ("/api/exhibitions")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Exhibition> getExhibitions() throws CancellationException {
         return exhibitionService.getExhibitions();
     }
 
-    @GetMapping("/api/exhibitions/{exhibitionId}")
+    @GetMapping("/exhibition/{exhibitionId}")
     @ResponseStatus(HttpStatus.OK)
     public Exhibition getExhibitionByExhibitionId(@PathVariable String exhibitionId) throws CancellationException, InterruptedException, ExecutionException{
         return exhibitionService.getExhibitionByExhibitionId(exhibitionId);
     }
 
-    @PutMapping ("/api/exhibitions/update/{documentId}")
+    @PutMapping ("/{Id}")
     @ResponseStatus(HttpStatus.OK)
-    public String updateExhibitions(@RequestBody Exhibition exhibition, @PathVariable String documentId) throws InterruptedException, ExecutionException {
-        return exhibitionService.updateExhibition(exhibition, documentId);
+    public String updateExhibitions(@RequestBody Exhibition exhibition, @PathVariable String Id) throws InterruptedException, ExecutionException {
+        return exhibitionService.updateExhibition(exhibition,Id);
     }
 
-    @DeleteMapping ("/api/exhibitions/delete/{documentId}")
+    @DeleteMapping ("/{Id}")
     @ResponseStatus(HttpStatus.OK)
-    public String deleteExhibition(@PathVariable String documentId) {
-        return exhibitionService.deleteExhibition(documentId);
+    public String deleteExhibition(@PathVariable String Id) {
+        return exhibitionService.deleteExhibition(Id);
     }
 
-    @PutMapping("/api/exhibitions/start/{documentId}/{start}")
+    @PutMapping("/{Id}/start")
     @ResponseStatus(HttpStatus.OK)
-    public String startExhibition(@PathVariable String documentId,@PathVariable boolean start) throws InterruptedException, ExecutionException {
-        return exhibitionService.startExhibition(documentId,start);
+    public String startExhibition(@PathVariable String Id,@RequestParam boolean start) throws InterruptedException, ExecutionException {
+        return exhibitionService.startExhibition(Id,start);
     }
 
     @GetMapping("/test")
