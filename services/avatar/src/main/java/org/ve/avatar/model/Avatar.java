@@ -1,34 +1,30 @@
 package org.ve.avatar.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 
 @Setter
 @Getter
-@Entity
-@Table(name = "USER_AVATARS")
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = "avatars")
+
 public class Avatar {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String id;
 
-    @Column
     private String userId;
-    @Column
     private String avatarId;
-    @Column
     private String  bottomColor;
-    @Column
     private String  topColor;
-    @Column
     private String  shoeColor;
-    @Column
     private String  hairColor;
-    @Column
     private String  beardColor;
-    @Column
     private String  gender;
 
 
