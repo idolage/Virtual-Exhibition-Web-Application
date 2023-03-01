@@ -33,9 +33,9 @@ public class ExhibitionService {
      * Get an exhibition
      * @param document id
      */
-    public Exhibition getExhibition(String documentId) throws InterruptedException, ExecutionException {
+    public Exhibition getExhibition(String Id) throws InterruptedException, ExecutionException {
         Firestore firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = firestore.collection("exhibitions").document(documentId);
+        DocumentReference documentReference = firestore.collection("exhibitions").document(Id);
         ApiFuture<DocumentSnapshot> documentSnapshotApiFuture = documentReference.get();
         DocumentSnapshot documentSnapshot = documentSnapshotApiFuture.get();
         Exhibition exhibition;
@@ -83,10 +83,10 @@ public class ExhibitionService {
      * Update an exhibition
      * @param exhibition instance and its document id
      */
-    public String updateExhibition(Exhibition exhibition, String documentId)throws InterruptedException, ExecutionException{
+    public String updateExhibition(Exhibition exhibition, String Id)throws InterruptedException, ExecutionException{
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionApiFuture = firestore.collection("exhibitions")
-                .document(documentId).set(exhibition);
+                .document(Id).set(exhibition);
         return "Updated "+collectionApiFuture.get().getUpdateTime().toString();
     }
 
@@ -94,23 +94,23 @@ public class ExhibitionService {
      * Delete an exhibition
      * @param document id
      */
-    public String deleteExhibition(String documentId){
+    public String deleteExhibition(String Id){
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionApiFuture = firestore.collection("exhibitions")
-                .document(documentId).delete();
-        return "Successfully deleted "+documentId;
+                .document(Id).delete();
+        return "Successfully deleted "+Id;
     }
 
     /*
      * Start or End the exhibition
      * @param start
      */
-    public String startExhibition(String documentId, boolean start) throws InterruptedException, ExecutionException{
-        Exhibition exhibition = getExhibition(documentId);
+    public String startExhibition(String Id, boolean start) throws InterruptedException, ExecutionException{
+        Exhibition exhibition = getExhibition(Id);
         exhibition.setStart(start);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionApiFuture = firestore.collection("exhibitions")
-                .document(documentId).set(exhibition);
+                .document(Id).set(exhibition);
         if(start){
             return "Started";
         } else {

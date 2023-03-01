@@ -11,21 +11,22 @@ import java.util.concurrent.ExecutionException;
 @CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/tickets")
 public class TicketController {
 
     private final TicketService ticketService;
-    @PostMapping("/api/tickets/issue")
+    @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public String issueTicket(@RequestBody Ticket ticket) throws InterruptedException, ExecutionException {
         return ticketService.issueTicket(ticket);
     }
 
-    @PutMapping ("/api/tickets/update/{ticketId}")
-    public String updateTicket(@RequestBody Ticket ticket, @PathVariable String ticketId) throws InterruptedException, ExecutionException {
+    @PutMapping ("/{ticketId}")
+    public String updateTicket(@PathVariable String ticketId,@RequestBody Ticket ticket) throws InterruptedException, ExecutionException {
         return ticketService.updateTicket(ticket,ticketId);
     }
 
-    @DeleteMapping ("/api/tickets/delete/{ticketId}")
+    @DeleteMapping ("/{ticketId}")
     public String deleteTicket(@PathVariable String ticketId) throws ExecutionException, InterruptedException {
         return ticketService.deleteTicket(ticketId);
     }
