@@ -1,15 +1,9 @@
 package org.ve.avatar.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.ve.avatar.model.Avatar;
 
-public interface AvatarRepository extends JpaRepository<Avatar,Integer> {
-
-
-
-
-
-
+public interface AvatarRepository extends MongoRepository<Avatar,String> {
 
     Avatar findByUserId(String userId);
 

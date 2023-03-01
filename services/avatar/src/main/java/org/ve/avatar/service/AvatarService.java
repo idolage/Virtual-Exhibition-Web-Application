@@ -8,6 +8,7 @@ import org.ve.avatar.repository.AvatarRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 @Service
@@ -17,6 +18,7 @@ public class AvatarService {
 
     public String addAvatar(Avatar avatar) {
        try {
+           avatar.setId(UUID.randomUUID().toString());
            repository.save(avatar);
            return "Avatar Added Successfully";
        }catch (Exception e){
