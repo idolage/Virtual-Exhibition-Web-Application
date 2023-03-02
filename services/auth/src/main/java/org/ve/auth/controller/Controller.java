@@ -1,6 +1,7 @@
 package org.ve.auth.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.ve.auth.model.Admin;
 import org.ve.auth.model.Attendee;
@@ -22,70 +23,85 @@ public class Controller {
     private LoginService loginService;
     private AuthService authService;
     @PostMapping(path="adminRegistration")
+    @ResponseStatus(HttpStatus.OK)
     public String register(@RequestBody AdminRegistrationRequest request){
         return adminRegistrationService.register(request);
     }
     @PostMapping(path="attendeeRegistration")
+    @ResponseStatus(HttpStatus.OK)
     public String register(@RequestBody AttendeeRegistrationRequest request){
         return attendeeRegistrationService.register(request);
     }
     @PostMapping(path="exhibitionOwnerRegistration")
+    @ResponseStatus(HttpStatus.OK)
     public String register(@RequestBody ExhibitionOwnerRegistrationRequest request){
         return exhibitionOwnerRegistrationService.register(request);
     }
     @PostMapping(path="exhibitorRegistration")
+    @ResponseStatus(HttpStatus.OK)
     public String register(@RequestBody ExhibitorRegistrationRequest request){
         return exhibitorRegistrationService.register(request);
     }
-    @GetMapping(path ="getAdmin")
-    public Admin getAdmin(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
+    @GetMapping(path ="getAdmin/{emailAddress}")
+    @ResponseStatus(HttpStatus.OK)
+    public Admin getAdmin(@PathVariable("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
         return authService.getAdmin(emailAddress);
     }
-    @GetMapping(path ="getAttendee")
-    public Attendee getAttendee(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
+    @GetMapping(path ="getAttendee/{emailAddress}")
+    @ResponseStatus(HttpStatus.OK)
+    public Attendee getAttendee(@PathVariable("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
         return authService.getAttendee(emailAddress);
     }
-    @GetMapping(path ="getExhibitor")
-    public Exhibitor getExhibitor(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
+    @GetMapping(path ="getExhibitor/{emailAddress}")
+    @ResponseStatus(HttpStatus.OK)
+    public Exhibitor getExhibitor(@PathVariable("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
         return authService.getExhibitor(emailAddress);
     }
-    @GetMapping(path ="getExhibitionOwner")
-    public ExhibitionOwner getExhibitionOwner(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
+    @GetMapping(path ="getExhibitionOwner/{emailAddress}")
+    @ResponseStatus(HttpStatus.OK)
+    public ExhibitionOwner getExhibitionOwner(@PathVariable("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
         return authService.getExhibitionOwner(emailAddress);
     }
-    @PostMapping(path ="updateAdmin")
-    public String updateAdmin(@RequestBody AdminRegistrationRequest request, @RequestParam String prevEmail) throws ExecutionException, InterruptedException {
+    @PutMapping(path ="updateAdmin/{prevEmail}")
+    @ResponseStatus(HttpStatus.OK)
+    public String updateAdmin(@RequestBody AdminRegistrationRequest request, @PathVariable String prevEmail) throws ExecutionException, InterruptedException {
         return authService.updateAdmin(request, prevEmail);
     }
-    @PostMapping(path ="updateAttendee")
-    public String updateAttendee(@RequestBody AttendeeRegistrationRequest request, @RequestParam String prevEmail) throws ExecutionException, InterruptedException {
+    @PutMapping(path ="updateAttendee/{prevEmail}")
+    @ResponseStatus(HttpStatus.OK)
+    public String updateAttendee(@RequestBody AttendeeRegistrationRequest request, @PathVariable String prevEmail) throws ExecutionException, InterruptedException {
         return authService.updateAttendee(request, prevEmail);
     }
-    @PostMapping(path ="updateExhibitor")
-    public String updateExhibitor(@RequestBody ExhibitorRegistrationRequest request, @RequestParam String prevEmail) throws ExecutionException, InterruptedException {
+    @PutMapping(path ="updateExhibitor/{prevEmail}")
+    @ResponseStatus(HttpStatus.OK)
+    public String updateExhibitor(@RequestBody ExhibitorRegistrationRequest request, @PathVariable String prevEmail) throws ExecutionException, InterruptedException {
         return authService.updateExhibitor(request, prevEmail);
     }
-    @PostMapping(path ="updateExhibitionOwner")
-    public String updateAttendee(@RequestBody ExhibitionOwnerRegistrationRequest request, @RequestParam String prevEmail) throws ExecutionException, InterruptedException {
+    @PutMapping(path ="updateExhibitionOwner/{prevEmail}")
+    @ResponseStatus(HttpStatus.OK)
+    public String updateExhibitionOwner(@RequestBody ExhibitionOwnerRegistrationRequest request, @PathVariable String prevEmail) throws ExecutionException, InterruptedException {
         return authService.updateExhibitionOwner(request, prevEmail);
     }
-    @GetMapping(path ="confirm")
-    public String confirm(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
+    @PutMapping(path ="confirm/{emailAddress}")
+    @ResponseStatus(HttpStatus.OK)
+    public String confirm(@PathVariable("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
         return authService.confirm(emailAddress);
     }
-    @GetMapping(path ="delete")
-    public String delete (@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
+    @DeleteMapping(path ="delete/{emailAddress}")
+    @ResponseStatus(HttpStatus.OK)
+    public String delete (@PathVariable("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
         return authService.deleteUser(emailAddress);
     }
     @GetMapping(path ="login")
+    @ResponseStatus(HttpStatus.OK)
     public String login(@RequestBody LoginRequest request) throws ExecutionException, InterruptedException {
         return loginService.login(request);
     }
 
-    @GetMapping(path ="forgotPassword")
-    public String forgotPassword(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
+    @PutMapping(path ="forgotPassword/{emailAddress}")
+    @ResponseStatus(HttpStatus.OK)
+    public String forgotPassword(@PathVariable("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
         return loginService.forgotPassword(emailAddress);
     }
-
-
+    
 }
