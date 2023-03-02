@@ -1,36 +1,29 @@
 package org.ve.auth.service;
 
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QuerySnapshot;
 import com.google.firebase.cloud.FirestoreClient;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.ve.auth.controller.AdminRegistrationRequest;
-//import org.ve.auth.email.EmailSenderService;
+import org.ve.auth.controller.ExhibitorRegistrationRequest;
+import org.ve.auth.model.ExhibitionOwner;
+import org.ve.auth.model.Exhibitor;
+import org.ve.auth.model.UserRole;
 import org.ve.auth.validators.ContactNoValidator;
 import org.ve.auth.validators.EmailValidator;
-import org.ve.auth.model.Admin;
-import org.ve.auth.model.UserRole;
 import org.ve.auth.validators.NicValidator;
-
-import javax.mail.MessagingException;
-import java.util.concurrent.ExecutionException;
-
 
 @Service
 @AllArgsConstructor
-public class AdminRegistrationService {
-    private final AdminService authAdminService;
+public class ExhibitorRegistrationService {
     private final EmailValidator emailValidator;
     private final NicValidator nicValidator;
     private final ContactNoValidator contactNoValidator;
-//    @Autowired
-//    private EmailSenderService emailSenderService;
-    public String register(AdminRegistrationRequest request) {
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    public String register(ExhibitorRegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getEmailAddress());
         if (!isValidEmail){
             throw new IllegalStateException("email not valid");
@@ -49,20 +42,20 @@ public class AdminRegistrationService {
         }
         String link = "http://localhost:8080/api/auth/confirm?emailAddress="+request.getEmailAddress();
 //        sendEmail(request.getEmailAddress(),request.getName(),link);
-        String token = authAdminService.signUpUser(
-                new Admin(
+        String token = signUpUser(
+                new Exhibitor(
                         request.getEmailAddress(),
                         request.getName(),
                         request.getContactNo(),
                         request.getNic(),
                         request.getPassword(),
-                        UserRole.ADMIN
+                        request.getCompany(),
+                        UserRole.EXHIBITOR
                 )
         );
         return token;
-
     }
-//    public void sendEmail(String emailAddress,String name,String link) {
+    //    public void sendEmail(String emailAddress,String name,String link) {
 //        String to = emailAddress;
 //        String subject = name;
 //        String text = "This is a test email from Spring Boot: " + link;
@@ -75,16 +68,11 @@ public class AdminRegistrationService {
 //        }
 //    }
 
-    public String confirm(String emailAddress) throws ExecutionException, InterruptedException {
+    public String signUpUser(Exhibitor exhibitor){
+        String encodedPassword = bCryptPasswordEncoder.encode(exhibitor.getPassword());
+        exhibitor.setPassword(encodedPassword);
         Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = firestore.collection("users").whereEqualTo("emailAddress", emailAddress).get();
-        QuerySnapshot snapshot = future.get();
-        if (!snapshot.isEmpty()) {
-            DocumentReference docRef = snapshot.getDocuments().get(0).getReference();
-            docRef.update("enabled", true);
-            return "User enabled successfully";
-        }
-        return "Failed to enable user";
+        firestore.collection("users").document().set(exhibitor);
+        return "Exhibitor registered successfully!";
     }
-
 }
