@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.ve.auth.controller.LoginRequest;
-import org.ve.auth.email.EmailSenderService;
+//import org.ve.auth.email.EmailSenderService;
 import org.ve.auth.tokens.JwtGenerator;
 import org.ve.auth.tokens.TempPwdGenerator;
 import org.ve.auth.validators.EmailValidator;
@@ -29,8 +29,8 @@ public class LoginService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private TempPwdGenerator tempPwdGenerator;
-    @Autowired
-    private EmailSenderService emailSenderService;
+//    @Autowired
+//    private EmailSenderService emailSenderService;
     @Autowired
     private JwtGenerator jwtGenerator;
     public String login(LoginRequest request) throws ExecutionException, InterruptedException {
@@ -44,8 +44,9 @@ public class LoginService {
             String password = documents.get(0).getString("password");
             if (password != null && new BCryptPasswordEncoder().matches(request.getPassword(), password)) {
                 boolean enabled = documents.get(0).getBoolean("enabled");
+                String userRole = documents.get(0).getString("userRole");
                 if(enabled){
-                    return jwtGenerator.generateToken(request.getEmailAddress());
+                    return jwtGenerator.generateToken(request.getEmailAddress(), userRole);
                 }
                 else{
                     return "Please activate your account first";
@@ -66,21 +67,21 @@ public class LoginService {
         if (!snapshot.isEmpty()) {
             DocumentReference docRef = snapshot.getDocuments().get(0).getReference();
             docRef.update("password", bCryptPasswordEncoder.encode(tempPwd));
-            sendEmail(emailAddress,tempPwd);
+//            sendEmail(emailAddress,tempPwd);
             return "Password updated successfully";
         }
         return "Check your email to see the new password";
     }
-    public void sendEmail(String emailAddress,String tempPwd) {
-        String to = emailAddress;
-        String subject = "Temporary Password";
-        String text = "Your temp password is: " + tempPwd;
-
-        try {
-            emailSenderService.sendSimpleEmail(to, subject, text);
-            System.out.println("Email sent successfully.");
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void sendEmail(String emailAddress,String tempPwd) {
+//        String to = emailAddress;
+//        String subject = "Temporary Password";
+//        String text = "Your temp password is: " + tempPwd;
+//
+//        try {
+//            emailSenderService.sendSimpleEmail(to, subject, text);
+//            System.out.println("Email sent successfully.");
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
