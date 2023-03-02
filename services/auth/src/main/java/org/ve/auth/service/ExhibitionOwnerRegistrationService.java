@@ -40,7 +40,7 @@ public class ExhibitionOwnerRegistrationService {
         if (!isContactNoValid){
             throw new IllegalStateException("Contact no not valid");
         }
-        String link = "http://localhost:8080/api/auth/confirm?emailAddress="+request.getEmailAddress();
+        String link = "http://localhost:8080/api/auth/confirm/"+request.getEmailAddress();
 //        sendEmail(request.getEmailAddress(),request.getName(),link);
         String token = signUpUser(
                 new ExhibitionOwner(

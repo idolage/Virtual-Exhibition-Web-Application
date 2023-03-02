@@ -45,8 +45,9 @@ public class AuthService {
             String nic  = documents.get(0).getString("nic");
             Admin admin = new Admin(email,name,contactNo, nic,"",UserRole.ADMIN);
             return admin;
+        } else{
+            return new Admin(null,null,null, null,null,UserRole.INVALID);
         }
-        return null;
     }
 
     public Attendee getAttendee(String emailAddress) throws ExecutionException, InterruptedException{
@@ -58,8 +59,9 @@ public class AuthService {
             String nic  = documents.get(0).getString("nic");
             Attendee attendee = new Attendee(email,name, nic,"",UserRole.ATTENDEE);
             return attendee;
+        }else{
+            return new Attendee(null,null,null,null,UserRole.INVALID);
         }
-        return null;
     }
 
     public Exhibitor getExhibitor(String emailAddress) throws ExecutionException, InterruptedException{
@@ -73,8 +75,9 @@ public class AuthService {
             String company = documents.get(0).getString("company");
             Exhibitor exhibitor = new Exhibitor(email,name, contactNo,nic,"",company,UserRole.EXHIBITOR);
             return exhibitor;
+        }else{
+            return new Exhibitor(null,null,null,null,null,null,UserRole.INVALID);
         }
-        return null;
     }
 
     public ExhibitionOwner getExhibitionOwner(String emailAddress) throws ExecutionException, InterruptedException{
@@ -88,8 +91,9 @@ public class AuthService {
             String company = documents.get(0).getString("company");
             ExhibitionOwner exhibitionOwner = new ExhibitionOwner(email,name, contactNo,nic,"",company,UserRole.EX_OWNER);
             return exhibitionOwner;
+        }else{
+            return new ExhibitionOwner(null,null,null,null,null,null,UserRole.INVALID);
         }
-        return null;
     }
 
     public String deleteUser(String emailAddress) throws ExecutionException, InterruptedException{

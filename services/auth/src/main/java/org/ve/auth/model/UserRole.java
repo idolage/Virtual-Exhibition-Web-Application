@@ -4,5 +4,6 @@ public enum UserRole {
     ADMIN,
     EX_OWNER,
     EXHIBITOR,
-    ATTENDEE
+    ATTENDEE,
+    INVALID
 }
