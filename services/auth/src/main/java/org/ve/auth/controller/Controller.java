@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.ve.auth.model.Admin;
 import org.ve.auth.model.Attendee;
+
+import org.ve.auth.model.ExhibitionOwner;
+import org.ve.auth.model.Exhibitor;
 import org.ve.auth.service.*;
 
 import java.util.concurrent.ExecutionException;
@@ -14,8 +17,8 @@ import java.util.concurrent.ExecutionException;
 public class Controller {
     private AdminRegistrationService adminRegistrationService;
     private AttendeeRegistrationService attendeeRegistrationService;
-//    private ExhibitorRegistrationService exhibitorRegistrationService;
-//    private ExhibitionOwnerRegistrationService exhibitionOwnerRegistrationService;
+    private ExhibitorRegistrationService exhibitorRegistrationService;
+    private ExhibitionOwnerRegistrationService exhibitionOwnerRegistrationService;
     private LoginService loginService;
     private AuthService authService;
     @PostMapping(path="adminRegistration")
@@ -26,14 +29,14 @@ public class Controller {
     public String register(@RequestBody AttendeeRegistrationRequest request){
         return attendeeRegistrationService.register(request);
     }
-//    @PostMapping(path="exhibitionOwnerRegistration")
-//    public String register(@RequestBody ExhibitionOwnerRegistrationRequest request){
-//        return exhibitionOwnerRegistrationService.register(request);
-//    }
-//    @PostMapping(path="exhibitorRegistration")
-//    public String register(@RequestBody ExhibitorRegistrationRequest request){
-//        return exhibitorRegistrationService.register(request);
-//    }
+    @PostMapping(path="exhibitionOwnerRegistration")
+    public String register(@RequestBody ExhibitionOwnerRegistrationRequest request){
+        return exhibitionOwnerRegistrationService.register(request);
+    }
+    @PostMapping(path="exhibitorRegistration")
+    public String register(@RequestBody ExhibitorRegistrationRequest request){
+        return exhibitorRegistrationService.register(request);
+    }
     @GetMapping(path ="getAdmin")
     public Admin getAdmin(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
         return authService.getAdmin(emailAddress);
@@ -42,14 +45,14 @@ public class Controller {
     public Attendee getAttendee(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
         return authService.getAttendee(emailAddress);
     }
-//    @GetMapping(path ="getExhibitor")
-//    public Exhibitor getExhibitor(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
-//        return authService.getExhibitor(emailAddress);
-//    }
-//    @GetMapping(path ="getExhibitionOwner")
-//    public ExhibitionOwner getExhibitionOwner(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
-//        return authService.getExhibitionOwner(emailAddress);
-//    }
+    @GetMapping(path ="getExhibitor")
+    public Exhibitor getExhibitor(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
+        return authService.getExhibitor(emailAddress);
+    }
+    @GetMapping(path ="getExhibitionOwner")
+    public ExhibitionOwner getExhibitionOwner(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
+        return authService.getExhibitionOwner(emailAddress);
+    }
     @PostMapping(path ="updateAdmin")
     public String updateAdmin(@RequestBody AdminRegistrationRequest request, @RequestParam String prevEmail) throws ExecutionException, InterruptedException {
         return authService.updateAdmin(request, prevEmail);
@@ -58,14 +61,14 @@ public class Controller {
     public String updateAttendee(@RequestBody AttendeeRegistrationRequest request, @RequestParam String prevEmail) throws ExecutionException, InterruptedException {
         return authService.updateAttendee(request, prevEmail);
     }
-//    @PostMapping(path ="updateExhibitor")
-//    public String updateExhibitor(@RequestBody ExhibitorRegistrationRequest request, @RequestParam String prevEmail) throws ExecutionException, InterruptedException {
-//        return authService.updateExhibitor(request, prevEmail);
-//    }
-//    @PostMapping(path ="updateExhibitionOwner")
-//    public String updateAttendee(@RequestBody ExhibitionOwnerRegistrationRequest request, @RequestParam String prevEmail) throws ExecutionException, InterruptedException {
-//        return authService.updateExhibitionOwner(request, prevEmail);
-//    }
+    @PostMapping(path ="updateExhibitor")
+    public String updateExhibitor(@RequestBody ExhibitorRegistrationRequest request, @RequestParam String prevEmail) throws ExecutionException, InterruptedException {
+        return authService.updateExhibitor(request, prevEmail);
+    }
+    @PostMapping(path ="updateExhibitionOwner")
+    public String updateAttendee(@RequestBody ExhibitionOwnerRegistrationRequest request, @RequestParam String prevEmail) throws ExecutionException, InterruptedException {
+        return authService.updateExhibitionOwner(request, prevEmail);
+    }
     @GetMapping(path ="confirm")
     public String confirm(@RequestParam("emailAddress") String emailAddress) throws ExecutionException, InterruptedException {
         return authService.confirm(emailAddress);

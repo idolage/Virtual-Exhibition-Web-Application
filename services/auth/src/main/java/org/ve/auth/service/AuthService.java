@@ -9,8 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.ve.auth.controller.AdminRegistrationRequest;
 import org.ve.auth.controller.AttendeeRegistrationRequest;
-//import org.ve.auth.controller.ExhibitionOwnerRegistrationRequest;
-//import org.ve.auth.controller.ExhibitorRegistrationRequest;
+import org.ve.auth.controller.ExhibitionOwnerRegistrationRequest;
+import org.ve.auth.controller.ExhibitorRegistrationRequest;
 import org.ve.auth.model.*;
 
 import java.util.HashMap;
@@ -62,35 +62,35 @@ public class AuthService {
         return null;
     }
 
-//    public Exhibitor getExhibitor(String emailAddress) throws ExecutionException, InterruptedException{
-//        Firestore firestore = FirestoreClient.getFirestore();
-//        List<QueryDocumentSnapshot> documents = firestore.collection("users").whereEqualTo("emailAddress", emailAddress).get().get().getDocuments();
-//        if (!documents.isEmpty()) {
-//            String email = documents.get(0).getString("emailAddress");
-//            String name = documents.get(0).getString("name");
-//            String contactNo  = documents.get(0).getString("contactNo");
-//            String nic  = documents.get(0).getString("nic");
-//            String company = documents.get(0).getString("company");
-//            Exhibitor exhibitor = new Exhibitor(email,name, contactNo,nic,"",company,UserRole.EXHIBITOR);
-//            return exhibitor;
-//        }
-//        return null;
-//    }
-//
-//    public ExhibitionOwner getExhibitionOwner(String emailAddress) throws ExecutionException, InterruptedException{
-//        Firestore firestore = FirestoreClient.getFirestore();
-//        List<QueryDocumentSnapshot> documents = firestore.collection("users").whereEqualTo("emailAddress", emailAddress).get().get().getDocuments();
-//        if (!documents.isEmpty()) {
-//            String email = documents.get(0).getString("emailAddress");
-//            String name = documents.get(0).getString("name");
-//            String contactNo  = documents.get(0).getString("contactNo");
-//            String nic  = documents.get(0).getString("nic");
-//            String company = documents.get(0).getString("company");
-//            ExhibitionOwner exhibitionOwner = new ExhibitionOwner(email,name, contactNo,nic,"",company,UserRole.EX_OWNER);
-//            return exhibitionOwner;
-//        }
-//        return null;
-//    }
+    public Exhibitor getExhibitor(String emailAddress) throws ExecutionException, InterruptedException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        List<QueryDocumentSnapshot> documents = firestore.collection("users").whereEqualTo("emailAddress", emailAddress).get().get().getDocuments();
+        if (!documents.isEmpty()) {
+            String email = documents.get(0).getString("emailAddress");
+            String name = documents.get(0).getString("name");
+            String contactNo  = documents.get(0).getString("contactNo");
+            String nic  = documents.get(0).getString("nic");
+            String company = documents.get(0).getString("company");
+            Exhibitor exhibitor = new Exhibitor(email,name, contactNo,nic,"",company,UserRole.EXHIBITOR);
+            return exhibitor;
+        }
+        return null;
+    }
+
+    public ExhibitionOwner getExhibitionOwner(String emailAddress) throws ExecutionException, InterruptedException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        List<QueryDocumentSnapshot> documents = firestore.collection("users").whereEqualTo("emailAddress", emailAddress).get().get().getDocuments();
+        if (!documents.isEmpty()) {
+            String email = documents.get(0).getString("emailAddress");
+            String name = documents.get(0).getString("name");
+            String contactNo  = documents.get(0).getString("contactNo");
+            String nic  = documents.get(0).getString("nic");
+            String company = documents.get(0).getString("company");
+            ExhibitionOwner exhibitionOwner = new ExhibitionOwner(email,name, contactNo,nic,"",company,UserRole.EX_OWNER);
+            return exhibitionOwner;
+        }
+        return null;
+    }
 
     public String deleteUser(String emailAddress) throws ExecutionException, InterruptedException{
         Firestore firestore = FirestoreClient.getFirestore();
@@ -144,43 +144,43 @@ public class AuthService {
         }
     }
 
-//    public String updateExhibitor(ExhibitorRegistrationRequest request, String prevEmail) throws ExecutionException, InterruptedException{
-//        Firestore firestore = FirestoreClient.getFirestore();
-//        ApiFuture<QuerySnapshot> future = firestore.collection("users").whereEqualTo("emailAddress", prevEmail).get();
-//        String documentId = future.get().getDocuments().get(0).getId();
-//        if (!documentId.isEmpty()) {
-//            Map<String, Object> updateValues = new HashMap<>();
-//            updateValues.put("emailAddress", request.getEmailAddress());
-//            updateValues.put("name", request.getName());
-//            updateValues.put("contactNo", request.getContactNo());
-//            updateValues.put("nic", request.getNic());
-//            updateValues.put("password", bCryptPasswordEncoder.encode(request.getPassword()));
-//            updateValues.put("company", request.getCompany());
-//            firestore.collection("users").document(documentId).update(updateValues);
-//            return "Exhibitor updated successfully!";
-//
-//        }else {
-//            return "No exhibitor found with email " + prevEmail;
-//        }
-//    }
-//
-//    public String updateExhibitionOwner(ExhibitionOwnerRegistrationRequest request, String prevEmail) throws ExecutionException, InterruptedException{
-//        Firestore firestore = FirestoreClient.getFirestore();
-//        ApiFuture<QuerySnapshot> future = firestore.collection("users").whereEqualTo("emailAddress", prevEmail).get();
-//        String documentId = future.get().getDocuments().get(0).getId();
-//        if (!documentId.isEmpty()) {
-//            Map<String, Object> updateValues = new HashMap<>();
-//            updateValues.put("emailAddress", request.getEmailAddress());
-//            updateValues.put("name", request.getName());
-//            updateValues.put("contactNo", request.getContactNo());
-//            updateValues.put("nic", request.getNic());
-//            updateValues.put("password", bCryptPasswordEncoder.encode(request.getPassword()));
-//            updateValues.put("company", request.getCompany());
-//            firestore.collection("users").document(documentId).update(updateValues);
-//            return "Exhibition owner updated successfully!";
-//
-//        }else {
-//            return "No exhibition owner found with email " + prevEmail;
-//        }
-//    }
+    public String updateExhibitor(ExhibitorRegistrationRequest request, String prevEmail) throws ExecutionException, InterruptedException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("users").whereEqualTo("emailAddress", prevEmail).get();
+        String documentId = future.get().getDocuments().get(0).getId();
+        if (!documentId.isEmpty()) {
+            Map<String, Object> updateValues = new HashMap<>();
+            updateValues.put("emailAddress", request.getEmailAddress());
+            updateValues.put("name", request.getName());
+            updateValues.put("contactNo", request.getContactNo());
+            updateValues.put("nic", request.getNic());
+            updateValues.put("password", bCryptPasswordEncoder.encode(request.getPassword()));
+            updateValues.put("company", request.getCompany());
+            firestore.collection("users").document(documentId).update(updateValues);
+            return "Exhibitor updated successfully!";
+
+        }else {
+            return "No exhibitor found with email " + prevEmail;
+        }
+    }
+
+    public String updateExhibitionOwner(ExhibitionOwnerRegistrationRequest request, String prevEmail) throws ExecutionException, InterruptedException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("users").whereEqualTo("emailAddress", prevEmail).get();
+        String documentId = future.get().getDocuments().get(0).getId();
+        if (!documentId.isEmpty()) {
+            Map<String, Object> updateValues = new HashMap<>();
+            updateValues.put("emailAddress", request.getEmailAddress());
+            updateValues.put("name", request.getName());
+            updateValues.put("contactNo", request.getContactNo());
+            updateValues.put("nic", request.getNic());
+            updateValues.put("password", bCryptPasswordEncoder.encode(request.getPassword()));
+            updateValues.put("company", request.getCompany());
+            firestore.collection("users").document(documentId).update(updateValues);
+            return "Exhibition owner updated successfully!";
+
+        }else {
+            return "No exhibition owner found with email " + prevEmail;
+        }
+    }
 }
