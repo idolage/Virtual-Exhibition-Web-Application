@@ -19,7 +19,10 @@ import org.ve.apigateway.exception.JwtTokenMalformedException;
 import org.ve.apigateway.exception.JwtTokenMissingException;
 import org.ve.apigateway.util.JwtUtil;
 import reactor.core.publisher.Mono;
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @Component
 public class JwtAuthenticationFilter implements GatewayFilter {
     @Autowired
@@ -30,7 +33,7 @@ public class JwtAuthenticationFilter implements GatewayFilter {
         ServerHttpRequest request = (ServerHttpRequest) exchange.getRequest();
 
 //        Bypass endpoint
-        final List<String> apiEndpoints = List.of("api/auth/login", "api/auth/registration");
+        final List<String> apiEndpoints = List.of("api/auth/login", "api/auth/registration", "api/avatars/test");
 
         Predicate<ServerHttpRequest> isApiSecured = r -> apiEndpoints.stream()
                 .noneMatch(uri -> r.getURI().getPath().contains(uri));
@@ -47,11 +50,15 @@ public class JwtAuthenticationFilter implements GatewayFilter {
 
             try {
                 jwtUtil.validateToken(token);
-            } catch (JwtTokenMalformedException | JwtTokenMissingException e) {
+            } catch (JwtTokenMalformedException | JwtTokenMissingException e ) {
                 // e.printStackTrace();
+                log.info(token +"*"+e.toString());
+
 
                 ServerHttpResponse response = exchange.getResponse();
                 response.setStatusCode(HttpStatus.BAD_REQUEST);
+
+
 
                 return response.setComplete();
             }
