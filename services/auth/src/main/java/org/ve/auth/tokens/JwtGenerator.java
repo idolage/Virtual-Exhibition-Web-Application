@@ -15,6 +15,8 @@ public class JwtGenerator {
     public String generateToken(String email, String userRole){
         long currentTime = System.currentTimeMillis();
         long expirationTime = currentTime + 1800000;
+        email = email.replace("\"", "");
+        userRole = userRole.replace("\"", "");
         HashMap<String, Object> hm = new HashMap<>();
         hm.put("userRole", userRole);
         return Jwts.builder()
