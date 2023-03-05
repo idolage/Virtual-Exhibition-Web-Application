@@ -22,6 +22,12 @@ public class Controller {
     private ExhibitionOwnerRegistrationService exhibitionOwnerRegistrationService;
     private LoginService loginService;
     private AuthService authService;
+
+    @GetMapping(path ="validate/{token}")
+    @ResponseStatus(HttpStatus.OK)
+    public String login(@PathVariable("token") String token) {
+        return loginService.validate(token);
+    }
     @PostMapping(path="adminRegistration")
     @ResponseStatus(HttpStatus.OK)
     public String register(@RequestBody AdminRegistrationRequest request){

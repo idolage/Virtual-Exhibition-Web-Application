@@ -16,6 +16,7 @@ import org.ve.auth.controller.LoginRequest;
 import org.ve.auth.tokens.JwtGenerator;
 import org.ve.auth.tokens.TempPwdGenerator;
 import org.ve.auth.validators.EmailValidator;
+import org.ve.auth.validators.JwtValidator;
 
 import javax.mail.MessagingException;
 import java.util.List;
@@ -33,6 +34,7 @@ public class LoginService {
 //    private EmailSenderService emailSenderService;
     @Autowired
     private JwtGenerator jwtGenerator;
+    private JwtValidator jwtValidator;
     public String login(LoginRequest request) throws ExecutionException, InterruptedException {
         boolean isValidEmail = emailValidator.test(request.getEmailAddress());
         if (!isValidEmail){
@@ -71,6 +73,14 @@ public class LoginService {
             return "Password updated successfully";
         }
         return "Check your email to see the new password";
+    }
+
+    public String validate(String token) {
+        Boolean isValid = jwtValidator.validateToken(token);
+        if (isValid){
+            return "Token is valid";
+        }
+        return "Token is invalid";
     }
 //    public void sendEmail(String emailAddress,String tempPwd) {
 //        String to = emailAddress;
