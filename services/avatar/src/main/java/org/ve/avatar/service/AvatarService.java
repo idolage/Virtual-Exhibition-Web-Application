@@ -1,5 +1,8 @@
 package org.ve.avatar.service;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,6 +10,7 @@ import org.ve.avatar.model.Avatar;
 import org.ve.avatar.repository.AvatarRepository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
@@ -79,4 +83,7 @@ public class AvatarService {
         repository.deleteByUserId(user_id);
         return "Successfully deleted "+ user_id;
     }
+
+
+
 }
