@@ -34,12 +34,15 @@ public class AvatarService {
     public Avatar getAvatar(String userId) {
         try {
             Avatar avatar=repository.findByUserId(userId);
-            return avatar;
+            if(avatar!=null) {
+                return avatar;
+            }
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
+
     }
 
     public List<Avatar> getAvatars() throws CancellationException {
@@ -80,8 +83,13 @@ public class AvatarService {
     }
     @Transactional
     public String deleteAvatar(String user_id){
-        repository.deleteByUserId(user_id);
-        return "Successfully deleted "+ user_id;
+        Avatar existingAvatar=repository.findByUserId(user_id);
+        if(existingAvatar!=null) {
+            repository.deleteByUserId(user_id);
+            return "Successfully deleted " + user_id;
+        }
+        return "No matching record found";
+
     }
 
 
