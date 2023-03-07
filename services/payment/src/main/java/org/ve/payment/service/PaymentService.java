@@ -47,7 +47,7 @@ public class PaymentService {
         Optional<Payment> payment = paymentRepository.findById(documentId);
         if(payment.isPresent()){
             Exhibition exhibition = restTemplate
-                    .getForObject("http://EXHIBITION-SERVICE/api/exhibition?documentId="+
+                    .getForObject("http://EXHIBITION-SERVICE/api/exhibitions/"+
                             payment.get().getExhibitionId(), Exhibition.class);
             PaymentResponse paymentResponse = new PaymentResponse(
                     payment.get().getId(),
