@@ -20,6 +20,11 @@ import java.util.concurrent.ExecutionException;
 public class StallController {
     private final StallService stallService;
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Stall> getAllStalls() throws CancellationException {
+        return stallService.getAllStalls();
+    }
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public String addStall(@RequestBody Stall stall) throws InterruptedException, ExecutionException{
@@ -56,11 +61,6 @@ public class StallController {
         return stallService.deleteStall(stallId);
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<Stall> getAllStalls() throws CancellationException {
-        return stallService.getAllStalls();
-    }
 
 }
 
