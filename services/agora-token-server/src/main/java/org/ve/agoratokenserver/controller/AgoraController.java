@@ -11,13 +11,14 @@ import org.ve.agoratokenserver.service.media.RtcTokenBuilder;
 import javax.ws.rs.core.Response;
 import java.util.concurrent.ExecutionException;
 
-@CrossOrigin("*")
 @RestController
+@CrossOrigin("*")
 @RequiredArgsConstructor
+@RequestMapping("/api/agora")
 public class AgoraController {
 
 
-    @PostMapping("/api/agora/rtc")
+    @PostMapping("/token")
     @ResponseStatus(HttpStatus.OK)
     public Object getRTCToken(@RequestBody AgoraRepository resource) throws InterruptedException, ExecutionException {
         System.out.println(resource.getChannelName());
