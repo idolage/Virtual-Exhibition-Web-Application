@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 @CrossOrigin("*")
 @RestController
@@ -53,6 +54,12 @@ public class StallController {
     @ResponseStatus(HttpStatus.OK)
     public String deleteStall(@PathVariable String stallId) {
         return stallService.deleteStall(stallId);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Stall> getAllStalls() throws CancellationException {
+        return stallService.getAllStalls();
     }
 
 }
