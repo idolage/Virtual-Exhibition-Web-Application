@@ -30,7 +30,7 @@ public class AvatarController {
 
     @GetMapping ("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public Avatar getAvatar(@PathVariable String userId) {
+    public ResponseEntity<?>  getAvatar(@PathVariable String userId) {
         return avatarService.getAvatar(userId);
     }
 
