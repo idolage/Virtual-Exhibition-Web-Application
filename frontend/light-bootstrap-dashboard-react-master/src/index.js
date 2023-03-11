@@ -27,13 +27,19 @@ import "./assets/css/demo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import AdminLayout from "layouts/Admin.js";
-
+import CustomizeAvatar from "views/CustomizeAvatar";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
     <Switch>
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
+
+      <Route
+        path="/customize-avatar"
+        render={(props) => <CustomizeAvatar {...props} />}
+      />
+
       <Redirect from="/" to="/admin/dashboard" />
     </Switch>
   </BrowserRouter>
