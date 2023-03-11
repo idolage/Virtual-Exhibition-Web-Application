@@ -4,15 +4,16 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.ve.avatar.dto.*;
 import org.ve.avatar.model.Avatar;
 import org.ve.avatar.repository.AvatarRepository;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 @Service
@@ -20,9 +21,11 @@ public class AvatarService {
     @Autowired
     private AvatarRepository repository;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public String addAvatar(Avatar avatar) {
        try {
-           avatar.setId(UUID.randomUUID().toString());
            repository.save(avatar);
            return "Avatar Added Successfully";
        }catch (Exception e){
@@ -31,18 +34,60 @@ public class AvatarService {
        }
     }
 
-    public Avatar getAvatar(String userId) {
-        try {
-            Avatar avatar=repository.findByUserId(userId);
-            if(avatar!=null) {
-                return avatar;
+    public ResponseEntity<?> getAvatar(String userId) {
+        Avatar avatar = repository.findByUserId(userId);
+        if(avatar != null){
+            if(Objects.equals(avatar.getUserType(), "ATTENDEE")){
+                Attendee attendee = restTemplate
+                        .getForObject("http://AUTH-SERVICE/api/auth/getAttendee/"+
+                                avatar.getUserId(), Attendee.class);
+                AvatarResponseAttendee avatarResponseAttendee = new AvatarResponseAttendee(
+                        avatar.getId(),
+                        attendee,
+                        avatar.getAvatarId(),
+                        avatar.getBottomColor(),
+                        avatar.getTopColor(),
+                        avatar.getShoeColor(),
+                        avatar.getHairColor(),
+                        avatar.getBeardColor(),
+                        avatar.getGender()
+                        );
+                return new ResponseEntity<>(avatarResponseAttendee, HttpStatus.OK);
+            } else if(Objects.equals(avatar.getUserType(), "EXHIBITOR")){
+                Exhibitor exhibitor = restTemplate
+                        .getForObject("http://AUTH-SERVICE/api/auth/getExhibitor/"+
+                                avatar.getUserId(), Exhibitor.class);
+                AvatarResponseExhibitor avatarResponseExhibitor = new AvatarResponseExhibitor(
+                        avatar.getId(),
+                        exhibitor,
+                        avatar.getAvatarId(),
+                        avatar.getBottomColor(),
+                        avatar.getTopColor(),
+                        avatar.getShoeColor(),
+                        avatar.getHairColor(),
+                        avatar.getBeardColor(),
+                        avatar.getGender()
+                );
+                return new ResponseEntity<>(avatarResponseExhibitor, HttpStatus.OK);
+            } else if(Objects.equals(avatar.getUserType(), "EX_OWNER")){
+                ExhibitionOwner exhibitionOwner = restTemplate
+                        .getForObject("http://AUTH-SERVICE/api/auth/getExhibitionOwner/"+
+                                avatar.getUserId(), ExhibitionOwner.class);
+                AvatarResponseExhibitionOwner avatarResponseExhibitionOwner = new AvatarResponseExhibitionOwner(
+                        avatar.getId(),
+                        exhibitionOwner,
+                        avatar.getAvatarId(),
+                        avatar.getBottomColor(),
+                        avatar.getTopColor(),
+                        avatar.getShoeColor(),
+                        avatar.getHairColor(),
+                        avatar.getBeardColor(),
+                        avatar.getGender()
+                );
+                return new ResponseEntity<>(avatarResponseExhibitionOwner, HttpStatus.OK);
             }
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return null;
-
+        return new ResponseEntity<>("No avatar found",HttpStatus.NOT_FOUND);
     }
 
     public List<Avatar> getAvatars() throws CancellationException {
@@ -62,7 +107,6 @@ public class AvatarService {
 
         Avatar existingAvatar=repository.findByUserId(avatar.getUserId());
         if(existingAvatar!=null) {
-            existingAvatar.setUserId(avatar.getUserId());
             existingAvatar.setAvatarId(avatar.getAvatarId());
             existingAvatar.setGender(avatar.getGender());
             existingAvatar.setHairColor(avatar.getHairColor());
