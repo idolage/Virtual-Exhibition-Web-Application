@@ -171,4 +171,27 @@ public class StallService {
                 .document(stallId).update(obj);
         return "Updated "+collectionApiFuture.get().getUpdateTime().toString();
     }
+
+    public List<Stall> getAllStalls() {
+        Firestore firestore = FirestoreClient.getFirestore();
+        Iterable<DocumentReference> documentReference = firestore.collection("stalls").listDocuments();
+        List<DocumentSnapshot> documentSnapshotApiFuture = new ArrayList<DocumentSnapshot>();
+        documentReference.forEach((element)->{ApiFuture<DocumentSnapshot> documentSnapshot = element.get();
+            try {
+                documentSnapshotApiFuture.add(documentSnapshot.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
+        List<Stall> stalls = new ArrayList<>();
+        if(!documentSnapshotApiFuture.isEmpty()){
+            documentSnapshotApiFuture.forEach((element)->{
+                if(element.exists()){
+                    stalls.add(element.toObject(Stall.class));
+                }
+            });
+            return stalls;
+        }
+        return null;
+    }
 }
