@@ -24,3 +24,8 @@ build/
 .vscode/
 
 node_modules/
+
+### service accounts ###
+/services/exhibition/src/main/resources/serviceAccountKey.json
+/services/stall/src/main/resources/serviceAccountKey.json
+/services/auth/src/main/resources/serviceAccountKey.json
