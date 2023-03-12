@@ -29,3 +29,4 @@ node_modules/
 /services/exhibition/src/main/resources/serviceAccountKey.json
 /services/stall/src/main/resources/serviceAccountKey.json
 /services/auth/src/main/resources/serviceAccountKey.json
+/services/ticket/src/main/resources/serviceAccountKey.json
