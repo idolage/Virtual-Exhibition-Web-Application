@@ -17,6 +17,7 @@ public class Payment {
     private String id;
     private String exhibitionId;
     private String userId;
+    private String userType;
     private Float amount;
     private String ticket;
     private String timestamp;
