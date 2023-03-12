@@ -26,7 +26,7 @@ public class ExhibitionController {
 
     @GetMapping ("/{Id}")
     @ResponseStatus(HttpStatus.OK)
-    public Exhibition getExhibition(@PathVariable String Id) throws InterruptedException, ExecutionException{
+    public ResponseEntity<?> getExhibition(@PathVariable String Id) throws InterruptedException, ExecutionException{
         return exhibitionService.getExhibition(Id);
     }
 
