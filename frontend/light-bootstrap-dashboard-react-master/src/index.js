@@ -51,6 +51,7 @@ root.render(
         render={(props) => <CustomizeStall {...props} />}
       />
 
+
       <Redirect from="/" to="/admin/dashboard" />
     </Switch>
   </BrowserRouter>

@@ -1,0 +1,250 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+
+@import url("https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css");
+
+/* body {
+  font-family: "Montserrat", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #242333;
+  color: #fff;
+  margin: 0;
+} */
+
+* {
+  font-family: "Montserrat", sans-serif !important;
+  box-sizing: border-box;
+}
+
+.container {
+  margin: 40px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.stall {
+  background-color: #b2ec5d;
+  height: 12px;
+  width: 15px;
+  margin: 3px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.stall-sel {
+  background-color: #00a86b;
+  height: 12px;
+  width: 15px;
+  margin: 3px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.pstall {
+  background-color: #87ceeb;
+  height: 12px;
+  width: 15px;
+  margin: 3px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.pstall-sel {
+  background-color: #0047ab;
+  height: 12px;
+  width: 15px;
+  margin: 3px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.dstall {
+  background-color: #ffef00;
+  height: 12px;
+  width: 15px;
+  margin: 3px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.dstall-sel {
+  background-color: #ed872d;
+  height: 12px;
+  width: 15px;
+  margin: 3px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.entrance {
+  background-color: #3b444b;
+  height: 12px;
+  width: 15px;
+  margin: 3px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.entrance:nth-of-type(n) {
+  margin-right: 25px;
+}
+
+.occupied {
+  background-color: #fff;
+}
+
+.stall:nth-of-type(n),
+.stall-sel:nth-of-type(n) {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.dstall:not(.occupied):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.dstall-sel:not(.occupied):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.pstall:not(.occupied):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.pstall-sel:not(.occupied):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.stall-sel:not(.occupied):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.entrance:not(.occupied):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.dstall:nth-of-type(n),
+.dstall-sel:nth-of-type(n) {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.stall:not(.occupied):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.pstall:nth-of-type(n),
+.pstall-sel:nth-of-type(n) {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.stall1:not(.occupied):hover,
+.stall2:not(.occupied):hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.showcase {
+  width: "20%";
+  justify-content: space-between;
+  list-style-type: none;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #777;
+}
+
+.showcase li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}
+
+.showcase small {
+  font-size: "2px";
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3px;
+}
+
+.row1 .stall,
+.row5 .stall {
+  background-color: #87ceeb;
+  height: 12px;
+  width: 15px;
+  margin: 3px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.row1 .stall:nth-of-type(n) {
+  margin-right: 26px;
+}
+
+.row3 .stall1 {
+  background-color: #87ceeb;
+  height: 12px;
+  width: 15px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.row3 .stall2 {
+  background-color: #87ceeb;
+  height: 12px;
+  width: 15px;
+  margin-left: 450px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.row5 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3px;
+}
+
+.row5 .stall:nth-of-type(n) {
+  margin-right: 26px;
+}
+
+p.text {
+  margin: 40px 0;
+}
+
+p.text span {
+  color: #0081cb;
+  font-weight: 600;
+  box-sizing: content-box;
+}

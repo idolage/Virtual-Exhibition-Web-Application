@@ -9,12 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentResponse {
-    private String id;
-    private Exhibition exhibition;
+public class Ticket {
+    private String ticketId;
+    private String exhibitionId;
     private String userId;
     private String userType;
-    private Float amount;
-    private String ticket;
-    private String timestamp;
+    private Boolean isExpired;
 }

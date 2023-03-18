@@ -48,8 +48,20 @@ public class StallController {
     }
     @GetMapping ("/{stallOwnerId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Stall> getStalls(@PathVariable String stallOwnerId) throws InterruptedException, ExecutionException{
-        return stallService.getStalls(stallOwnerId);}
+    public List<Stall> getStallsByOwner(@PathVariable String stallOwnerId) throws InterruptedException, ExecutionException{
+        return stallService.getStallsByOwner(stallOwnerId);}
+
+    @GetMapping ("/booked/{exhibitionId}")
+    @ResponseStatus(HttpStatus.OK)
+    public String[] getBookedStalls(@PathVariable String exhibitionId) throws InterruptedException, ExecutionException{
+        return stallService.getBookedStalls(exhibitionId);}
+
+    @GetMapping ("/{exhibitionId}/stall")
+    @ResponseStatus(HttpStatus.OK)
+    public String getBookedStall(@PathVariable String exhibitionId, @RequestParam String stallOwnerId) throws InterruptedException, ExecutionException {
+        return stallService.getBookedStall(exhibitionId, stallOwnerId);
+    }
+
     @PutMapping ("/{stallId}")
     @ResponseStatus(HttpStatus.OK)
     public String updateStall(@PathVariable String stallId,@RequestBody Stall stall) throws InterruptedException, ExecutionException {
@@ -60,7 +72,6 @@ public class StallController {
     public String deleteStall(@PathVariable String stallId) {
         return stallService.deleteStall(stallId);
     }
-
 
 }
 
