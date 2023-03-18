@@ -161,22 +161,21 @@ public class StallService {
         return null;
     }
 
-    public List<Stall> getBookedStalls(String exhibitionId) throws CancellationException, ExecutionException, InterruptedException {
+    public String[] getBookedStalls(String exhibitionId) throws CancellationException, ExecutionException, InterruptedException {
         Firestore firestore = FirestoreClient.getFirestore();
         // asynchronously retrieve multiple documents
         ApiFuture<QuerySnapshot> future = firestore.collection("stalls").whereEqualTo("exhibitionId", exhibitionId).get();
 // future.get() blocks on response
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        List<Stall> stalls = new ArrayList<>();
+        List<String> stallIds = new ArrayList<>();
         if (!documents.isEmpty()) {
             documents.forEach((element) -> {
                 if (element.exists()) {
-                    stalls.add(element.toObject(Stall.class));
+                    stallIds.add(element.getString("stallId"));
                 }
             });
-            return stalls;
         }
-        return null;
+        return stallIds.toArray(new String[0]);
     }
 
     public String deleteStall(String stallId) {

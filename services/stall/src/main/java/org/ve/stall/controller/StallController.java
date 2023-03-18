@@ -53,7 +53,7 @@ public class StallController {
 
     @GetMapping ("/booked/{exhibitionId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Stall> getBookedStalls(@PathVariable String exhibitionId) throws InterruptedException, ExecutionException{
+    public String[] getBookedStalls(@PathVariable String exhibitionId) throws InterruptedException, ExecutionException{
         return stallService.getBookedStalls(exhibitionId);}
     @PutMapping ("/{stallId}")
     @ResponseStatus(HttpStatus.OK)
@@ -65,7 +65,6 @@ public class StallController {
     public String deleteStall(@PathVariable String stallId) {
         return stallService.deleteStall(stallId);
     }
-
 
 }
 
