@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { useLocation, Route, Switch } from "react-router-dom";
 
 import AdminNavbar from "components/Navbars/AdminNavbar";
@@ -12,9 +12,16 @@ import sidebarImage from "assets/img/sidebar-3.jpg";
 import { Canvas } from "@react-three/fiber";
 import Experience from "components/StallCustomization/Experience";
 import Interface from "components/StallCustomization/Interface";
-
+import Carousel from "react-bootstrap/Carousel";
+import "../assets/css/custom-style.css";
 function CustomizeStall() {
-  const avatarIdVal = 2;
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+  };
+
+  const stallType = "Platinum";
 
   const [image, setImage] = React.useState(sidebarImage);
   const [color, setColor] = React.useState("black");
@@ -56,24 +63,68 @@ function CustomizeStall() {
         <Sidebar color={color} image={hasImage ? image : ""} routes={routes} />
         <div className="main-panel" ref={mainPanel}>
           <AdminNavbar />
-          <div className="container mb-4 ">
+          <div className=" mb-4 ">
             <Switch>{getRoutes(routes)}</Switch>
+            <div className=" mt-5 mb-5 pt-4">
+              <Carousel
+                activeIndex={index}
+                onSelect={handleSelect}
+                variant={"dark"}
+                interval={null}
+              >
+                <Carousel.Item>
+                  <StallCustomizationProvider>
+                    <div className="row mt-5">
+                      <div className="col-lg-9 align-self-center ">
+                        <Canvas
+                          camera={{ position: [1.8, 1.0, 2.5], fov: 50 }}
+                          style={{
+                            height: 750,
+                            width: "auto",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Experience stallType={stallType} />
+                        </Canvas>
+                      </div>
+                      <div className="col-lg-3">
+                        <Interface />
+                      </div>
+                    </div>
+                  </StallCustomizationProvider>
+                </Carousel.Item>
+                <Carousel.Item>
+                  <p>Upload Banners</p>
+                </Carousel.Item>
+                <Carousel.Item>
+                  <p>Upload Videos</p>
+                </Carousel.Item>
+              </Carousel>
+            </div>
 
-            <StallCustomizationProvider>
+            {/* <StallCustomizationProvider>
               <div className="row mt-5">
-                <div className="col-lg-10 ">
+                <div className="col-lg-9 align-self-center ">
                   <Canvas
-                    camera={{ position: [1.5, 1.0, 2.5], fov: 45 }}
-                    style={{ height: 750, width: 800 }}
+                    camera={{ position: [1.8, 1.0, 2.5], fov: 50 }}
+                    style={{
+                      height: 750,
+                      width: "auto",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
                   >
-                    <Experience />
+                    <Experience stallType={stallType} />
                   </Canvas>
                 </div>
-                <div className="col-lg-4">
+                <div className="col-lg-3">
                   <Interface />
                 </div>
               </div>
-            </StallCustomizationProvider>
+            </StallCustomizationProvider> */}
           </div>
           <Footer />
         </div>
