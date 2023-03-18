@@ -30,6 +30,7 @@ import AdminLayout from "layouts/Admin.js";
 import CustomizeStall from "views/CustomizeStall";
 import CustomizeAvatar from "views/CustomizeAvatar";
 
+import StallsSelect from "views/StallsSelect";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
