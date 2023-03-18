@@ -178,6 +178,16 @@ public class StallService {
         return stallIds.toArray(new String[0]);
     }
 
+    public String getBookedStall(String exhibitionId, String stallOwnerId) throws CancellationException, ExecutionException, InterruptedException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        List<QueryDocumentSnapshot> documents = firestore.collection("stalls")
+                .whereEqualTo("exhibitionId",exhibitionId).whereEqualTo("stallOwnerId",stallOwnerId).get().get().getDocuments();
+        if(!documents.isEmpty()){
+            return documents.get(0).getString("stallId");
+        }
+        return "Document empty";
+    }
+
     public String deleteStall(String stallId) {
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionApiFuture = firestore.collection("stalls")
