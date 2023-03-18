@@ -27,7 +27,9 @@ import "./assets/css/demo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import AdminLayout from "layouts/Admin.js";
+import CustomizeStall from "views/CustomizeStall";
 import CustomizeAvatar from "views/CustomizeAvatar";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
@@ -38,6 +40,11 @@ root.render(
       <Route
         path="/customize-avatar"
         render={(props) => <CustomizeAvatar {...props} />}
+      />
+
+      <Route
+        path="/customize-stall"
+        render={(props) => <CustomizeStall {...props} />}
       />
 
       <Redirect from="/" to="/admin/dashboard" />

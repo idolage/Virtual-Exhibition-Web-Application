@@ -3,7 +3,6 @@ import Attendeefemaleavatar1 from "./Attendeefemaleavatar1";
 import Attendeefemaleavatar2 from "./Attendeefemaleavatar2";
 import Attendeemaleavatar1 from "./Attendeemaleavatar1";
 import Attendeemaleavatar2 from "./Attendeemaleavatar2";
-
 const Experience = ({avatarId}) => {
   console.log(avatarId);
   let avatarComponent;
