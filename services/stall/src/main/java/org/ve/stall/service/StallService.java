@@ -120,8 +120,30 @@ public class StallService {
         return ResponseEntity.status(HttpStatus.CREATED).body("success");
 
     }
+    public List<Stall> getAllStalls() {
+        Firestore firestore = FirestoreClient.getFirestore();
+        Iterable<DocumentReference> documentReference = firestore.collection("stalls").listDocuments();
+        List<DocumentSnapshot> documentSnapshotApiFuture = new ArrayList<DocumentSnapshot>();
+        documentReference.forEach((element)->{ApiFuture<DocumentSnapshot> documentSnapshot = element.get();
+            try {
+                documentSnapshotApiFuture.add(documentSnapshot.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
+        List<Stall> stalls = new ArrayList<>();
+        if(!documentSnapshotApiFuture.isEmpty()){
+            documentSnapshotApiFuture.forEach((element)->{
+                if(element.exists()){
+                    stalls.add(element.toObject(Stall.class));
+                }
+            });
+            return stalls;
+        }
+        return null;
+    }
 
-    public List<Stall> getStalls(String stallOwnerId) throws CancellationException, ExecutionException, InterruptedException {
+    public List<Stall> getStallsByOwner(String stallOwnerId) throws CancellationException, ExecutionException, InterruptedException {
         Firestore firestore = FirestoreClient.getFirestore();
         // asynchronously retrieve multiple documents
         ApiFuture<QuerySnapshot> future = firestore.collection("stalls").whereEqualTo("stallOwnerId", stallOwnerId).get();
@@ -138,16 +160,22 @@ public class StallService {
         }
         return null;
     }
-    private File convertMultiPartToFile(MultipartFile file) throws IOException {
-        File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
-        FileOutputStream fos = new FileOutputStream(convertedFile);
-        fos.write(file.getBytes());
-        fos.close();
-        return convertedFile;
-    }
 
-    private String generateFileName(MultipartFile multiPart) {
-        return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
+    public String[] getBookedStalls(String exhibitionId) throws CancellationException, ExecutionException, InterruptedException {
+        Firestore firestore = FirestoreClient.getFirestore();
+        // asynchronously retrieve multiple documents
+        ApiFuture<QuerySnapshot> future = firestore.collection("stalls").whereEqualTo("exhibitionId", exhibitionId).get();
+// future.get() blocks on response
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        List<String> stallIds = new ArrayList<>();
+        if (!documents.isEmpty()) {
+            documents.forEach((element) -> {
+                if (element.exists()) {
+                    stallIds.add(element.getString("stallId"));
+                }
+            });
+        }
+        return stallIds.toArray(new String[0]);
     }
 
     public String deleteStall(String stallId) {
@@ -172,26 +200,15 @@ public class StallService {
         return "Updated "+collectionApiFuture.get().getUpdateTime().toString();
     }
 
-    public List<Stall> getAllStalls() {
-        Firestore firestore = FirestoreClient.getFirestore();
-        Iterable<DocumentReference> documentReference = firestore.collection("stalls").listDocuments();
-        List<DocumentSnapshot> documentSnapshotApiFuture = new ArrayList<DocumentSnapshot>();
-        documentReference.forEach((element)->{ApiFuture<DocumentSnapshot> documentSnapshot = element.get();
-            try {
-                documentSnapshotApiFuture.add(documentSnapshot.get());
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        });
-        List<Stall> stalls = new ArrayList<>();
-        if(!documentSnapshotApiFuture.isEmpty()){
-            documentSnapshotApiFuture.forEach((element)->{
-                if(element.exists()){
-                    stalls.add(element.toObject(Stall.class));
-                }
-            });
-            return stalls;
-        }
-        return null;
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
+        FileOutputStream fos = new FileOutputStream(convertedFile);
+        fos.write(file.getBytes());
+        fos.close();
+        return convertedFile;
+    }
+
+    private String generateFileName(MultipartFile multiPart) {
+        return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
     }
 }
