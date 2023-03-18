@@ -9,6 +9,7 @@ import { MantineProvider } from "@mantine/core";
 import routes from "routes.js";
 import sidebarImage from "assets/img/sidebar-3.jpg";
 import "components/Stalls/StallsSelect.css";
+import axios from "axios";
 
 function StallsSelect() {
   const [image, setImage] = React.useState(sidebarImage);
@@ -18,6 +19,7 @@ function StallsSelect() {
   const [selectedStallTier, setSelectedStallTier] = React.useState(null);
   const [error, setError] = React.useState("");
   const [amount, setAmount] = React.useState(0);
+  const [bookedStalls, setBookedStalls] = React.useState([]);
   const location = useLocation();
   const mainPanel = React.useRef(null);
   const getRoutes = (routes) => {
@@ -48,12 +50,45 @@ function StallsSelect() {
       var element = document.getElementById("bodyClick");
       element.parentNode.removeChild(element);
     }
+    axios
+      .get(
+        "http://localhost:8080/api/stalls/booked/5d4a0180-01c8-4ec2-b7d7-2045ecdffe0a"
+      )
+      .then((res) => {
+        setBookedStalls(res.data);
+        res.data.forEach((bookedStall) => {
+          let divBookedStall = document.getElementById(bookedStall);
+          let stall = parseInt(bookedStall);
+          if (
+            (stall >= 1 && stall < 9) ||
+            stall == 22 ||
+            stall == 23 ||
+            stall == 44 ||
+            (stall >= 37 && stall < 44)
+          ) {
+            divBookedStall.style.backgroundColor = "#0047ab";
+          } else if (
+            stall == 9 ||
+            stall == 14 ||
+            stall == 18 ||
+            stall == 27 ||
+            stall == 31 ||
+            stall == 35
+          ) {
+            divBookedStall.style.backgroundColor = "#ed872d";
+          } else {
+            divBookedStall.style.backgroundColor = "#00a86b";
+          }
+        });
+      });
   }, [location]);
 
   function handleSelectedState(stall) {
     const divStall = document.getElementById(String(stall));
     setError("");
-    if (stall == selectedStall) {
+    if (bookedStalls.includes(String(stall))) {
+      setError("Sorry! the stall you selected was occupied already");
+    } else if (stall == selectedStall) {
       setAmount(0);
       setSelectedStall(0);
       setSelectedStallTier(null);
