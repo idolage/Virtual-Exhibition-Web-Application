@@ -21,6 +21,7 @@
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "5.0.1",
+    "react-three-fiber": "^6.0.13",
     "reactstrap": "8.8.1",
     "sass": "1.53.0",
     "three": "^0.150.1"

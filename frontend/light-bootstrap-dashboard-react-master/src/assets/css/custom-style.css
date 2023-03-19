@@ -1,0 +1,17 @@
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1) !important;
+}
+
+.carousel-caption {
+  color: #000 !important;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  color: #000 !important;
+}
+
+.carousel-dark .carousel-indicators .active {
+  background-color: black;
+}

@@ -10,7 +10,7 @@ import { useAvatarCustomization } from "contexts/AvatarCustomizationContext";
 const Attendeemaleavatar2 = (props) => {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF(
-    "./models/attendeemaleavatar2.gltf"
+    "./avatars/attendeemaleavatar2.gltf"
   );
   const { actions, names } = useAnimations(animations, group);
 
@@ -102,4 +102,4 @@ const Attendeemaleavatar2 = (props) => {
   );
 };
 export default Attendeemaleavatar2;
-useGLTF.preload('/attendeemaleavatar21.gltf')
+useGLTF.preload('./avatars/attendeemaleavatar21.gltf')

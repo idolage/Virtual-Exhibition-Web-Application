@@ -14,7 +14,7 @@ import Experience from "components/AvatarCustomization/Experience";
 import Interface from "components/AvatarCustomization/Interface";
 
 function CustomizeAvatar() {
-  const avatarIdVal = 2;
+  const avatarIdVal = 1;
 
   const [image, setImage] = React.useState(sidebarImage);
   const [color, setColor] = React.useState("black");
