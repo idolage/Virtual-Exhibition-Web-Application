@@ -30,6 +30,7 @@ import AdminLayout from "layouts/Admin.js";
 import CustomizeStall from "views/CustomizeStall";
 import CustomizeAvatar from "views/CustomizeAvatar";
 import StallsSelect from "views/StallsSelect";
+import Payments from "views/Payments";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
@@ -51,6 +52,7 @@ root.render(
         render={(props) => <CustomizeStall {...props} />}
       />
 
+      <Route path="/payments" render={(props) => <Payments {...props} />} />
 
       <Redirect from="/" to="/admin/dashboard" />
     </Switch>
