@@ -31,8 +31,6 @@ import CustomizeStall from "views/CustomizeStall";
 import CustomizeAvatar from "views/CustomizeAvatar";
 import StallsSelect from "views/StallsSelect";
 import Payments from "views/Payments";
-
-import StallsSelect from "views/StallsSelect";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
@@ -55,10 +53,7 @@ root.render(
       />
 
       <Route path="/payments" render={(props) => <Payments {...props} />} />
-      <Route
-        path="/customize-stall"
-        render={(props) => <CustomizeStall {...props} />}
-      />
+      
 
       <Redirect from="/" to="/admin/dashboard" />
     </Switch>

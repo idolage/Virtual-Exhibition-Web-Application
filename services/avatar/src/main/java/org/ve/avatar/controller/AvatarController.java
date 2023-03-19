@@ -17,7 +17,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins="*",allowedHeaders = "*")
 @RequiredArgsConstructor
 @RequestMapping("/api/avatars")
 public class AvatarController {
