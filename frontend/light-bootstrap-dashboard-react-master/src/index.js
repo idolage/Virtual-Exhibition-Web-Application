@@ -33,8 +33,6 @@ import StallsSelect from "views/StallsSelect";
 import Payments from "views/Payments";
 
 import StallsSelect from "views/StallsSelect";
-
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
