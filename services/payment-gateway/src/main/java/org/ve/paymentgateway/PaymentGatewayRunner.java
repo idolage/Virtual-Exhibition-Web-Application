@@ -14,9 +14,5 @@ public class PaymentGatewayRunner {
         SpringApplication.run(PaymentGatewayRunner.class, args);
     }
 
-    @Bean
-    @LoadBalanced
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
+
 }

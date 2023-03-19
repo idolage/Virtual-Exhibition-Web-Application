@@ -53,6 +53,7 @@ root.render(
       />
 
       <Route path="/payments" render={(props) => <Payments {...props} />} />
+      
 
       <Redirect from="/" to="/admin/dashboard" />
     </Switch>
