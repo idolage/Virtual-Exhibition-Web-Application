@@ -7,28 +7,18 @@ const Payments = ({ price }) => {
     "pk_test_51Mmz4YD6ZxcX2rToMJ2OGmR3HorqkdxlC7KfCFrdmmVRnaoQJHlmyhbff18ridO4IuUgdpErJ8lBjPxqQrIluwrk00volY2MsC";
   const stripePrice = 200;
 
-  const onToken = async (token) => {
-    try {
-      const response = await fetch(
-        "http://localhost:8080/api/payment-gateway/charge",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            amount: stripePrice,
-            token,
-          }),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        }
-      );
-      if (!response.ok) {
-        alert("payment error");
-      }
-      alert("payment success");
-    } catch (err) {
-      alert(e);
-    }
+  const onToken = (token) => {
+    axios
+      .post("http://localhost:8080/api/payment-gateway/charge", {
+        amount: stripePrice,
+        token,
+      })
+      .then((res) => {
+        alert("payment success");
+      })
+      .catch((e) => {
+        alert(e);
+      });
   };
 
   return (
