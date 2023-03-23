@@ -69,9 +69,9 @@ function StallsSelect() {
           ) {
             divBookedStall.style.backgroundColor = "#0047ab";
           } else if (
-            stall == 9 ||
-            stall == 14 ||
-            stall == 18 ||
+            stall == 11 ||
+            stall == 15 ||
+            stall == 19 ||
             stall == 27 ||
             stall == 31 ||
             stall == 35
@@ -103,9 +103,9 @@ function StallsSelect() {
         divStall.style.backgroundColor = "#87ceeb";
         divStall.style.transform = "scale(1)";
       } else if (
-        stall == 9 ||
-        stall == 14 ||
-        stall == 18 ||
+        stall == 11 ||
+        stall == 15 ||
+        stall == 19 ||
         stall == 27 ||
         stall == 31 ||
         stall == 35
@@ -130,9 +130,9 @@ function StallsSelect() {
         divStall.style.transform = "scale(1.3)";
         divStall.style.transition = "ease-in 0.5s";
       } else if (
-        stall == 9 ||
-        stall == 14 ||
-        stall == 18 ||
+        stall == 11 ||
+        stall == 15 ||
+        stall == 19 ||
         stall == 27 ||
         stall == 31 ||
         stall == 35
@@ -243,7 +243,7 @@ function StallsSelect() {
                 <div className="row">
                   <div
                     id="9"
-                    className="dstall"
+                    className="stall"
                     onClick={() => handleSelectedState(9)}
                   ></div>
                   <div
@@ -253,7 +253,7 @@ function StallsSelect() {
                   ></div>
                   <div
                     id="11"
-                    className="stall"
+                    className="dstall"
                     onClick={() => handleSelectedState(11)}
                   ></div>
                   <div
@@ -268,12 +268,12 @@ function StallsSelect() {
                   ></div>
                   <div
                     id="14"
-                    className="dstall"
+                    className="stall"
                     onClick={() => handleSelectedState(14)}
                   ></div>
                   <div
                     id="15"
-                    className="stall"
+                    className="dstall"
                     onClick={() => handleSelectedState(15)}
                   ></div>
                   <div
@@ -288,12 +288,12 @@ function StallsSelect() {
                   ></div>
                   <div
                     id="18"
-                    className="dstall"
+                    className="stall"
                     onClick={() => handleSelectedState(18)}
                   ></div>
                   <div
                     id="19"
-                    className="stall"
+                    className="dstall"
                     onClick={() => handleSelectedState(19)}
                   ></div>
                   <div
