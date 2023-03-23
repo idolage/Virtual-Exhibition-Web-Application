@@ -1,11 +1,17 @@
 import React from "react";
-import Stripe from "react-stripe-checkout";
+import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import StripeCheckout from "react-stripe-checkout";
-const Payments = ({ price }) => {
+const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
   const publishKey =
     "pk_test_51Mmz4YD6ZxcX2rToMJ2OGmR3HorqkdxlC7KfCFrdmmVRnaoQJHlmyhbff18ridO4IuUgdpErJ8lBjPxqQrIluwrk00volY2MsC";
-  const stripePrice = 200;
+  const stripePrice = price * 100;
+  console.log(exhibitionId);
+  console.log(userId);
+  console.log(userType);
+  console.log(stallId);
+  console.log(tier);
+  const [msg, setMsg] = React.useState("Please wait");
 
   const onToken = (token) => {
     axios
@@ -14,47 +20,93 @@ const Payments = ({ price }) => {
         token,
       })
       .then((res) => {
-        alert("payment success");
+        console.log("kk");
+        const newPayment = {
+          exhibitionId: exhibitionId,
+          userId: userId,
+          userType: userType,
+          amount: price,
+        };
+        axios
+          .post("http://localhost:8080/api/payments", newPayment)
+          .then((res) => {
+            console.log("done");
+            const newStall = {
+              exhibitionId: exhibitionId,
+              stallId: stallId,
+              stallOwnerId: userId,
+              userType: userType,
+              tier: tier,
+            };
+            axios
+              .post("http://localhost:8080/api/stalls", newStall)
+              .then((res) => {
+                setMsg("Payment Successfull");
+              })
+              .catch((e) => {
+                console.log(e);
+                setMsg("Sorry! Please try again");
+              });
+          })
+          .catch((e) => {
+            console.log(e);
+            setMsg("Sorry! Please try again");
+          });
       })
       .catch((e) => {
-        alert(e);
+        console.log(e);
+        setMsg("Sorry! Please try again");
       });
+  };
+
+  const displayModal = () => {
+    return (
+      <div
+        className="modal show"
+        style={{ display: "block", position: "initial" }}
+      >
+        <Modal.Dialog>
+          <Modal.Header closeButton>
+            <Modal.Title>Payment Details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div class="text-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Please wait</span>
+              </div>
+              <br></br>
+              <span>
+                {msg == "Payment Successfull" ? (
+                  <div className="alert alert-success" role="alert">
+                    {msg}
+                  </div>
+                ) : (
+                  <div className="alert alert-danger" role="alert">
+                    {msg}
+                  </div>
+                )}
+              </span>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary">Done</Button>
+            <Button variant="secondary">Close</Button>
+          </Modal.Footer>
+        </Modal.Dialog>
+      </div>
+    );
   };
 
   return (
     <StripeCheckout
       amount={stripePrice}
-      label="Pay now"
+      name="Nerambum - නැරඹුම්"
+      label="Pay Now"
+      description={`Your total is USD${price}`}
       token={onToken}
       stripeKey={publishKey}
       currency="USD"
     />
   );
-  // function handleToken(token) {
-  //   console.log(token);
-  //   axios
-  //     .post("http://localhost:8080/api/payment-gateway/charge", "", {
-  //       headers: {
-  //         "Access-Control-Allow-Origin": "*",
-  //         "Content-Type": "application/json",
-  //         token: token.id,
-  //         amount: 500,
-  //       },
-  //     })
-  //     .then(() => {
-  //       alert("Payment Success");
-  //     })
-  //     .catch((error) => {
-  //       alert(error);
-  //     });
-  // }
-  // return (
-  //   <div className="Payments">
-  //     <Stripe
-  //       stripeKey="pk_test_51Mmz4YD6ZxcX2rToMJ2OGmR3HorqkdxlC7KfCFrdmmVRnaoQJHlmyhbff18ridO4IuUgdpErJ8lBjPxqQrIluwrk00volY2MsC"
-  //       token={handleToken}
-  //     />
-  //   </div>
-  // );
 };
 export default Payments;

@@ -10,6 +10,7 @@ import routes from "routes.js";
 import sidebarImage from "assets/img/sidebar-3.jpg";
 import "components/Stalls/StallsSelect.css";
 import axios from "axios";
+import Payments from "views/Payments.js";
 
 function StallsSelect() {
   const [image, setImage] = React.useState(sidebarImage);
@@ -123,8 +124,8 @@ function StallsSelect() {
         stall == 44 ||
         (stall >= 37 && stall < 44)
       ) {
-        setAmount(100);
-        setSelectedStallTier("Platinum ");
+        setAmount(10);
+        setSelectedStallTier("Platinum");
         divStall.style.backgroundColor = "#0047ab";
         divStall.style.transform = "scale(1.3)";
         divStall.style.transition = "ease-in 0.5s";
@@ -136,14 +137,14 @@ function StallsSelect() {
         stall == 31 ||
         stall == 35
       ) {
-        setAmount(300);
-        setSelectedStallTier("Diamond ");
+        setAmount(50);
+        setSelectedStallTier("Diamond");
         divStall.style.backgroundColor = "#ed872d";
         divStall.style.transform = "scale(1.3)";
         divStall.style.transition = "ease-in 0.5s";
       } else {
-        setAmount(500);
-        setSelectedStallTier("Gold ");
+        setAmount(30);
+        setSelectedStallTier("Gold");
         divStall.style.backgroundColor = "#00a86b";
         divStall.style.transform = "scale(1.3)";
         divStall.style.transition = "ease-in 0.5s";
@@ -151,14 +152,6 @@ function StallsSelect() {
       setSelectedStall(stall);
     } else {
       setError("Sorry! you can only select one stall");
-    }
-  }
-
-  function handlePayment() {
-    if (amount == 0) {
-      setError("Please select a stall first!");
-    } else {
-      setError("");
     }
   }
 
@@ -442,16 +435,20 @@ function StallsSelect() {
                   <p className="text">
                     You have selected the number{" "}
                     <span id="count">{selectedStall}</span>{" "}
-                    <span id="count">{selectedStallTier}</span>stall
+                    <span id="count">{selectedStallTier} </span>stall
                   </p>
                 )}
-                <button
-                  type="button"
-                  className="btn btn-primary btn-sm"
-                  onClick={() => handlePayment()}
-                >
-                  Payment
-                </button>
+                <div>{console.log(amount)}</div>
+                <div>
+                  <Payments
+                    exhibitionId={"5d4a0180-01c8-4ec2-b7d7-2045ecdffe0a"}
+                    userId={"abc@gmail.com"}
+                    userType={"EXHIBITOR"}
+                    price={parseInt(amount)}
+                    stallId={selectedStall}
+                    tier={selectedStallTier}
+                  ></Payments>
+                </div>
                 <br></br>
                 {error == "" ? null : (
                   <div className="alert alert-danger" role="alert">
