@@ -32,7 +32,7 @@ public class Exhibitor implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private boolean locked = false;
-    private boolean enabled = false;
+    private boolean enabled = true;
 
     public Exhibitor(String emailAddress, String name, String contactNo, String nic, String password, String company, UserRole userRole) {
         this.emailAddress = emailAddress;

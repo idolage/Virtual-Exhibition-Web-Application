@@ -30,7 +30,7 @@ public class Attendee implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private boolean locked = false;
-    private boolean enabled = false;
+    private boolean enabled = true;
 
     public Attendee(String emailAddress, String name, String nic, String password, UserRole userRole) {
         this.emailAddress = emailAddress;

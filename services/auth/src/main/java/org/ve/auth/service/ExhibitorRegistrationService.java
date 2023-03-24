@@ -26,22 +26,22 @@ public class ExhibitorRegistrationService {
     public String register(ExhibitorRegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getEmailAddress());
         if (!isValidEmail){
-            throw new IllegalStateException("email not valid");
+            return ("Invalid Email Format");
         }
         boolean isEmailTaken = emailValidator.isEmailTaken(request.getEmailAddress());
         if (isEmailTaken){
-            throw new IllegalStateException("email is taken");
+            return ("Email Is Already Taken");
         }
         boolean isNicValid = nicValidator.isValidNic(request.getNic());
         if (!isNicValid){
-            throw new IllegalStateException("Nic not valid");
+            return ("Invalid NIC number");
         }
         boolean isContactNoValid = contactNoValidator.validateContactNo(request.getContactNo());
         if (!isContactNoValid){
-            throw new IllegalStateException("Contact no not valid");
+            return ("Contact no is not valid");
         }
         String link = "http://localhost:8080/api/auth/confirm/"+request.getEmailAddress();
-//        sendEmail(request.getEmailAddress(),request.getName(),link);
+//        sendEmail(request.getEmailAddress(),request.getPassword(),request.getName(),link);
         String token = signUpUser(
                 new Exhibitor(
                         request.getEmailAddress(),
@@ -55,10 +55,11 @@ public class ExhibitorRegistrationService {
         );
         return token;
     }
-    //    public void sendEmail(String emailAddress,String name,String link) {
+    //    public void sendEmail(String emailAddress,String pwd,String name,String link) {
 //        String to = emailAddress;
-//        String subject = name;
-//        String text = "This is a test email from Spring Boot: " + link;
+//        String subject = "Nerambum exhibitor registration";
+//        String text = "Hello "+ name + "!<br/>Welcome to Nerambum!<br/>" +
+////                "Your password is: "+pwd+ "<br/>Click on this link to activate your account: "+link;
 //
 //        try {
 //            emailSenderService.sendSimpleEmail(to, subject, text);
@@ -73,6 +74,6 @@ public class ExhibitorRegistrationService {
         exhibitor.setPassword(encodedPassword);
         Firestore firestore = FirestoreClient.getFirestore();
         firestore.collection("users").document().set(exhibitor);
-        return "Exhibitor registered successfully!";
+        return "Exhibitor registered successfully! Confirmation email is sent to the provided email";
     }
 }

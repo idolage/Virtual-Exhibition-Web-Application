@@ -106,14 +106,6 @@ function Upgrade() {
                       </Button>
                     </td>
                     <td>
-                      <Button
-                        className="btn-round btn-fill"
-                        href="http://www.creative-tim.com/product/light-bootstrap-dashboard-pro-react/?ref=lbdrupgrade"
-                        target="_blank"
-                        variant="info"
-                      >
-                        Upgrade to PRO
-                      </Button>
                     </td>
                   </tr>
                 </tbody>
