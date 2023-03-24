@@ -5,6 +5,7 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
 import org.ve.stall.StallRunner;
+import org.ve.stall.dto.Stalls;
 import org.ve.stall.model.Stall;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Blob;
@@ -161,21 +162,22 @@ public class StallService {
         return null;
     }
 
-    public String[] getBookedStalls(String exhibitionId) throws CancellationException, ExecutionException, InterruptedException {
+    public ResponseEntity<?> getBookedStalls(String exhibitionId) throws CancellationException, ExecutionException, InterruptedException {
         Firestore firestore = FirestoreClient.getFirestore();
         // asynchronously retrieve multiple documents
         ApiFuture<QuerySnapshot> future = firestore.collection("stalls").whereEqualTo("exhibitionId", exhibitionId).get();
 // future.get() blocks on response
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        List<String> stallIds = new ArrayList<>();
+        List<Stalls> stalls = new ArrayList<>();
         if (!documents.isEmpty()) {
             documents.forEach((element) -> {
                 if (element.exists()) {
-                    stallIds.add(element.getString("stallId"));
+                    Stalls tempStall = new Stalls(element.getString("stallId"),element.getString("stallName"));
+                    stalls.add((tempStall));
                 }
             });
         }
-        return stallIds.toArray(new String[0]);
+        return new ResponseEntity<>(stalls.toArray(new Stalls[0]), HttpStatus.OK);
     }
 
     public String getBookedStall(String exhibitionId, String stallOwnerId) throws CancellationException, ExecutionException, InterruptedException{
@@ -200,6 +202,8 @@ public class StallService {
         {obj.put("exhibitionId",stall.getExhibitionId());}
         if(stall.getStallOwnerId()!=null)
         {obj.put("stallOwnerId",stall.getStallOwnerId());}
+        if(stall.getStallOwnerId()!=null)
+        {obj.put("stallName",stall.getStallName());}
         if(stall.getStallColor()!=null)
         {obj.put("stallColor",stall.getStallColor());}
         if(stall.getTier()!=null)

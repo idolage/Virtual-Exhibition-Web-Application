@@ -53,7 +53,7 @@ public class StallController {
 
     @GetMapping ("/booked/{exhibitionId}")
     @ResponseStatus(HttpStatus.OK)
-    public String[] getBookedStalls(@PathVariable String exhibitionId) throws InterruptedException, ExecutionException{
+    public ResponseEntity<?> getBookedStalls(@PathVariable String exhibitionId) throws InterruptedException, ExecutionException{
         return stallService.getBookedStalls(exhibitionId);}
 
     @GetMapping ("/{exhibitionId}/stall")
