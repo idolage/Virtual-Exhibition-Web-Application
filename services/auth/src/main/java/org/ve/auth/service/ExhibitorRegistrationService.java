@@ -41,7 +41,7 @@ public class ExhibitorRegistrationService {
             throw new IllegalStateException("Contact no not valid");
         }
         String link = "http://localhost:8080/api/auth/confirm/"+request.getEmailAddress();
-//        sendEmail(request.getEmailAddress(),request.getName(),link);
+//        sendEmail(request.getEmailAddress(),request.getPassword(),request.getName(),link);
         String token = signUpUser(
                 new Exhibitor(
                         request.getEmailAddress(),
@@ -55,10 +55,11 @@ public class ExhibitorRegistrationService {
         );
         return token;
     }
-    //    public void sendEmail(String emailAddress,String name,String link) {
+    //    public void sendEmail(String emailAddress,String pwd,String name,String link) {
 //        String to = emailAddress;
-//        String subject = name;
-//        String text = "This is a test email from Spring Boot: " + link;
+//        String subject = "Nerambum exhibitor registration";
+//        String text = "Hello "+ name + "!<br/>Welcome to Nerambum!<br/>" +
+////                "Your password is: "+pwd+ "<br/>Click on this link to activate your account: "+link;
 //
 //        try {
 //            emailSenderService.sendSimpleEmail(to, subject, text);

@@ -18,7 +18,7 @@
 import React, { Component } from "react";
 import { useLocation } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
-
+import Logo from '../../assets/img/logo.png'
 import routes from "routes.js";
 
 function Header() {
@@ -41,7 +41,7 @@ function Header() {
         return routes[i].name;
       }
     }
-    return "Brand";
+    return "";
   };
   return (
     <Navbar bg="light" expand="lg">
