@@ -33,19 +33,19 @@ public class AdminRegistrationService {
 
         boolean isValidEmail = emailValidator.test(request.getEmailAddress());
         if (!isValidEmail){
-            throw new IllegalStateException("email not valid");
+            return ("Invalid Email Format");
         }
         boolean isEmailTaken = emailValidator.isEmailTaken(request.getEmailAddress());
         if (isEmailTaken){
-            throw new IllegalStateException("email is taken");
+            return("Email is already taken");
         }
         boolean isNicValid = nicValidator.isValidNic(request.getNic());
         if (!isNicValid){
-            throw new IllegalStateException("Nic not valid");
+            return(" Invalid NIC number");
         }
         boolean isContactNoValid = contactNoValidator.validateContactNo(request.getContactNo());
         if (!isContactNoValid){
-            throw new IllegalStateException("Contact no not valid");
+            return ("Contact no is not valid");
         }
         String link = "http://localhost:8080/api/auth/confirm/"+request.getEmailAddress();
 //        sendEmail(request.getEmailAddress(),request.getPassword(),request.getName(),link);

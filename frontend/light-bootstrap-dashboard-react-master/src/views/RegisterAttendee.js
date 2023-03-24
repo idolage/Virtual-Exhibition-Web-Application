@@ -29,7 +29,7 @@ export default function RegisterAttendee() {
             <div className="home-container">
               <div className="home-banner-container">
                 <div className="home-text-section">
-                  <Attendee/>
+                  <Attendee />
                 </div>
                 <div className="home-image-section">
                   <img src={RegisterImg} class="img-fluid" alt="Sample image" />
@@ -43,6 +43,3 @@ export default function RegisterAttendee() {
     </>
   );
 }
-
-
-

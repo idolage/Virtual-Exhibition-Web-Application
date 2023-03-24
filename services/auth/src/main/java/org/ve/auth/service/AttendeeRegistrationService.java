@@ -29,15 +29,15 @@ public class AttendeeRegistrationService {
     public String register(AttendeeRegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getEmailAddress());
         if (!isValidEmail){
-            throw new IllegalStateException("email not valid");
+            return ("Invalid Email Format");
         }
         boolean isEmailTaken = emailValidator.isEmailTaken(request.getEmailAddress());
         if (isEmailTaken){
-            throw new IllegalStateException("email is taken");
+            return ("Email Is Already Taken");
         }
         boolean isNicValid = nicValidator.isValidNic(request.getNic());
         if (!isNicValid){
-            throw new IllegalStateException("Nic not valid");
+            return ("Invalid NIC number");
         }
         String link = "http://localhost:8080/api/auth/confirm/"+request.getEmailAddress();
 //        sendEmail(request.getEmailAddress(),request.getName(),link);
@@ -70,6 +70,6 @@ public class AttendeeRegistrationService {
         attendee.setPassword(encodedPassword);
         Firestore firestore = FirestoreClient.getFirestore();
         firestore.collection("users").document().set(attendee);
-        return "Attendee registered successfully!";
+        return "Attendee registered successfully! Please check your email to activate your account";
     }
 }

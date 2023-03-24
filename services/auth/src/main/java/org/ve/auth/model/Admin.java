@@ -37,7 +37,7 @@ public class Admin implements UserDetails{
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private boolean locked = false;
-    private boolean enabled = false;
+    private boolean enabled = true;
 
     public Admin(String emailAddress, String name, String contactNo, String nic, String password, UserRole userRole) {
         this.emailAddress = emailAddress;

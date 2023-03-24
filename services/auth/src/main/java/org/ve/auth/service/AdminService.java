@@ -26,7 +26,7 @@ public class AdminService implements UserDetailsService{
         authAdmin.setPassword(encodedPassword);
         Firestore firestore = FirestoreClient.getFirestore();
         firestore.collection("users").document().set(authAdmin);
-        return "Admin registered successfully!";
+        return "Admin registered successfully! Confirmation email is sent to the provided email";
     }
 
 }
