@@ -38,9 +38,10 @@ function Header() {
   };
 
   function handleLogout() {
-    localStorage.setItem("userLoggedIn", false);
-    localStorage.setItem("jwt", "");
-    history.push("/");
+    localStorage.removeItem("userLoggedIn");
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("userRole");
+    history.push("/login");
   }
 
   const getBrandText = () => {

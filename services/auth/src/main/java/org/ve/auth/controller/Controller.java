@@ -103,9 +103,6 @@ public class Controller {
     @PostMapping(path ="login")
     @ResponseStatus(HttpStatus.OK)
     public String login(@RequestBody LoginRequest request, HttpServletResponse response) throws ExecutionException, InterruptedException {
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        response.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
         return loginService.login(request);
     }
 

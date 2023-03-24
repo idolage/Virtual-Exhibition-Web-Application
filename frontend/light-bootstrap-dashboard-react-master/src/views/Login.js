@@ -24,6 +24,9 @@ export default function Login() {
       var element = document.getElementById("bodyClick");
       element.parentNode.removeChild(element);
     }
+    console.log(localStorage.getItem("jwt"))
+    console.log(localStorage.getItem("userRole"))
+    console.log(localStorage.getItem("userLoggedIn"))
   });
   return (
     <>
@@ -77,7 +80,8 @@ const LoginForm = () => {
           setNotification(res.data);
         } else {
           localStorage.setItem("userLoggedIn", true);
-          localStorage.setItem("jwt", res.data);
+          localStorage.setItem("userRole", res.data.userRole);
+          localStorage.setItem("jwt", res.data.token);
           history.push("/admin/dashboard");
         }
       })
