@@ -11,8 +11,7 @@ public class Stall {
     private String exhibitionId;
     private String stallId;
     private String stallOwnerId;
+    private String stallName;
     private String stallColor;
     private String tier;
-
-
 }
