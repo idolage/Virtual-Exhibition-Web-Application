@@ -49,7 +49,8 @@ public class LoginService {
                 boolean enabled = documents.get(0).getBoolean("enabled");
                 String userRole = documents.get(0).getString("userRole");
                 if(enabled){
-                    return jwtGenerator.generateToken(request.getEmailAddress(), userRole);
+                    var token = jwtGenerator.generateToken(request.getEmailAddress(), userRole);
+                    return "{\"token\":\"" + token + "\",\"userRole\":\"" + userRole + "\"}";
                 }
                 else{
                     return "Please activate your account first";
