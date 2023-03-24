@@ -23,6 +23,7 @@ function StallsSelect() {
   const [bookedStalls, setBookedStalls] = React.useState([]);
   const location = useLocation();
   const mainPanel = React.useRef(null);
+  let stallIds = [];
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
@@ -56,10 +57,14 @@ function StallsSelect() {
         "http://localhost:8080/api/stalls/booked/5d4a0180-01c8-4ec2-b7d7-2045ecdffe0a"
       )
       .then((res) => {
-        setBookedStalls(res.data);
+        stallIds.length = 0;
         res.data.forEach((bookedStall) => {
-          let divBookedStall = document.getElementById(bookedStall);
-          let stall = parseInt(bookedStall);
+          stallIds.push(bookedStall.stallId);
+        });
+        setBookedStalls(stallIds);
+        res.data.forEach((bookedStall) => {
+          let divBookedStall = document.getElementById(bookedStall.stallId);
+          let stall = parseInt(bookedStall.stallId);
           if (
             (stall >= 1 && stall < 9) ||
             stall == 22 ||
@@ -87,6 +92,8 @@ function StallsSelect() {
   function handleSelectedState(stall) {
     const divStall = document.getElementById(String(stall));
     setError("");
+    console.log("bookedStalls");
+    console.log(bookedStalls);
     if (bookedStalls.includes(String(stall))) {
       setError("Sorry! the stall you selected was occupied already");
     } else if (stall == selectedStall) {
