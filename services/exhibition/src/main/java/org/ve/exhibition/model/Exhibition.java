@@ -13,4 +13,8 @@ public class Exhibition {
     private boolean start;
     private boolean isOver;
     private String datetime;
+    private String sponsorVideoUrl1;
+    private String sponsorVideoUrl2;
+    private String sponsorVideoUrl3;
+    private String sponsorVideoUrl4;
 }
