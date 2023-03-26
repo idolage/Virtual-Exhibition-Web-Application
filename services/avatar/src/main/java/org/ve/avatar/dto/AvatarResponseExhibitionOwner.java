@@ -15,5 +15,7 @@ public class AvatarResponseExhibitionOwner {
     private String  shoeColor;
     private String  hairColor;
     private String  beardColor;
+    private String  skinColor;
+
     private String  gender;
 }
