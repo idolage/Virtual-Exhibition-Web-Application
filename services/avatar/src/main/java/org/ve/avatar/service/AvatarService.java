@@ -50,6 +50,7 @@ public class AvatarService {
                         avatar.getShoeColor(),
                         avatar.getHairColor(),
                         avatar.getBeardColor(),
+                        avatar.getSkinColor(),
                         avatar.getGender()
                         );
                 return new ResponseEntity<>(avatarResponseAttendee, HttpStatus.OK);
@@ -66,7 +67,9 @@ public class AvatarService {
                         avatar.getShoeColor(),
                         avatar.getHairColor(),
                         avatar.getBeardColor(),
+                        avatar.getSkinColor(),
                         avatar.getGender()
+
                 );
                 return new ResponseEntity<>(avatarResponseExhibitor, HttpStatus.OK);
             } else if(Objects.equals(avatar.getUserType(), "EX_OWNER")){
@@ -82,7 +85,9 @@ public class AvatarService {
                         avatar.getShoeColor(),
                         avatar.getHairColor(),
                         avatar.getBeardColor(),
+                        avatar.getSkinColor(),
                         avatar.getGender()
+
                 );
                 return new ResponseEntity<>(avatarResponseExhibitionOwner, HttpStatus.OK);
             }
@@ -114,6 +119,7 @@ public class AvatarService {
             existingAvatar.setTopColor(avatar.getTopColor());
             existingAvatar.setShoeColor(avatar.getShoeColor());
             existingAvatar.setBeardColor(avatar.getBeardColor());
+            existingAvatar.setSkinColor(avatar.getSkinColor());
 
             try {
                 repository.save(existingAvatar);
