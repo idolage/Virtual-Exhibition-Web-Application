@@ -1,10 +1,7 @@
 package org.ve.ticket.service;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import org.ve.ticket.dto.*;
 import org.ve.ticket.model.Ticket;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -114,10 +113,50 @@ public class TicketService {
         }
     }
 
+    public void update(String ticketId) throws InterruptedException, ExecutionException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        DocumentReference documentReference = firestore.collection("tickets").document(ticketId);
+        ApiFuture<DocumentSnapshot> documentSnapshotApiFuture = documentReference.get();
+        DocumentSnapshot documentSnapshot = documentSnapshotApiFuture.get();
+        Ticket ticket = documentSnapshot.toObject(Ticket.class);
+        if(ticket!=null) {
+            ticket.setIsExpired(true);
+            ApiFuture<WriteResult> collectionApiFuture = firestore.collection("tickets")
+                    .document(ticketId).set(ticket);
+        }
+    }
+
     public String deleteTicket(String ticketId) throws InterruptedException, ExecutionException {
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionApiFuture = firestore.collection("tickets")
                 .document(ticketId).delete();
         return "Successfully deleted "+ticketId;
+    }
+
+    public Boolean validateTicket(String ticketId) throws InterruptedException, ExecutionException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        DocumentReference documentReference = firestore.collection("tickets").document(ticketId);
+        ApiFuture<DocumentSnapshot> documentSnapshotApiFuture = documentReference.get();
+        DocumentSnapshot documentSnapshot = documentSnapshotApiFuture.get();
+        if(documentSnapshot.exists()){
+            Ticket ticket = documentSnapshot.toObject(Ticket.class);
+            if(ticket != null){
+                return !ticket.getIsExpired();
+            }
+        }
+        return false;
+    }
+
+    public String expireTickets(String exhibitionId) throws InterruptedException, ExecutionException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("tickets")
+                .whereEqualTo("exhibitionId",exhibitionId).get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        for (QueryDocumentSnapshot document : documents) {
+            if (!document.toObject(Ticket.class).getIsExpired()) {
+                update(document.toObject(Ticket.class).getTicketId());
+            }
+        }
+        return "Done";
     }
 }

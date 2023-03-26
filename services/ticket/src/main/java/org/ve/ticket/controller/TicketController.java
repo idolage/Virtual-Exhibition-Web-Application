@@ -37,4 +37,15 @@ public class TicketController {
     public String deleteTicket(@PathVariable String ticketId) throws ExecutionException, InterruptedException {
         return ticketService.deleteTicket(ticketId);
     }
+
+    @GetMapping ("validate/{ticketId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean validateTicket(@PathVariable String ticketId) throws InterruptedException, ExecutionException{
+        return ticketService.validateTicket(ticketId);
+    }
+
+    @PutMapping ("/expireTickets/{exhibitionId}")
+    public String expireTickets(@PathVariable String exhibitionId) throws InterruptedException, ExecutionException {
+        return ticketService.expireTickets(exhibitionId);
+    }
 }
