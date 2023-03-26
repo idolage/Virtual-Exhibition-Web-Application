@@ -74,7 +74,11 @@ public class ExhibitionService {
                         exhibition.getExhibitionId(),
                         exhibition.isStart(),
                         exhibition.isOver(),
-                        exhibition.getDatetime()
+                        exhibition.getDatetime(),
+                        exhibition.getSponsorVideoUrl1(),
+                        exhibition.getSponsorVideoUrl2(),
+                        exhibition.getSponsorVideoUrl3(),
+                        exhibition.getSponsorVideoUrl4()
                 );
                 return new ResponseEntity<>(exhibitionResponse, HttpStatus.OK);
             }
