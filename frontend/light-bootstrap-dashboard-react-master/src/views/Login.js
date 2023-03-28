@@ -72,12 +72,8 @@ const LoginForm = () => {
     })
       .then((res) => {
         console.log(res.data);
-        if (
-          res.data === "Invalid Credentials" ||
-          res.data === "Please activate your account first" ||
-          res.data === "Invalid Email Format"
-        ) {
-          setNotification(res.data);
+        if (res.data.userRole === "null") {
+          setNotification(res.data.token);
         } else {
           localStorage.setItem("userLoggedIn", true);
           localStorage.setItem("userRole", res.data.userRole);
