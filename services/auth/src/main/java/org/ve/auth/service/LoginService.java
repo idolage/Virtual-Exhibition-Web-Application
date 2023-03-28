@@ -39,7 +39,7 @@ public class LoginService {
     public String login(LoginRequest request) throws ExecutionException, InterruptedException {
         boolean isValidEmail = emailValidator.test(request.getEmailAddress());
         if (!isValidEmail){
-            return "Invalid Email Format";
+            return "{\"token\":\""+"Invalid Email Format"+"\",\"userRole\":\""+null+"\"  }";
         }
         Firestore firestore = FirestoreClient.getFirestore();
         List<QueryDocumentSnapshot> documents = firestore.collection("users").whereEqualTo("emailAddress", request.getEmailAddress()).get().get().getDocuments();
@@ -53,13 +53,13 @@ public class LoginService {
                     return "{\"token\":\"" + token + "\",\"userRole\":\"" + userRole + "\"}";
                 }
                 else{
-                    return "Please activate your account first";
+                    return "{\"token\":\""+"Please activate your account first"+"\",\"userRole\":\""+null+"\"  }";
                 }
             }else {
-                return "Invalid Credentials";
+                return "{\"token\":\""+"Invalid Credentials"+"\",\"userRole\":\""+null+"\"  }";
             }
         }else {
-            return "Invalid Credentials";
+            return "{\"token\":\""+"Invalid Credentials"+"\",\"userRole\":\""+null+"\"  }";
         }
     }
 
