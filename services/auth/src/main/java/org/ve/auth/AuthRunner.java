@@ -19,8 +19,8 @@ public class AuthRunner {
     public static void main(String []args) throws IOException {
         ClassLoader classLoader = AuthRunner.class.getClassLoader();
         File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
-//    FileInputStream serviceAccount = new FileInputStream(file.getAbsolutePath());
-        FileInputStream serviceAccount = new FileInputStream("C:\\Users\\USER\\Unity Projects\\Virtual-Exhibition-Web-Application\\services\\auth\\src\\main\\resources\\serviceAccountKey.json");
+        FileInputStream serviceAccount = new FileInputStream(file.getAbsolutePath());
+//        FileInputStream serviceAccount = new FileInputStream("C:\\Users\\USER\\Unity Projects\\Virtual-Exhibition-Web-Application\\services\\auth\\src\\main\\resources\\serviceAccountKey.json");
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount)).build();
         FirebaseApp.initializeApp(options);

@@ -14,6 +14,7 @@ public class ExhibitionResponse {
     private String exhibitionName;
     private ExhibitionOwner exhibitionOwner;
     private String exhibitionId;
+    private int ticketPrice;
     private boolean start;
     private boolean isOver;
     private String datetime;
