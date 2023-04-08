@@ -37,25 +37,28 @@ import RegisterAttendee from "views/RegisterAttendee";
 import RegisterOwner from "views/RegisterOwner";
 import RegisterAdmin from "views/RegisterAdmin";
 import RegisterExhibitor from "views/RegisterExhibitor";
+import GetExhibitions from "components/Exhibitions/GetExhibitions";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
     <Switch>
-    <Route exact path='/home' component={Landing}/>
-      <Route exact path='/login' component={Login}/>
-      <Route exact path='/registerAttendee' component={RegisterAttendee}/>
-      <Route exact path='/registerOwner' component={RegisterOwner}/>
+      <Route exact path="/home" component={Landing} />
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/registerAttendee" component={RegisterAttendee} />
+      <Route exact path="/registerOwner" component={RegisterOwner} />
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
 
-      <Route  
-      path='/registerAdmin' 
-      render={(props) => <RegisterAdmin {...props} />} />
-      
-      <Route  
-      path='/registerExhibitor' 
-      render={(props) => <RegisterExhibitor {...props} />} />
+      <Route
+        path="/registerAdmin"
+        render={(props) => <RegisterAdmin {...props} />}
+      />
+
+      <Route
+        path="/registerExhibitor"
+        render={(props) => <RegisterExhibitor {...props} />}
+      />
 
       <Route
         path="/customize-avatar"
@@ -72,6 +75,11 @@ root.render(
       />
 
       <Route path="/payments" render={(props) => <Payments {...props} />} />
+
+      <Route
+        path="/exhibitions"
+        render={(props) => <GetExhibitions {...props} />}
+      />
 
       <Redirect from="/" to="/home" />
     </Switch>
