@@ -76,6 +76,7 @@ const LoginForm = () => {
           setNotification(res.data.token);
         } else {
           localStorage.setItem("userLoggedIn", true);
+          localStorage.setItem("email", email);
           localStorage.setItem("userRole", res.data.userRole);
           localStorage.setItem("jwt", res.data.token);
           history.push("/admin/dashboard");
