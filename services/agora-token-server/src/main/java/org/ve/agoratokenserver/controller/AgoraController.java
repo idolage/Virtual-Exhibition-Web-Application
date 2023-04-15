@@ -23,7 +23,7 @@ public class AgoraController {
     private  final TokenService tokenService;
 
 
-    //Call the api when  you are purchasing a diamond or platinum stall to set the channel name for live streaming.
+    //Call the api when  you are purchasing a diamond or platinum stall to set the channel name & sessions for live streaming.
     @PostMapping ("/liveStreamChannel")
     @ResponseStatus(HttpStatus.OK)
     public String addLiveStreamChannel(@RequestBody AgoraToken token) {
