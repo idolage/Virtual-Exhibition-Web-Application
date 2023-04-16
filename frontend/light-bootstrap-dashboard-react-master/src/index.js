@@ -38,6 +38,7 @@ import RegisterOwner from "views/RegisterOwner";
 import RegisterAdmin from "views/RegisterAdmin";
 import RegisterExhibitor from "views/RegisterExhibitor";
 import GetExhibitions from "components/Exhibitions/GetExhibitions";
+import LiveStream from "views/liveStream";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -79,6 +80,11 @@ root.render(
       <Route
         path="/exhibitions"
         render={(props) => <GetExhibitions {...props} />}
+      />
+
+      <Route
+        path="/live-streaming"
+        render={(props) => <LiveStream {...props} />}
       />
 
       <Redirect from="/" to="/home" />
