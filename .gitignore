@@ -30,4 +30,3 @@ node_modules/
 /services/auth/src/main/resources/serviceAccountKey.json
 /services/ticket/src/main/resources/serviceAccountKey.json
 /services/exhibition/src/main/resources/serviceAccountKey.json
-
