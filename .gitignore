@@ -29,3 +29,5 @@ node_modules/
 /services/stall/src/main/resources/serviceAccountKey.json
 /services/auth/src/main/resources/serviceAccountKey.json
 /services/ticket/src/main/resources/serviceAccountKey.json
+/services/exhibition/src/main/resources/serviceAccountKey.json
+
