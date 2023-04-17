@@ -41,6 +41,7 @@ function Header() {
     localStorage.removeItem("userLoggedIn");
     localStorage.removeItem("jwt");
     localStorage.removeItem("userRole");
+    localStorage.removeItem("email");
     history.push("/login");
   }
 

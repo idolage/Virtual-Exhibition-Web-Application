@@ -7,6 +7,8 @@ public class AgoraRepository {
     private int uid = 0; // By default 0
     private int expirationTimeInSeconds = 3600; // By default 3600
     private int role = 2; // By default subscriber
+    private  String stallId;
+    private  String exhibitionId;
 
     public  String getAppId() {
         return appId;
@@ -15,6 +17,23 @@ public class AgoraRepository {
     public  void setAppId(String appId) {
         this.appId = appId;
     }
+
+    public  String getStallId() {
+        return stallId;
+    }
+    public  String getExhibitionId() {
+        return exhibitionId;
+    }
+
+    public  void setExhibitionId(String exhibitionId) {
+        this.exhibitionId = exhibitionId;
+    }
+
+
+    public  void setStallId(String stallId) {
+        this.stallId = stallId;
+    }
+
 
     public  String getAppCertificate() {
         return appCertificate;

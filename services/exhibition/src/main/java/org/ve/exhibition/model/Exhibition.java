@@ -10,6 +10,7 @@ public class Exhibition {
     private String exhibitionName;
     private String exhibitionOwnerId;
     private String exhibitionId;
+    private int ticketPrice;
     private boolean start;
     private boolean isOver;
     private String datetime;

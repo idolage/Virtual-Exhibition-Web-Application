@@ -18,7 +18,6 @@ import org.ve.exhibition.ExhibitionRunner;
 import org.ve.exhibition.dto.ExhibitionOwner;
 import org.ve.exhibition.dto.ExhibitionResponse;
 import org.ve.exhibition.model.Exhibition;
-import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -72,6 +71,7 @@ public class ExhibitionService {
                         exhibition.getExhibitionName(),
                         exhibitionOwner,
                         exhibition.getExhibitionId(),
+                        exhibition.getTicketPrice(),
                         exhibition.isStart(),
                         exhibition.isOver(),
                         exhibition.getDatetime(),
