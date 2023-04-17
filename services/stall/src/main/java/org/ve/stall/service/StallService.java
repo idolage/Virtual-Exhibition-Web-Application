@@ -27,10 +27,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
@@ -72,29 +69,33 @@ public class StallService {
 
     }
 
-    public ResponseEntity<String> uploadBanner(MultipartFile multipartFile, String stallId, String stallOwnerId, String exhibitionId, String tier) throws IOException {
-        String objectName = generateFileName(multipartFile);
+    public ResponseEntity<String> uploadBanners(List<MultipartFile> multipartFiles, String stallId, String stallOwnerId, String exhibitionId, String tier) throws IOException {
+
         ClassLoader classLoader = StallRunner.class.getClassLoader();
         File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
         FileInputStream serviceAccount = new FileInputStream(file.getAbsolutePath());
-        File file2 = convertMultiPartToFile(multipartFile);
-        Path filePath = file2.toPath();
-        String directoryPath =exhibitionId+"/"+tier+"/"+stallOwnerId+"/"+"banner";
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).setProjectId(FIREBASE_PROJECT_ID).build().getService();
-        BlobId blobId = BlobId.of(FIREBASE_BUCKET, directoryPath+"/"+objectName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
-
-        storage.create(blobInfo, Files.readAllBytes(filePath));
-
-        String url= String.format("https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/%s?alt=media", URLEncoder.encode(directoryPath + "/" + objectName, StandardCharsets.UTF_8));
-        JSONObject obj=new JSONObject();
-        obj.put("bannerUrl",url);
         Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionApiFuture = firestore.collection("stalls")
-                .document(stallId).update(obj);
+        DocumentReference documentReference = firestore.collection("stalls").document(stallId);
 
+        for(int i=0; i<multipartFiles.size();i++){
+            MultipartFile multipartFile = multipartFiles.get(i);
+            String objectName = generateFileName(multipartFile);
+            File file2 = convertMultiPartToFile(multipartFile);
+            Path filePath = file2.toPath();
+            String directoryPath =exhibitionId+"/"+tier+"/"+stallOwnerId+"/"+"banner";
+            BlobId blobId = BlobId.of(FIREBASE_BUCKET, directoryPath+"/"+objectName);
+            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
+
+            storage.create(blobInfo, Files.readAllBytes(filePath));
+
+            String url= String.format("https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/%s?alt=media", URLEncoder.encode(directoryPath + "/" + objectName, StandardCharsets.UTF_8));
+            String fieldName = "bannerUrl" + (i + 1);
+            Map<String, Object> fieldUpdate = new HashMap<>();
+            fieldUpdate.put(fieldName, url);
+            documentReference.update(fieldUpdate);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body("success");
-
     }
 
     public ResponseEntity<String> uploadVideo(MultipartFile multipartFile,String stallId, String stallOwnerId, String exhibitionId, String tier) throws IOException {
@@ -224,5 +225,11 @@ public class StallService {
 
     private String generateFileName(MultipartFile multiPart) {
         return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
+    }
+
+    public Stall getStallsByExhibition(String exhibitionId, String stallId) throws ExecutionException, InterruptedException {
+        Firestore firestore = FirestoreClient.getFirestore();
+        List<QueryDocumentSnapshot> documents = firestore.collection("stalls").whereEqualTo("exhibitionId",exhibitionId).whereEqualTo("stallId", stallId).get().get().getDocuments();
+        return documents.get(0).toObject(Stall.class);
     }
 }

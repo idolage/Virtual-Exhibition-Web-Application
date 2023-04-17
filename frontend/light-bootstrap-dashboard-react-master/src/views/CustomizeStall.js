@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, Route, Switch } from "react-router-dom";
-
+import Axios from 'axios';
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
 import Sidebar from "components/Sidebar/Sidebar";
@@ -16,12 +16,22 @@ import Carousel from "react-bootstrap/Carousel";
 import "../assets/css/custom-style.css";
 function CustomizeStall() {
   const [index, setIndex] = useState(0);
+  const [files, setFiles] = useState([]);
+  const stallId = '1';
+  const stallOwnerId = 'abc';
+  const exhibitionId = '0c171753-685f-4cef-9b73-6eef6227eeb6';
+  const tier = 'Gold'
+  const logoUrl = `http://localhost:8080/api/stalls/upload-logo/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`;
+  const bannerUrl = `http://localhost:8080/api/stalls/upload-banner/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`
+  const videoUrl = `http://localhost:8080/api/stalls/upload-video/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`
+
 
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
   };
 
   const stallType = "Platinum";
+
 
   const [image, setImage] = React.useState(sidebarImage);
   const [color, setColor] = React.useState("black");
@@ -56,6 +66,41 @@ function CustomizeStall() {
       element.parentNode.removeChild(element);
     }
   }, [location]);
+
+  function handleFileUpload(e) {
+    const uploadedFiles = e.target.files;
+    setFiles([...files, uploadedFiles]);
+    // console.log(files);
+  }
+ 
+  function submitLogo(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', files[0][0]);
+    Axios.post(logoUrl, formData)
+      .then(res => {
+        setFiles([]);
+      })
+  }
+
+  function submitBanner(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', files[0][0]);
+    Axios.post(bannerUrl, formData)
+      .then(res => {
+        setFiles([]);
+      })
+  }
+  function submitVideo(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', files[0][0]);
+    Axios.post(videoUrl, formData)
+      .then(res => {
+        setFiles([]);
+      })
+  }
 
   return (
     <>
@@ -96,11 +141,79 @@ function CustomizeStall() {
                   </StallCustomizationProvider>
                 </Carousel.Item>
                 <Carousel.Item>
-                  <p>Upload Banners</p>
+                  <div className="row mt-5">
+                    <div className="col-lg-9 align-self-center ">
+                      <div class="frame">
+                        <div class="center">
+                          <div class="title">
+                            <h1 style={{ fontSize: 18 }}>Upload your logo here</h1>
+                          </div>
+
+                          <div class="dropzone">
+                            <img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" />
+                            <input type="file" class="upload-input" onChange={
+                              (e) => handleFileUpload(e)
+                            } multiple />
+
+                          </div>
+                          <button type="button" class="btn" name="uploadbutton" onClick={(e) => submitLogo(e)}>Upload file</button>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
                 </Carousel.Item>
                 <Carousel.Item>
-                  <p>Upload Videos</p>
+                <div className="row mt-5">
+                    <div className="col-lg-9 align-self-center ">
+                      <div class="frame">
+                        <div class="center">
+                          <div class="title">
+                            <h1 style={{ fontSize: 18 }}>Upload your banner here</h1>
+                          </div>
+
+                          <div class="dropzone">
+                            <img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" />
+                            <input type="file" class="upload-input" onChange={
+                              (e) => handleFileUpload(e)
+                            } multiple />
+
+                          </div>
+                          <button type="button" class="btn" name="uploadbutton" onClick={(e) => submitBanner(e)}>Upload file</button>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
                 </Carousel.Item>
+                {tier !== 'Gold' &&
+                <Carousel.Item>
+                <div className="row mt-5">
+                    <div className="col-lg-9 align-self-center ">
+                      <div class="frame">
+                        <div class="center">
+                          <div class="title">
+                            <h1 style={{ fontSize: 18 }}>Upload your video here</h1>
+                          </div>
+
+                          <div class="dropzone">
+                            <img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" />
+                            <input type="file" class="upload-input" onChange={
+                              (e) => handleFileUpload(e)
+                            } multiple />
+
+                          </div>
+                          <button type="button" class="btn" name="uploadbutton" onClick={(e) => submitVideo(e)}>Upload file</button>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </Carousel.Item>
+                }
               </Carousel>
             </div>
 
