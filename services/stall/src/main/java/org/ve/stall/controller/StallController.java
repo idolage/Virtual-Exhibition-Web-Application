@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -38,8 +39,8 @@ public class StallController {
     }
     @PostMapping("/upload-banner/{stallId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> uploadBanner(@PathVariable String stallId,@RequestParam("file") MultipartFile file,String stallOwnerId, String exhibitionId, String tier) throws Exception {
-        return stallService.uploadBanner(file,stallId,stallOwnerId,exhibitionId,tier);
+    public ResponseEntity<String> uploadBanners(@PathVariable String stallId,@RequestParam("files") MultipartFile[] files,String stallOwnerId, String exhibitionId, String tier) throws Exception {
+        return stallService.uploadBanners(Arrays.asList(files),stallId,stallOwnerId,exhibitionId,tier);
     }
     @PostMapping("/upload-video/{stallId}")
     @ResponseStatus(HttpStatus.OK)
@@ -50,6 +51,10 @@ public class StallController {
     @ResponseStatus(HttpStatus.OK)
     public List<Stall> getStallsByOwner(@PathVariable String stallOwnerId) throws InterruptedException, ExecutionException{
         return stallService.getStallsByOwner(stallOwnerId);}
+    @GetMapping ("/{exhibitionId}/stallId")
+    @ResponseStatus(HttpStatus.OK)
+    public Stall getStallsByExhibition(@PathVariable String exhibitionId, @RequestParam String stallId) throws InterruptedException, ExecutionException{
+        return stallService.getStallsByExhibition(exhibitionId,stallId);}
 
     @GetMapping ("/booked/{exhibitionId}")
     @ResponseStatus(HttpStatus.OK)
