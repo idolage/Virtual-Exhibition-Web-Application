@@ -67,6 +67,12 @@ public class ExhibitionController {
         return exhibitionService.uploadSponsorVideos(Arrays.asList(files), Id);
     }
 
+    @PutMapping ("/activeUsers/{Id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String updateActiveUsers(@PathVariable String Id, @RequestParam int number) throws InterruptedException, ExecutionException {
+        return exhibitionService.updateActiveUsers(Id,number);
+    }
+
     @GetMapping("/test")
     public ResponseEntity<String> testGetEndpoints(){
         return ResponseEntity.ok("Test endpoint is working");
