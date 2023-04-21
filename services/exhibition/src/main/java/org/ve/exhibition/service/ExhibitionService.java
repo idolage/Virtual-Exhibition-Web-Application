@@ -44,6 +44,7 @@ public class ExhibitionService {
         Firestore firestore = FirestoreClient.getFirestore();
         exhibition.setExhibitionId(UUID.randomUUID().toString()); //set exhibition id
         exhibition.setStart(false); //set exhibition start false
+        exhibition.setNoOfUsers(0);
         DocumentReference documentReference =  firestore.collection("exhibitions").document();
         exhibition.setId(documentReference.getId());
         ApiFuture<WriteResult> collectionApiFuture = documentReference.set(exhibition);
@@ -78,7 +79,8 @@ public class ExhibitionService {
                         exhibition.getSponsorVideoUrl1(),
                         exhibition.getSponsorVideoUrl2(),
                         exhibition.getSponsorVideoUrl3(),
-                        exhibition.getSponsorVideoUrl4()
+                        exhibition.getSponsorVideoUrl4(),
+                        exhibition.getNoOfUsers()
                 );
                 return new ResponseEntity<>(exhibitionResponse, HttpStatus.OK);
             }
@@ -210,5 +212,22 @@ public class ExhibitionService {
     }
     private String generateFileName(MultipartFile multiPart) {
         return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
+    }
+
+    public String updateActiveUsers(String Id, int number)throws InterruptedException, ExecutionException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        DocumentReference documentReference = firestore.collection("exhibitions").document(Id);
+        ApiFuture<DocumentSnapshot> documentSnapshotApiFuture = documentReference.get();
+        DocumentSnapshot documentSnapshot = documentSnapshotApiFuture.get();
+        Exhibition exhibition = documentSnapshot.toObject(Exhibition.class);
+        if(exhibition!=null){
+            exhibition.setNoOfUsers(exhibition.getNoOfUsers()+number);
+            ApiFuture<WriteResult> collectionApiFuture = firestore.collection("exhibitions")
+                    .document(Id).set(exhibition);
+            return "Updated";
+        }
+        else{
+            return "Error";
+        }
     }
 }
