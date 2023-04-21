@@ -216,14 +216,12 @@ public class ExhibitionService {
 
     public String updateActiveUsers(String Id, int number)throws InterruptedException, ExecutionException{
         Firestore firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = firestore.collection("exhibitions").document(Id);
-        ApiFuture<DocumentSnapshot> documentSnapshotApiFuture = documentReference.get();
-        DocumentSnapshot documentSnapshot = documentSnapshotApiFuture.get();
-        Exhibition exhibition = documentSnapshot.toObject(Exhibition.class);
+
+        Exhibition  exhibition=getExhibitionByExhibitionId(Id);
         if(exhibition!=null){
             exhibition.setNoOfUsers(exhibition.getNoOfUsers()+number);
             ApiFuture<WriteResult> collectionApiFuture = firestore.collection("exhibitions")
-                    .document(Id).set(exhibition);
+                    .document(exhibition.getId()).set(exhibition);
             return "Updated";
         }
         else{
