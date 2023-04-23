@@ -12,4 +12,6 @@ import lombok.Setter;
 public class Stalls {
     private String stallId;
     private String stallName;
+    private String stallColor;
+
 }
