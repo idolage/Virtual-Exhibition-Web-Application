@@ -3,6 +3,7 @@ import Axios from "axios";
 // react-bootstrap components
 import {
   Badge,
+  Modal,
   Button,
   Card,
   Form,
@@ -150,6 +151,39 @@ const Admin = () => {
         </Button>
         <div className="clearfix"></div>
       </Form>
+      <Modal
+                  style={{ marginTop: "10vh" }}
+                  className="modal-mini modal-primary"
+                  show={showModal}
+                  onHide={() => setShowModal(false)}
+                >
+                  <Modal.Header className="justify-content-center">
+                    <div className="modal-profile">
+                      <i className="nc-icon nc-notification-70"></i>
+                    </div>
+                  </Modal.Header>
+                  <Modal.Body className="text-center">
+                    <p>{notification}</p>
+                  </Modal.Body>
+                  <div className="modal-footer">
+                    <Button
+                      className="btn-simple"
+                      type="button"
+                      variant="link"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      className="btn-simple"
+                      type="button"
+                      variant="link"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Close
+                    </Button>
+                  </div>
+                </Modal>
     </>
   );
 };
@@ -274,6 +308,39 @@ const Attendee = () => {
         </Button>
         <div className="clearfix"></div>
       </Form>
+      <Modal
+                  style={{ marginTop: "10vh" }}
+                  className="modal-mini modal-primary"
+                  show={showModal}
+                  onHide={() => setShowModal(false)}
+                >
+                  <Modal.Header className="justify-content-center">
+                    <div className="modal-profile">
+                      <i className="nc-icon nc-notification-70"></i>
+                    </div>
+                  </Modal.Header>
+                  <Modal.Body className="text-center">
+                    <p>{notification}</p>
+                  </Modal.Body>
+                  <div className="modal-footer">
+                    <Button
+                      className="btn-simple"
+                      type="button"
+                      variant="link"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      className="btn-simple"
+                      type="button"
+                      variant="link"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Close
+                    </Button>
+                  </div>
+                </Modal>
     </>
   );
 };
@@ -432,6 +499,39 @@ const Exhibitor = () => {
         </Button>
         <div className="clearfix"></div>
       </Form>
+      <Modal
+                  style={{ marginTop: "10vh" }}
+                  className="modal-mini modal-primary"
+                  show={showModal}
+                  onHide={() => setShowModal(false)}
+                >
+                  <Modal.Header className="justify-content-center">
+                    <div className="modal-profile">
+                      <i className="nc-icon nc-notification-70"></i>
+                    </div>
+                  </Modal.Header>
+                  <Modal.Body className="text-center">
+                    <p>{notification}</p>
+                  </Modal.Body>
+                  <div className="modal-footer">
+                    <Button
+                      className="btn-simple"
+                      type="button"
+                      variant="link"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      className="btn-simple"
+                      type="button"
+                      variant="link"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Close
+                    </Button>
+                  </div>
+                </Modal>
     </>
   );
 };
@@ -590,6 +690,39 @@ const ExhibitionOwner = () => {
         </Button>
         <div className="clearfix"></div>
       </Form>
+      <Modal
+                  style={{ marginTop: "10vh" }}
+                  className="modal-mini modal-primary"
+                  show={showModal}
+                  onHide={() => setShowModal(false)}
+                >
+                  <Modal.Header className="justify-content-center">
+                    <div className="modal-profile">
+                      <i className="nc-icon nc-notification-70"></i>
+                    </div>
+                  </Modal.Header>
+                  <Modal.Body className="text-center">
+                    <p>{notification}</p>
+                  </Modal.Body>
+                  <div className="modal-footer">
+                    <Button
+                      className="btn-simple"
+                      type="button"
+                      variant="link"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      className="btn-simple"
+                      type="button"
+                      variant="link"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Close
+                    </Button>
+                  </div>
+                </Modal>
     </>
   );
 };
