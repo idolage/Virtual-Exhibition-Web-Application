@@ -17,16 +17,17 @@ export default function AddExhibition() {
   const URL = "http://localhost:8080/api/exhibitions";
   const [notification, setNotification] = useState(null);
   const [showModal, setShowModal] = React.useState(false);
-  const [exhibitionName, setExhibitionName] = useState("");
-  const [ticketPrice, setTicketPrice] = useState(null);
-  const [dateTime, setDateTime] = useState(null);
+  const [exhibitionName, setExhibitionName] = useState();
+  const [ticketPrice, setTicketPrice] = useState();
+  const [dateTime, setDateTime] = useState();
 
   function add(e) {
+    e.preventDefault();
     Axios.post(URL, {
       exhibitionName: exhibitionName,
       exhibitionOwnerId: localStorage.getItem("email"),
       ticketPrice: parseInt(ticketPrice),
-      datetime: dateTime,
+      datetime: Date(dateTime),
     })
       .then((res) => {
         console.log(res.data);
@@ -105,7 +106,7 @@ export default function AddExhibition() {
                 >
                   <Modal.Header className="justify-content-center">
                     <div className="modal-profile">
-                      <i className="nc-icon nc-lock-circle-open"></i>
+                      <i className="nc-icon nc-notification-70"></i>
                     </div>
                   </Modal.Header>
                   <Modal.Body className="text-center">
@@ -134,6 +135,7 @@ export default function AddExhibition() {
             </Card>
             <br />
           </div>
+          <br/><br/><br/>
           <Footer />
         </div>
       </div>
