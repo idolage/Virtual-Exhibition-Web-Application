@@ -201,6 +201,24 @@ export default function GetExhibitions() {
     </div>
   );
 
+  const GetFreeTicket=(exhibitionId, userId, userType, price)=>{
+    const newPayment = {
+      exhibitionId: exhibitionId,
+      userId: userId,
+      userType: userType,
+      amount: price,
+    };
+    axios
+        .post("http://localhost:8080/api/payments", newPayment)
+        .then((res) => {
+          console.log("done");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+
+  }
+
   return (
     <div>
       <DataTable
@@ -268,13 +286,22 @@ export default function GetExhibitions() {
                           </Button>
                         ) : (
                           <>
-                                USD&nbsp;{exhibition.ticketPrice}&nbsp;
+                            {exhibition.ticketPrice==0?(<Button
+                                style={{ fontSize: "14px", borderRadius: "10px" }}
+                                variant="success"
+                                size="sm"
+                                onClick={()=>GetFreeTicket(exhibition.exhibitionId,"abc@gmail.com","ATTENDEE",0)}
+                            >
+                              Free
+                            </Button>):<>
+                              USD&nbsp;{exhibition.ticketPrice}&nbsp;
                               <AttendPayment
-                                exhibitionId={exhibition.exhibitionId}
-                                userId={"abc@gmail.com"}
-                                userType={"ATTENDEE"}
-                                price={parseInt(exhibition.ticketPrice)}
-                              ></AttendPayment>
+                                  exhibitionId={exhibition.exhibitionId}
+                                  userId={"abc@gmail.com"}
+                                  userType={"ATTENDEE"}
+                                  price={parseInt(exhibition.ticketPrice)}
+                              ></AttendPayment></>}
+
                           </>
                         )}
                         <br></br>
