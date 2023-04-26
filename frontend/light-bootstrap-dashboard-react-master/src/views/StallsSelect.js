@@ -463,14 +463,14 @@ function StallsSelect() {
                   </div>
                 )}
               </div>
-              {/* <div>
+              { <div>
                 Top view of stalls arrangment in the hall
                 <img
                   className="responsive"
                   style={{ width: "100%", height: "100%" }}
                   src={require("assets/img/stalls/hall-top.png")}
                 ></img>
-              </div> */}
+              </div> }
             </div>
             <h3>Stall Tiers</h3>
             <div className="row">
