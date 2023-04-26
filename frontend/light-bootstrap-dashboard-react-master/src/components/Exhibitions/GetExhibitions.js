@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DataTable from "react-data-table-component";
 import { Button, Modal } from "react-bootstrap";
+import AttendPayment from "./AttendPayment";
 
 export default function GetExhibitions() {
   const [exhibitions, setExhibitions] = useState([]);
@@ -15,9 +16,9 @@ export default function GetExhibitions() {
   };
 
   const handleShowExhibition = (id) =>
-    axios.get(`http://localhost:8080/api/exhibitions/${id}`).then((res) => {
+    axios.get(`http://localhost:8080/api/exhibitions/${id}`).then((resOne) => {
       setShowDetails(true);
-      setExhibition(res.data);
+      setExhibition(resOne.data);
     });
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function GetExhibitions() {
       .catch((e) => {
         console.log(e);
       });
-  });
+  },[exhibition]);
 
   const BootyPagination = ({
     rowsPerPage,
@@ -200,6 +201,24 @@ export default function GetExhibitions() {
     </div>
   );
 
+  const GetFreeTicket=(exhibitionId, userId, userType, price)=>{
+    const newPayment = {
+      exhibitionId: exhibitionId,
+      userId: userId,
+      userType: userType,
+      amount: price,
+    };
+    axios
+        .post("http://localhost:8080/api/payments", newPayment)
+        .then((res) => {
+          console.log("done");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+
+  }
+
   return (
     <div>
       <DataTable
@@ -234,6 +253,7 @@ export default function GetExhibitions() {
                   <div className="d-flex flex-column align-items-center text-center">
                     <img src="https://img.icons8.com/external-smashingstocks-isometric-smashing-stocks/55/null/external-Exhibition-art-and-culture-smashingstocks-isometric-smashing-stocks.png" />
                   </div>
+                  <hr></hr>
                   <dl className="d-flex align-items-center">
                     <dl className="row">
                       <dt className="col-lg-5">Date</dt>
@@ -251,6 +271,9 @@ export default function GetExhibitions() {
                         )}
                       </dd>
                       <hr></hr>
+                      <dt className="col-lg-5">Active Users</dt>
+                      <dd className="col-lg-7">{exhibition.noOfUsers}</dd>
+                      <hr></hr>
                       <dt className="col-lg-5">Join</dt>
                       <dd className="col-lg-7">
                         {exhibition.over ? (
@@ -262,46 +285,65 @@ export default function GetExhibitions() {
                             Ended
                           </Button>
                         ) : (
-                          <div>
-                            <div className="row">
-                              <dd className="col-lg-5">
-                                USD&nbsp;{exhibition.ticketPrice}
-                              </dd>
+                          <>
+                            {exhibition.ticketPrice==0?(<Button
+                                style={{ fontSize: "14px", borderRadius: "10px" }}
+                                variant="success"
+                                size="sm"
+                                onClick={()=>GetFreeTicket(exhibition.exhibitionId,"abc@gmail.com","ATTENDEE",0)}
+                            >
+                              Free
+                            </Button>):<>
+                              USD&nbsp;{exhibition.ticketPrice}&nbsp;
                               <AttendPayment
-                                exhibitionId={exhibition.exhibitionId}
-                                userId={"abc@gmail.com"}
-                                userType={"ATTENDEE"}
-                                price={parseInt(exhibition.ticketPrice)}
-                              ></AttendPayment>
-                            </div>
-                          </div>
+                                  exhibitionId={exhibition.exhibitionId}
+                                  userId={"abc@gmail.com"}
+                                  userType={"ATTENDEE"}
+                                  price={parseInt(exhibition.ticketPrice)}
+                              ></AttendPayment></>}
+
+                          </>
                         )}
+                        <br></br>
                       </dd>
-                      <dt className="col-lg-12">Exhibition Owner Details</dt>
+                    </dl>
+                  </dl>
+                  <h5
+                      className="card-title"
+                      style={{ textAlign: "center", textTransform: "uppercase" }}
+                  >
+                    Exhibition Owner Details
+                  </h5>
+                  <div className="d-flex flex-column align-items-center text-center">
+                    <img src="https://img.icons8.com/fluency/48/null/microsoft-admin.png"/>
+                  </div>
+                  <hr></hr>
+                  <dl className="d-flex align-items-center">
+                    <dl className="row">
                       <hr></hr>
                       <dt className="col-lg-5">Name</dt>
                       <dd className="col-lg-7">
-                        {exhibition.exhibitionOwner.name}
+                        {!showDetails?null:exhibition.exhibitionOwner.name}
                       </dd>
                       <hr></hr>
                       <dt className="col-lg-5">Email</dt>
                       <dd className="col-lg-7">
-                        {exhibition.exhibitionOwner.email}
+                        {!showDetails?null:exhibition.exhibitionOwner.emailAddress}
                       </dd>
                       <hr></hr>
                       <dt className="col-lg-5">Contact Number</dt>
                       <dd className="col-lg-7">
-                        {exhibition.exhibitionOwner.contactNo}
+                        {!showDetails?null:exhibition.exhibitionOwner.contactNo}
                       </dd>
                       <hr></hr>
                       <dt className="col-lg-5">NIC</dt>
                       <dd className="col-lg-7">
-                        {exhibition.exhibitionOwner.nic}
+                        {!showDetails?null:exhibition.exhibitionOwner.nic}
                       </dd>
                       <hr></hr>
                       <dt className="col-lg-5">Company</dt>
                       <dd className="col-lg-7">
-                        {exhibition.exhibitionOwner.company}
+                        {!showDetails?null:exhibition.exhibitionOwner.company}
                       </dd>
                     </dl>
                   </dl>
