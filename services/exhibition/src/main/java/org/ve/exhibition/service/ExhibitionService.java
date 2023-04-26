@@ -8,6 +8,7 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -126,9 +127,32 @@ public class ExhibitionService {
      * @param exhibition instance and its document id
      */
     public String updateExhibition(Exhibition exhibition, String Id)throws InterruptedException, ExecutionException{
+        JSONObject obj=new JSONObject();
+        if(exhibition.getDatetime()!=null)
+        {obj.put("datetime",exhibition.getDatetime());}
+        if(exhibition.getExhibitionId()!=null)
+        {obj.put("exhibitionId",exhibition.getExhibitionId());}
+        if(exhibition.getExhibitionName()!=null)
+        {obj.put("exhibitionName",exhibition.getExhibitionName());}
+        if(exhibition.getExhibitionOwnerId()!=null)
+        {obj.put("exhibitionOwnerId",exhibition.getExhibitionOwnerId());}
+        if(exhibition.getId()!=null)
+        {obj.put("id",exhibition.getId());}
+        if(exhibition.getNoOfUsers()!=0)
+        {obj.put("noOfUsers",exhibition.getNoOfUsers());}
+        if(exhibition.getTicketPrice()!=0)
+        {obj.put("ticketPrice",exhibition.getTicketPrice());}
         Firestore firestore = FirestoreClient.getFirestore();
+        if(exhibition.getSponsorVideoUrl1()==null)
+        {obj.put("sponsorVideoUrl1",exhibition.getSponsorVideoUrl1());}
+        if(exhibition.getSponsorVideoUrl2()==null)
+        {obj.put("sponsorVideoUrl2",exhibition.getSponsorVideoUrl2());}
+        if(exhibition.getSponsorVideoUrl3()==null)
+        {obj.put("sponsorVideoUrl3",exhibition.getSponsorVideoUrl3());}
+        if(exhibition.getSponsorVideoUrl4()==null)
+        {obj.put("sponsorVideoUrl4",exhibition.getSponsorVideoUrl4());}
         ApiFuture<WriteResult> collectionApiFuture = firestore.collection("exhibitions")
-                .document(Id).set(exhibition);
+                .document(Id).update(obj);
         return "Updated "+collectionApiFuture.get().getUpdateTime().toString();
     }
 

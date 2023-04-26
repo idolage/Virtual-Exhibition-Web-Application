@@ -40,6 +40,7 @@ import RegisterExhibitor from "views/RegisterExhibitor";
 import GetExhibitions from "components/Exhibitions/GetExhibitions";
 import LiveStream from "views/liveStream";
 import AddExhibition from "views/AddExhibition";
+import EditExhibition from "views/EditExhibition";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -89,6 +90,9 @@ root.render(
       />
 
       <Route path="/addExhibition" render={(props)=> <AddExhibition {...props}/>}/>
+
+      <Route path="/editExhibition" render={(props)=> <EditExhibition {...props}/>}/>
+
 
       <Redirect from="/" to="/home" />
     </Switch>

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from 'react-router-dom';
 import axios from "axios";
 import DataTable from "react-data-table-component";
 import { Button, Modal } from "react-bootstrap";
 import AttendPayment from "./AttendPayment";
+import EditExhibition from "../../views/EditExhibition";
 
 export default function GetExhibitions() {
+  const history = useHistory();
   const [exhibitions, setExhibitions] = useState([]);
   const [show, setShow] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -297,7 +300,7 @@ export default function GetExhibitions() {
                               USD&nbsp;{exhibition.ticketPrice}&nbsp;
                               <AttendPayment
                                   exhibitionId={exhibition.exhibitionId}
-                                  userId={"abc@gmail.com"}
+                                  userId={localStorage.getItem("email")}
                                   userType={"ATTENDEE"}
                                   price={parseInt(exhibition.ticketPrice)}
                               ></AttendPayment></>}
@@ -356,6 +359,10 @@ export default function GetExhibitions() {
           <Button variant="secondary" onClick={() => handleClose()}>
             Close
           </Button>
+          {!showDetails?null:exhibition.exhibitionOwner.emailAddress==="exhibitionowner@gmail.com"?
+              ( <Button variant="primary" onClick={() => history.push("/editExhibition",{exhibitionId:exhibition.id})}>
+                Edit
+              </Button>):null}
         </Modal.Footer>
       </Modal>
     </div>
