@@ -25,57 +25,189 @@ import Notifications from "views/Notifications.js";
 import Upgrade from "views/Upgrade.js";
 import Test from "views/Test.js";
 import { Attendee } from "components/Register/Attendee";
+import CustomizeAvatar from "views/CustomizeAvatar";
+import GetExhibitions from "components/Exhibitions/GetExhibitions";
+import RegisterAdmin from "views/RegisterAdmin";
+import RegisterExhibitor from "views/RegisterExhibitor";
+import StallsSelect from "views/StallsSelect";
+import CustomizeStall from "views/CustomizeStall";
+import LiveStream from "views/liveStream";
 
-const dashboardRoutes = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: "nc-icon nc-chart-pie-35",
-    component: Dashboard,
-    layout: "/admin"
-  },
-  {
-    path: "/user",
-    name: "User Profile",
-    icon: "nc-icon nc-circle-09",
-    component: UserProfile,
-    layout: "/admin"
-  },
-  {
-    path: "/table",
-    name: "Table List",
-    icon: "nc-icon nc-notes",
-    component: TableList,
-    layout: "/admin"
-  },
-  {
-    path: "/typography",
-    name: "Typography",
-    icon: "nc-icon nc-paper-2",
-    component: Typography,
-    layout: "/admin"
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "nc-icon nc-atom",
-    component: Icons,
-    layout: "/admin"
-  },
-  {
-    path: "/maps",
-    name: "Maps",
-    icon: "nc-icon nc-pin-3",
-    component: Maps,
-    layout: "/admin"
-  },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    icon: "nc-icon nc-bell-55",
-    component: Notifications,
-    layout: "/admin"
-  }
-];
+const userRole = localStorage.getItem("userRole");
+let dashboardRoutes;
+
+switch (userRole) {
+  case "ADMIN":
+    dashboardRoutes = [
+      {
+        path: "/user",
+        name: "User Profile",
+        icon: "nc-icon nc-circle-09",
+        component: UserProfile,
+        layout: "/admin"
+      },
+      {
+        path: "/registerAdmin",
+        name: "Register Admins",
+        icon: "nc-icon nc-simple-add",
+        component: RegisterAdmin,
+        layout: ""
+      },
+    ];
+    break;
+
+  case "EX_OWNER":
+    dashboardRoutes = [
+      {
+        path: "/user",
+        name: "User Profile",
+        icon: "nc-icon nc-circle-09",
+        component: UserProfile,
+        layout: "/admin"
+      },
+      {
+        path: "/registerExhibitor",
+        name: "Register Exhibitor",
+        icon: "nc-icon nc-simple-add",
+        component: RegisterExhibitor,
+        layout: ""
+      },
+    ];
+    break;
+
+  case "EXHIBITOR":
+    dashboardRoutes = [
+      {
+        path: "/user",
+        name: "User Profile",
+        icon: "nc-icon nc-circle-09",
+        component: UserProfile,
+        layout: "/admin"
+      },
+      {
+        path: "/stalls-select",
+        name: "Select Stalls",
+        icon: "nc-icon nc-tap-01",
+        component: StallsSelect,
+        layout: ""
+      },
+      {
+        path: "/customize-stall",
+        name: "Customize Stall",
+        icon: "nc-icon nc-palette",
+        component: CustomizeStall,
+        layout: ""
+      },
+      {
+        path: "/live-streaming",
+        name: "Live Streaming",
+        icon: "nc-icon nc-button-play",
+        component: LiveStream,
+        layout: ""
+      },
+      {
+        path: '/exhibitions',
+        name: "Exhibitions",
+        icon: "nc-icon nc-tv-2",
+        component: GetExhibitions,
+        layout: ""
+      },
+      {
+        path: "/icons",
+        name: "Icons",
+        icon: "nc-icon nc-atom",
+        component: Icons,
+        layout: "/admin"
+      },
+    ];
+    break;
+
+  case "ATTENDEE":
+    dashboardRoutes = [
+      {
+        path: "/user",
+        name: "User Profile",
+        icon: "nc-icon nc-circle-09",
+        component: UserProfile,
+        layout: "/admin"
+      },
+      {
+        path: '/customize-avatar',
+        name: "Customize Avatar",
+        icon: "nc-icon nc-palette",
+        component: CustomizeAvatar,
+        layout: ""
+      },
+      {
+        path: '/exhibitions',
+        name: "Exhibitions",
+        icon: "nc-icon nc-tv-2",
+        component: GetExhibitions,
+        layout: ""
+      },
+      {
+        path: "/icons",
+        name: "Icons",
+        icon: "nc-icon nc-atom",
+        component: Icons,
+        layout: "/admin"
+      },
+    ];
+    break;
+    default:
+      dashboardRoutes=[{}]
+  }  
+
+// const dashboardRoutes = [
+  // {
+  //   path: "/dashboard",
+  //   name: "Dashboard",
+  //   icon: "nc-icon nc-chart-pie-35",
+  //   component: Dashboard,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/user",
+  //   name: "User Profile",
+  //   icon: "nc-icon nc-circle-09",
+  //   component: UserProfile,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/table",
+  //   name: "Table List",
+  //   icon: "nc-icon nc-notes",
+  //   component: TableList,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/typography",
+  //   name: "Typography",
+  //   icon: "nc-icon nc-paper-2",
+  //   component: Typography,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/icons",
+  //   name: "Icons",
+  //   icon: "nc-icon nc-atom",
+  //   component: Icons,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/maps",
+  //   name: "Maps",
+  //   icon: "nc-icon nc-pin-3",
+  //   component: Maps,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/notifications",
+  //   name: "Notifications",
+  //   icon: "nc-icon nc-bell-55",
+  //   component: Notifications,
+  //   layout: "/admin"
+  // }
+// ];
 
 export default dashboardRoutes;

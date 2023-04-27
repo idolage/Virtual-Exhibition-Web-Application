@@ -79,7 +79,7 @@ const LoginForm = () => {
           localStorage.setItem("email", email);
           localStorage.setItem("userRole", res.data.userRole);
           localStorage.setItem("jwt", res.data.token);
-          history.push("/admin/dashboard");
+          history.push("/admin/user");
         }
       })
       .catch((e) => {
