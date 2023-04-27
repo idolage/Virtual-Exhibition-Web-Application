@@ -8,6 +8,7 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,7 @@ public class ExhibitionService {
         exhibition.setExhibitionId(UUID.randomUUID().toString()); //set exhibition id
         exhibition.setStart(false); //set exhibition start false
         exhibition.setNoOfUsers(0);
+        exhibition.setVisitedUsers(0);
         DocumentReference documentReference =  firestore.collection("exhibitions").document();
         exhibition.setId(documentReference.getId());
         ApiFuture<WriteResult> collectionApiFuture = documentReference.set(exhibition);
@@ -80,7 +82,8 @@ public class ExhibitionService {
                         exhibition.getSponsorVideoUrl2(),
                         exhibition.getSponsorVideoUrl3(),
                         exhibition.getSponsorVideoUrl4(),
-                        exhibition.getNoOfUsers()
+                        exhibition.getNoOfUsers(),
+                        exhibition.getVisitedUsers()
                 );
                 return new ResponseEntity<>(exhibitionResponse, HttpStatus.OK);
             }
@@ -126,9 +129,32 @@ public class ExhibitionService {
      * @param exhibition instance and its document id
      */
     public String updateExhibition(Exhibition exhibition, String Id)throws InterruptedException, ExecutionException{
+        JSONObject obj=new JSONObject();
+        if(exhibition.getDatetime()!=null)
+        {obj.put("datetime",exhibition.getDatetime());}
+        if(exhibition.getExhibitionId()!=null)
+        {obj.put("exhibitionId",exhibition.getExhibitionId());}
+        if(exhibition.getExhibitionName()!=null)
+        {obj.put("exhibitionName",exhibition.getExhibitionName());}
+        if(exhibition.getExhibitionOwnerId()!=null)
+        {obj.put("exhibitionOwnerId",exhibition.getExhibitionOwnerId());}
+        if(exhibition.getId()!=null)
+        {obj.put("id",exhibition.getId());}
+        if(exhibition.getNoOfUsers()!=0)
+        {obj.put("noOfUsers",exhibition.getNoOfUsers());}
+        if(exhibition.getTicketPrice()!=0)
+        {obj.put("ticketPrice",exhibition.getTicketPrice());}
         Firestore firestore = FirestoreClient.getFirestore();
+        if(exhibition.getSponsorVideoUrl1()==null)
+        {obj.put("sponsorVideoUrl1",exhibition.getSponsorVideoUrl1());}
+        if(exhibition.getSponsorVideoUrl2()==null)
+        {obj.put("sponsorVideoUrl2",exhibition.getSponsorVideoUrl2());}
+        if(exhibition.getSponsorVideoUrl3()==null)
+        {obj.put("sponsorVideoUrl3",exhibition.getSponsorVideoUrl3());}
+        if(exhibition.getSponsorVideoUrl4()==null)
+        {obj.put("sponsorVideoUrl4",exhibition.getSponsorVideoUrl4());}
         ApiFuture<WriteResult> collectionApiFuture = firestore.collection("exhibitions")
-                .document(Id).set(exhibition);
+                .document(Id).update(obj);
         return "Updated "+collectionApiFuture.get().getUpdateTime().toString();
     }
 
@@ -227,5 +253,29 @@ public class ExhibitionService {
         else{
             return "Error";
         }
+    }
+
+    public String updateVisitedUsers(String Id)throws InterruptedException, ExecutionException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        DocumentReference documentReference = firestore.collection("exhibitions").document(Id);
+        ApiFuture<DocumentSnapshot> documentSnapshotApiFuture = documentReference.get();
+        DocumentSnapshot documentSnapshot = documentSnapshotApiFuture.get();
+        Exhibition exhibition = documentSnapshot.toObject(Exhibition.class);
+        if(exhibition!=null){
+            exhibition.setVisitedUsers(exhibition.getVisitedUsers()+1);
+            ApiFuture<WriteResult> collectionApiFuture = firestore.collection("exhibitions")
+                    .document(exhibition.getId()).set(exhibition);
+            return "Updated";
+        }
+        else{
+            return "Error";
+        }
+    }
+
+    public Integer getVisitedUsers(String Id) throws CancellationException,InterruptedException,ExecutionException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        List<QueryDocumentSnapshot> documents = firestore.collection("exhibitions")
+                .whereEqualTo("id",Id).get().get().getDocuments();
+        return documents.get(0).toObject(Exhibition.class).getVisitedUsers();
     }
 }

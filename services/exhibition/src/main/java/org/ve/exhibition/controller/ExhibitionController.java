@@ -73,6 +73,18 @@ public class ExhibitionController {
         return exhibitionService.updateActiveUsers(Id,number);
     }
 
+    @PutMapping ("/visitedUsers/{Id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String updateVisitedUsers(@PathVariable String Id) throws InterruptedException, ExecutionException {
+        return exhibitionService.updateVisitedUsers(Id);
+    }
+
+    @GetMapping ("/visitedUsers/{Id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Integer getVisitedUsers(@PathVariable String Id) throws InterruptedException, ExecutionException {
+        return exhibitionService.getVisitedUsers(Id);
+    }
+
     @GetMapping("/test")
     public ResponseEntity<String> testGetEndpoints(){
         return ResponseEntity.ok("Test endpoint is working");

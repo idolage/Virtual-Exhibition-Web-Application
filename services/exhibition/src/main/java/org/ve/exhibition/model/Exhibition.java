@@ -19,4 +19,5 @@ public class Exhibition {
     private String sponsorVideoUrl3;
     private String sponsorVideoUrl4;
     private int noOfUsers;
+    private int visitedUsers;
 }
