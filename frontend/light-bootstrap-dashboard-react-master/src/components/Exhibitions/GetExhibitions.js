@@ -13,6 +13,8 @@ export default function GetExhibitions() {
   const [show, setShow] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [exhibition, setExhibition] = useState({});
+  const [activeUsers, setActiveUsers] = useState(0);
+  let var1=0;
 
   const handleClose = () => {
     setShow(false);
@@ -26,11 +28,16 @@ export default function GetExhibitions() {
     });
 
   useEffect(() => {
+    var1=0;
     axios
       .get("http://localhost:8080/api/exhibitions")
       .then((res) => {
         console.log(res.data);
         setExhibitions(res.data);
+        res.data.map((users)=>{
+          var1=users.noOfUsers+var1;
+        })
+        setActiveUsers(var1);
       })
       .catch((e) => {
         console.log(e);
@@ -261,7 +268,7 @@ export default function GetExhibitions() {
                   <dl className="d-flex align-items-center">
                     <dl className="row">
                       <dt className="col-lg-5">Date</dt>
-                      <dd className="col-lg-7">{exhibition.datetime}</dd>
+                      <dd className="col-lg-7" >{exhibition.datetime}</dd>
                       <hr></hr>
                       <dt className="col-lg-5">Exhibition ID</dt>
                       <dd className="col-lg-7">{exhibition.exhibitionId}</dd>
@@ -275,12 +282,11 @@ export default function GetExhibitions() {
                         )}
                       </dd>
                       <hr></hr>
-                      <dt className="col-lg-5">Active Users</dt>
-                      <dd className="col-lg-7">{exhibition.noOfUsers}</dd>
-                      <hr></hr>
-                      <dt className="col-lg-5">Join</dt>
+                      {/*<dt className="col-lg-5">Active Users</dt>*/}
+                      {/*<dd className="col-lg-7">{exhibition.noOfUsers}</dd>*/}
+                      <dt className="col-lg-5"></dt>
                       <dd className="col-lg-7">
-                        {exhibition.over ? (
+                        {!exhibition.start ?
                           <Button
                             style={{ fontSize: "12px", borderRadius: "20px" }}
                             variant="secondary"
@@ -288,7 +294,13 @@ export default function GetExhibitions() {
                           >
                             Ended
                           </Button>
-                        ) : (
+                        : (activeUsers==10?<Button
+                                    style={{ fontSize: "12px", borderRadius: "20px" }}
+                                    variant="danger"
+                                    size="md"
+                                >
+                                  Sorry Exhibition is Full. Please try again later!
+                                </Button>:
                           <>
                             {exhibition.ticketPrice==0?(<Button
                                 style={{ fontSize: "14px", borderRadius: "10px" }}
