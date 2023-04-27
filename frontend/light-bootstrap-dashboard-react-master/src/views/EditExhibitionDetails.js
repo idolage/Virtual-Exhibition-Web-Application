@@ -11,7 +11,6 @@ export default function EditExhibitionDetails({exhibitionId}) {
     const [exhibitionName, setExhibitionName] = useState("");
     const [ticketPrice, setTicketPrice] = useState(0);
     const [dateTime, setDateTime] = useState("");
-    const [exhibition, setExhibition] = useState({});
 
     useEffect(()=>{
         axios
@@ -24,6 +23,7 @@ export default function EditExhibitionDetails({exhibitionId}) {
             console.log(e);
         })
     },[])
+
     function edit(e) {
         e.preventDefault();
         Axios.put(`http://localhost:8080/api/exhibitions/${exhibitionId}`, {

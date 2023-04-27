@@ -46,6 +46,7 @@ public class ExhibitionService {
         exhibition.setExhibitionId(UUID.randomUUID().toString()); //set exhibition id
         exhibition.setStart(false); //set exhibition start false
         exhibition.setNoOfUsers(0);
+        exhibition.setVisitedUsers(0);
         DocumentReference documentReference =  firestore.collection("exhibitions").document();
         exhibition.setId(documentReference.getId());
         ApiFuture<WriteResult> collectionApiFuture = documentReference.set(exhibition);
@@ -81,7 +82,8 @@ public class ExhibitionService {
                         exhibition.getSponsorVideoUrl2(),
                         exhibition.getSponsorVideoUrl3(),
                         exhibition.getSponsorVideoUrl4(),
-                        exhibition.getNoOfUsers()
+                        exhibition.getNoOfUsers(),
+                        exhibition.getVisitedUsers()
                 );
                 return new ResponseEntity<>(exhibitionResponse, HttpStatus.OK);
             }
@@ -251,5 +253,29 @@ public class ExhibitionService {
         else{
             return "Error";
         }
+    }
+
+    public String updateVisitedUsers(String Id)throws InterruptedException, ExecutionException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        DocumentReference documentReference = firestore.collection("exhibitions").document(Id);
+        ApiFuture<DocumentSnapshot> documentSnapshotApiFuture = documentReference.get();
+        DocumentSnapshot documentSnapshot = documentSnapshotApiFuture.get();
+        Exhibition exhibition = documentSnapshot.toObject(Exhibition.class);
+        if(exhibition!=null){
+            exhibition.setVisitedUsers(exhibition.getVisitedUsers()+1);
+            ApiFuture<WriteResult> collectionApiFuture = firestore.collection("exhibitions")
+                    .document(exhibition.getId()).set(exhibition);
+            return "Updated";
+        }
+        else{
+            return "Error";
+        }
+    }
+
+    public Integer getVisitedUsers(String Id) throws CancellationException,InterruptedException,ExecutionException{
+        Firestore firestore = FirestoreClient.getFirestore();
+        List<QueryDocumentSnapshot> documents = firestore.collection("exhibitions")
+                .whereEqualTo("id",Id).get().get().getDocuments();
+        return documents.get(0).toObject(Exhibition.class).getVisitedUsers();
     }
 }

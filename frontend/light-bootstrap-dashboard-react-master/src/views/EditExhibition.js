@@ -7,6 +7,7 @@ import sidebarImage from "../assets/img/sidebar-3.jpg";
 import Sidebar from "../components/Sidebar/Sidebar";
 import routes from "../routes";
 import AdminNavbar from "../components/Navbars/AdminNavbar";
+import EditSponsorVideos from "./EditSponsorVideos";
 
 function UncontrolledExample() {
   const [image, setImage] = React.useState(sidebarImage);
@@ -31,17 +32,9 @@ function UncontrolledExample() {
         <Tab eventKey="details" title="Details">
           <EditExhibitionDetails exhibitionId={exhibitionId}/>
         </Tab>
-        <Tab eventKey="video1" title="Video-01">
-
+        <Tab eventKey="videos" title="Videos">
+            <EditSponsorVideos exhibitionId={exhibitionId}/>
         </Tab>
-        <Tab eventKey="video2" title="Video-02" >
-
-        </Tab>
-          <Tab eventKey="video3" title="Video-03" >
-          </Tab>
-          <Tab eventKey="video4" title="Video-04" >
-
-          </Tab>
       </Tabs>
             </div>
           </div>
