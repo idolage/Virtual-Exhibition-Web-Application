@@ -4,12 +4,14 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.support.NullValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.ve.ticket.dto.*;
 import org.ve.ticket.model.Ticket;
+import org.ve.ticket.model.TicketInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,5 +160,46 @@ public class TicketService {
             }
         }
         return "Done";
+    }
+
+    public List<TicketInfo> getTickets(String userId) throws ExecutionException, InterruptedException {
+        Firestore firestore = FirestoreClient.getFirestore();
+        CollectionReference ticketsCollection = firestore.collection("tickets");
+        CollectionReference exhibitionsCollection = firestore.collection("exhibitions");
+
+        List<TicketInfo> ticketInfos = new ArrayList<>();
+
+        Query query = ticketsCollection.whereEqualTo("userId", userId);
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.get().getDocuments();
+
+        // Retrieve exhibition names and ticket prices for the exhibition IDs
+        for (QueryDocumentSnapshot document : documents) {
+            String exhibitionId = document.getString("exhibitionId");
+            String ticketId = document.getString("ticketId");
+
+            ApiFuture<DocumentSnapshot> exhibitionFuture = exhibitionsCollection.document(exhibitionId).get();
+            DocumentSnapshot exhibitionSnapshot = exhibitionFuture.get();
+
+            if (exhibitionSnapshot.exists()) {
+                String exhibitionName = exhibitionSnapshot.getString("exhibitionName");
+                long ticketPriceLong = exhibitionSnapshot.getLong("ticketPrice");
+                int ticketPrice = (int) ticketPriceLong;
+
+
+
+                TicketInfo ticketInfo = new TicketInfo(exhibitionName, ticketPrice, ticketId);
+                ticketInfos.add(ticketInfo);
+            }
+            else{
+                TicketInfo ticketInfo = new TicketInfo("Exhibition doesn't exist", 0, ticketId);
+                ticketInfos.add(ticketInfo);
+            }
+        }
+
+        if (ticketInfos.isEmpty()) {
+            return null;
+        }
+        return ticketInfos;
     }
 }

@@ -1,4 +1,4 @@
-import React , { useState, useEffect }  from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 // react-bootstrap components
 import {
@@ -12,146 +12,242 @@ import {
   Container,
   Row,
   Col,
+  Table,
 } from "react-bootstrap";
 
+// const OngoingExhibitions = () => {
+//   const [exhibitions, setExhibitions] = useState([]);
+//   useEffect(() => {
+//     Axios.get("http://localhost:8080/api/exhibitions").then((response) => {
+//       const filteredExhibitions = response.data.filter(
+//         (exhibition) => exhibition.over === false
+//       );
+//       setExhibitions(filteredExhibitions);
+//     });
+//   }, []);
+
+//   return (
+//     <>
+//       <Table className="table-hover">
+//         <thead>
+//           <tr>
+//             <th className="border-0">Exhibition Name</th>
+//             <th className="border-0">Date & Time</th>
+//             <th className="border-0">Ticket Price</th>
+//             <th className="border-0"></th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {exhibitions.map((exhibition) => (
+//             <tr key={exhibition.exhibitionId}>
+//               <td>{exhibition.exhibitionName}</td>
+//               <td>{exhibition.datetime}</td>
+//               <td>{exhibition.ticketPrice}.00</td>
+//               <td>
+//                 {localStorage.getItem("userRole") === "ATTENDEE" ? (
+//                   <Button>Buy Ticket</Button>
+//                 ) : (
+//                   <p></p>
+//                 )}
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </Table>
+//     </>
+//   );
+// };
+
+const PurchasedTickets = () => {
+  const [tickets, setTickets] = useState([]);
+  const storedEmail = localStorage.getItem("email");
+
+  useEffect(() => {
+    Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`).then((response) => {
+      setTickets(response.data);
+    });
+  }, [tickets]);
+
+  return (
+    <>
+    <Table className="table-hover">
+        <thead>
+          <tr>
+            <th className="border-0">Ticket ID</th>
+
+            <th className="border-0">Exhibition Name</th>
+
+            <th className="border-0">Ticket Price</th>
+          </tr>
+        </thead>
+        <tbody>
+        {tickets.map((ticket,i) => (
+            <tr key={i}>
+              <td>{ticket.ticketId}</td>
+              <td>{ticket.exhibitionName}</td>
+              <td>{ticket.ticketPrice}.00</td>
+            </tr>
+          ))}
+        </tbody>
+        </Table>
+    </>
+  )
+}
+
 const Admin = () => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [nic, setNIC] = useState('');
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [nic, setNIC] = useState("");
   const [tel, setTel] = useState("");
-  const [pwd, setPwd] = useState('');
-  const [rePwd, setRePwd] = useState('');
+  const [pwd, setPwd] = useState("");
+  const [rePwd, setRePwd] = useState("");
   const [notification, setNotification] = useState(null);
   const [showModal, setShowModal] = React.useState(false);
 
   function updateAdmin(e) {
     e.preventDefault();
-    if(pwd==rePwd){
-      const storedEmail = localStorage.getItem('email');
+    if (pwd == rePwd) {
+      const storedEmail = localStorage.getItem("email");
       Axios.put(`http://localhost:8080/api/auth/updateAdmin/${storedEmail}`, {
         emailAddress: email,
         name: name,
         contactNo: tel,
         nic: nic,
         password: pwd,
-      }).then((res) => {
-        console.log(res.data);
-        setShowModal(true);
-        setNotification(res.data);
       })
-      .catch((e) => {
-        console.log(e);
-      });
-    }
-    else{
+        .then((res) => {
+          console.log(res.data);
+          setShowModal(true);
+          setNotification(res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
       setShowModal(true);
       setNotification("Passwords do not match!");
     }
   }
-  
+
   useEffect(() => {
     const fetchAdminDetails = async () => {
       try {
-        const storedEmail = localStorage.getItem('email');
-        const response = await Axios.get(`http://localhost:8080/api/auth/getAdmin/${storedEmail}`);
+        const storedEmail = localStorage.getItem("email");
+        const response = await Axios.get(
+          `http://localhost:8080/api/auth/getAdmin/${storedEmail}`
+        );
         setEmail(response.data.emailAddress);
         setName(response.data.name);
         setNIC(response.data.nic);
         setTel(response.data.contactNo);
-      } 
-      catch(e){console.error(e);};
+      } catch (e) {
+        console.error(e);
+      }
     };
     fetchAdminDetails();
-  },[]);
-  
+  }, []);
+
   return (
     <>
-      <Form>
+      <Container fluid>
         <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Email</label>
-              <Form.Control
-                defaultValue={email}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
+          <Col md="8">
+            <Card>
+              <Card.Header>
+                <Card.Title as="h4">Edit Profile</Card.Title>
+              </Card.Header>
+              <Card.Body>
+                <Form>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Email</label>
+                        <Form.Control
+                          defaultValue={email}
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Name</label>
-              <Form.Control
-                defaultValue={name}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Name</label>
+                        <Form.Control
+                          defaultValue={name}
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Contact No</label>
-              <Form.Control
-                defaultValue={tel}
-                value={tel}
-                onChange={(e) => setTel(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Contact No</label>
+                        <Form.Control
+                          defaultValue={tel}
+                          value={tel}
+                          onChange={(e) => setTel(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>NIC</label>
-              <Form.Control
-                defaultValue={nic}
-                value={nic}
-                onChange={(e) => setNIC(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>NIC</label>
+                        <Form.Control
+                          defaultValue={nic}
+                          value={nic}
+                          onChange={(e) => setNIC(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-        <Row>
-          <Col md="6">
-            <Form.Group>
-              <label>Password</label>
-              <Form.Control
-                value={pwd}
-                onChange={(e) => setPwd(e.target.value)}
-                type="password"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-          <Col md="6">
-            <Form.Group>
-              <label>Re-enter password</label>
-              <Form.Control
-                value={rePwd}
-                onChange={(e) => setRePwd(e.target.value)}
-                type="password"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
-        
-        <Button className="btn-fill pull-right" type="submit" variant="info" onClick={(e)=>updateAdmin(e)}>
-          Update 
-        </Button>
-        <div className="clearfix"></div>
-      </Form>
-      <Modal
+                  <Row>
+                    <Col md="6">
+                      <Form.Group>
+                        <label>Password</label>
+                        <Form.Control
+                          value={pwd}
+                          onChange={(e) => setPwd(e.target.value)}
+                          type="password"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                    <Col md="6">
+                      <Form.Group>
+                        <label>Re-enter password</label>
+                        <Form.Control
+                          value={rePwd}
+                          onChange={(e) => setRePwd(e.target.value)}
+                          type="password"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Button
+                    className="btn-fill pull-right"
+                    type="submit"
+                    variant="info"
+                    onClick={(e) => updateAdmin(e)}
+                  >
+                    Update
+                  </Button>
+                  <div className="clearfix"></div>
+                </Form>
+                <Modal
                   style={{ marginTop: "10vh" }}
                   className="modal-mini modal-primary"
                   show={showModal}
@@ -184,131 +280,195 @@ const Admin = () => {
                     </Button>
                   </div>
                 </Modal>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };
 
 const Attendee = () => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [nic, setNIC] = useState('');
-  const [pwd, setPwd] = useState('');
-  const [rePwd, setRePwd] = useState('');
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [nic, setNIC] = useState("");
+  const [pwd, setPwd] = useState("");
+  const [rePwd, setRePwd] = useState("");
   const [notification, setNotification] = useState(null);
   const [showModal, setShowModal] = React.useState(false);
-  
+
   function updateAttendee(e) {
     e.preventDefault();
-    if(pwd==rePwd){
-      const storedEmail = localStorage.getItem('email');
-      Axios.put(`http://localhost:8080/api/auth/updateAttendee/${storedEmail}`, {
-        emailAddress: email,
-        name: name,
-        nic: nic,
-        password: pwd,
-      }).then((res) => {
-        console.log(res.data);
-        setShowModal(true);
-        setNotification(res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    }
-    else{
+    if (pwd == rePwd) {
+      const storedEmail = localStorage.getItem("email");
+      Axios.put(
+        `http://localhost:8080/api/auth/updateAttendee/${storedEmail}`,
+        {
+          emailAddress: email,
+          name: name,
+          nic: nic,
+          password: pwd,
+        }
+      )
+        .then((res) => {
+          console.log(res.data);
+          setShowModal(true);
+          setNotification(res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
       setShowModal(true);
       setNotification("Passwords do not match!");
     }
   }
-  
+
   useEffect(() => {
     const fetchAttendeeDetails = async () => {
       try {
-        const storedEmail = localStorage.getItem('email');
-        const response = await Axios.get(`http://localhost:8080/api/auth/getAttendee/${storedEmail}`);
+        const storedEmail = localStorage.getItem("email");
+        const response = await Axios.get(
+          `http://localhost:8080/api/auth/getAttendee/${storedEmail}`
+        );
         setEmail(response.data.emailAddress);
         setName(response.data.name);
         setNIC(response.data.nic);
-      } 
-      catch(e){console.error(e);};
+      } catch (e) {
+        console.error(e);
+      }
     };
     fetchAttendeeDetails();
-  },[]);
-  
+  }, []);
+
   return (
     <>
-      <Form>
+      <Container fluid>
         <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Email</label>
-              <Form.Control
-                defaultValue={email}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
+          <Col lg="6" sm="6">
+            <Card className="card-stats">
+              <Card.Body>
+                <Row>
+                    <div className="numbers text-center">
+                    <i className="nc-icon nc-tag-content text-primary" style={{fontSize:'28px'}}></i>
+                      <Card.Title as="h5">Ticket ID</Card.Title>
+                    </div>
+                </Row>
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                <div className="stats">
+                  Ticket ID
+                </div>
+              </Card.Footer>
+            </Card>
+          </Col>
+          <Col lg="6" sm="6">
+            <Card className="card-stats">
+              <Card.Body>
+                <Row>
+                    <div className="numbers text-center">
+                    <i className="nc-icon nc-album-2 text-primary" style={{fontSize:'28px'}}></i>
+                      <Card.Title as="h5">
+                        Exhibition ID
+                        </Card.Title>
+                    </div>
+                </Row>
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                <div className="stats">
+                  Exhibition ID
+                </div>
+              </Card.Footer>
+            </Card>
           </Col>
         </Row>
+        <Row>
+          <Col lg="6">
+            <Card>
+              <Card.Header>
+                <Card.Title as="h4">Edit Profile</Card.Title>
+              </Card.Header>
+              <Card.Body>
+                <Form>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Email</label>
+                        <Form.Control
+                          defaultValue={email}
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Name</label>
-              <Form.Control
-                defaultValue={name}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Name</label>
+                        <Form.Control
+                          defaultValue={name}
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>NIC</label>
-              <Form.Control
-                defaultValue={nic}
-                value={nic}
-                onChange={(e) => setNIC(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>NIC</label>
+                        <Form.Control
+                          defaultValue={nic}
+                          value={nic}
+                          onChange={(e) => setNIC(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-        <Row>
-          <Col md="6">
-            <Form.Group>
-              <label>Password</label>
-              <Form.Control
-                value={pwd}
-                onChange={(e) => setPwd(e.target.value)}
-                type="password"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-          <Col md="6">
-            <Form.Group>
-              <label>Re-enter password</label>
-              <Form.Control
-                value={rePwd}
-                onChange={(e) => setRePwd(e.target.value)}
-                type="password"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
-        
-        <Button className="btn-fill pull-right" type="submit" variant="info" onClick={(e)=>updateAttendee(e)}>
-          Update 
-        </Button>
-        <div className="clearfix"></div>
-      </Form>
-      <Modal
+                  <Row>
+                    <Col md="6">
+                      <Form.Group>
+                        <label>Password</label>
+                        <Form.Control
+                          value={pwd}
+                          onChange={(e) => setPwd(e.target.value)}
+                          type="password"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                    <Col md="6">
+                      <Form.Group>
+                        <label>Re-enter password</label>
+                        <Form.Control
+                          value={rePwd}
+                          onChange={(e) => setRePwd(e.target.value)}
+                          type="password"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Button
+                    className="btn-fill pull-right"
+                    type="submit"
+                    variant="info"
+                    onClick={(e) => updateAttendee(e)}
+                  >
+                    Update
+                  </Button>
+                  <div className="clearfix"></div>
+                </Form>
+                <Modal
                   style={{ marginTop: "10vh" }}
                   className="modal-mini modal-primary"
                   show={showModal}
@@ -341,165 +501,261 @@ const Attendee = () => {
                     </Button>
                   </div>
                 </Modal>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col lg="6">
+            <Card>
+              <Card.Header>
+                <Card.Title as="h4">Avatar</Card.Title>
+              </Card.Header>
+              <Card.Body>
+                <p>3D Avatar goes here</p>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+        {/* <Row>
+          <Col lg='12'>
+        <Card>
+              <Card.Header>
+                <Card.Title as="h4">Ongoing Exhibitions</Card.Title>
+              </Card.Header>
+              <Card.Body>
+              <OngoingExhibitions/>
+              </Card.Body>
+            </Card></Col>
+        </Row> */}
+        <Row>
+          <Col lg='12'>
+        <Card>
+              <Card.Header>
+                <Card.Title as="h4">Visited Exhibitions</Card.Title>
+              </Card.Header>
+              <Card.Body>
+                <PurchasedTickets/>
+              </Card.Body>
+            </Card></Col>
+        </Row>
+      </Container>
     </>
   );
 };
 
 const Exhibitor = () => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [nic, setNIC] = useState('');
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [nic, setNIC] = useState("");
   const [tel, setTel] = useState("");
-  const [pwd, setPwd] = useState('');
-  const [rePwd, setRePwd] = useState('');
+  const [pwd, setPwd] = useState("");
+  const [rePwd, setRePwd] = useState("");
   const [company, setCompany] = useState("");
   const [notification, setNotification] = useState(null);
   const [showModal, setShowModal] = React.useState(false);
 
   function updateExhibitor(e) {
     e.preventDefault();
-    if(pwd==rePwd){
-      const storedEmail = localStorage.getItem('email');
-      Axios.put(`http://localhost:8080/api/auth/updateExhibitor/${storedEmail}`, {
-        emailAddress: email,
-        name: name,
-        contactNo: tel,
-        nic: nic,
-        password: pwd,
-        company:company
-      }).then((res) => {
-        console.log(res.data);
-        setShowModal(true);
-        setNotification(res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    }
-    else{
+    if (pwd == rePwd) {
+      const storedEmail = localStorage.getItem("email");
+      Axios.put(
+        `http://localhost:8080/api/auth/updateExhibitor/${storedEmail}`,
+        {
+          emailAddress: email,
+          name: name,
+          contactNo: tel,
+          nic: nic,
+          password: pwd,
+          company: company,
+        }
+      )
+        .then((res) => {
+          console.log(res.data);
+          setShowModal(true);
+          setNotification(res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
       setShowModal(true);
       setNotification("Passwords do not match!");
     }
   }
-  
+
   useEffect(() => {
     const fetchExhibitorDetails = async () => {
       try {
-        const storedEmail = localStorage.getItem('email');
-        const response = await Axios.get(`http://localhost:8080/api/auth/getExhibitor/${storedEmail}`);
+        const storedEmail = localStorage.getItem("email");
+        const response = await Axios.get(
+          `http://localhost:8080/api/auth/getExhibitor/${storedEmail}`
+        );
         setEmail(response.data.emailAddress);
         setName(response.data.name);
         setNIC(response.data.nic);
         setTel(response.data.contactNo);
-        setCompany(response.data.company)
-      } 
-      catch(e){console.error(e);};
+        setCompany(response.data.company);
+      } catch (e) {
+        console.error(e);
+      }
     };
     fetchExhibitorDetails();
-  },[]);
-  
+  }, []);
+
   return (
     <>
-      <Form>
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Email</label>
-              <Form.Control
-                defaultValue={email}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
+      <Container fluid>
+      <Row>
+          <Col lg="6" sm="6">
+            <Card className="card-stats">
+              <Card.Body>
+                <Row>
+                    <div className="numbers text-center">
+                    <i className="nc-icon nc-tag-content text-primary" style={{fontSize:'28px'}}></i>
+                      <Card.Title as="h5">Ticket ID</Card.Title>
+                    </div>
+                </Row>
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                <div className="stats">
+                  Ticket ID
+                </div>
+              </Card.Footer>
+            </Card>
+          </Col>
+          <Col lg="6" sm="6">
+            <Card className="card-stats">
+              <Card.Body>
+                <Row>
+                    <div className="numbers text-center">
+                    <i className="nc-icon nc-album-2 text-primary" style={{fontSize:'28px'}}></i>
+                      <Card.Title as="h5">
+                        Exhibition ID
+                        </Card.Title>
+                    </div>
+                </Row>
+              </Card.Body>
+              <Card.Footer>
+                <hr></hr>
+                <div className="stats">
+                  Exhibition ID
+                </div>
+              </Card.Footer>
+            </Card>
           </Col>
         </Row>
+        <Row>
+          <Col lg="6">
+            <Card>
+              <Card.Header>
+                <Card.Title as="h4">Edit Profile</Card.Title>
+              </Card.Header>
+              <Card.Body>
+                <Form>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Email</label>
+                        <Form.Control
+                          defaultValue={email}
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Name</label>
-              <Form.Control
-                defaultValue={name}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Name</label>
+                        <Form.Control
+                          defaultValue={name}
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Contact No</label>
-              <Form.Control
-                defaultValue={tel}
-                value={tel}
-                onChange={(e) => setTel(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Contact No</label>
+                        <Form.Control
+                          defaultValue={tel}
+                          value={tel}
+                          onChange={(e) => setTel(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>NIC</label>
-              <Form.Control
-                defaultValue={nic}
-                value={nic}
-                onChange={(e) => setNIC(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>NIC</label>
+                        <Form.Control
+                          defaultValue={nic}
+                          value={nic}
+                          onChange={(e) => setNIC(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Company name</label>
-              <Form.Control
-                defaultValue={company}
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Company name</label>
+                        <Form.Control
+                          defaultValue={company}
+                          value={company}
+                          onChange={(e) => setCompany(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-        <Row>
-          <Col md="6">
-            <Form.Group>
-              <label>Password</label>
-              <Form.Control
-                value={pwd}
-                onChange={(e) => setPwd(e.target.value)}
-                type="password"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-          <Col md="6">
-            <Form.Group>
-              <label>Re-enter password</label>
-              <Form.Control
-                value={rePwd}
-                onChange={(e) => setRePwd(e.target.value)}
-                type="password"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
-        
-        <Button className="btn-fill pull-right" type="submit" variant="info" onClick={(e)=>updateExhibitor(e)}>
-          Update 
-        </Button>
-        <div className="clearfix"></div>
-      </Form>
-      <Modal
+                  <Row>
+                    <Col md="6">
+                      <Form.Group>
+                        <label>Password</label>
+                        <Form.Control
+                          value={pwd}
+                          onChange={(e) => setPwd(e.target.value)}
+                          type="password"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                    <Col md="6">
+                      <Form.Group>
+                        <label>Re-enter password</label>
+                        <Form.Control
+                          value={rePwd}
+                          onChange={(e) => setRePwd(e.target.value)}
+                          type="password"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Button
+                    className="btn-fill pull-right"
+                    type="submit"
+                    variant="info"
+                    onClick={(e) => updateExhibitor(e)}
+                  >
+                    Update
+                  </Button>
+                  <div className="clearfix"></div>
+                </Form>
+                <Modal
                   style={{ marginTop: "10vh" }}
                   className="modal-mini modal-primary"
                   show={showModal}
@@ -532,66 +788,106 @@ const Exhibitor = () => {
                     </Button>
                   </div>
                 </Modal>
+              </Card.Body>
+            </Card>
+          </Col>
+        <Col lg="6">
+          <Card>
+            <Card.Header>
+              <Card.Title as="h4">Stall</Card.Title>
+            </Card.Header>
+            <Card.Body>
+              <p>3D Stall goes here</p>
+            </Card.Body>
+          </Card>
+        </Col>
+        </Row>
+        <Row>
+          <Col lg='12'>
+        <Card>
+              <Card.Header>
+                <Card.Title as="h4">Uploaded Marketing Material</Card.Title>
+              </Card.Header>
+              <Card.Body>
+                <p>no records to show</p>
+              </Card.Body>
+            </Card></Col>
+        </Row>
+      </Container>
     </>
   );
 };
 
 const ExhibitionOwner = () => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [nic, setNIC] = useState('');
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [nic, setNIC] = useState("");
   const [tel, setTel] = useState("");
-  const [pwd, setPwd] = useState('');
-  const [rePwd, setRePwd] = useState('');
+  const [pwd, setPwd] = useState("");
+  const [rePwd, setRePwd] = useState("");
   const [company, setCompany] = useState("");
   const [notification, setNotification] = useState(null);
   const [showModal, setShowModal] = React.useState(false);
 
   function updateExhibitionOwner(e) {
     e.preventDefault();
-    if(pwd==rePwd){
-      const storedEmail = localStorage.getItem('email');
-      Axios.put(`http://localhost:8080/api/auth/updateExhibitionOwner/${storedEmail}`, {
-        emailAddress: email,
-        name: name,
-        contactNo: tel,
-        nic: nic,
-        password: pwd,
-        company:company
-      }).then((res) => {
-        console.log(res.data);
-        setShowModal(true);
-        setNotification(res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    }
-    else{
+    if (pwd == rePwd) {
+      const storedEmail = localStorage.getItem("email");
+      Axios.put(
+        `http://localhost:8080/api/auth/updateExhibitionOwner/${storedEmail}`,
+        {
+          emailAddress: email,
+          name: name,
+          contactNo: tel,
+          nic: nic,
+          password: pwd,
+          company: company,
+        }
+      )
+        .then((res) => {
+          console.log(res.data);
+          setShowModal(true);
+          setNotification(res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
       setShowModal(true);
       setNotification("Passwords do not match!");
     }
   }
-  
+
   useEffect(() => {
     const fetchExhibitionOwnerDetails = async () => {
       try {
-        const storedEmail = localStorage.getItem('email');
-        const response = await Axios.get(`http://localhost:8080/api/auth/getExhibitionOwner/${storedEmail}`);
+        const storedEmail = localStorage.getItem("email");
+        const response = await Axios.get(
+          `http://localhost:8080/api/auth/getExhibitionOwner/${storedEmail}`
+        );
         setEmail(response.data.emailAddress);
         setName(response.data.name);
         setNIC(response.data.nic);
         setTel(response.data.contactNo);
-        setCompany(response.data.company)
-      } 
-      catch(e){console.error(e);};
+        setCompany(response.data.company);
+      } catch (e) {
+        console.error(e);
+      }
     };
     fetchExhibitionOwnerDetails();
-  },[]);
-  
+  }, []);
+
   return (
     <>
-      <Form>
+    <Container fluid>
+    <Row>
+      <Col lg='10'>
+      <Card>
+              <Card.Header>
+                <Card.Title as="h4">Edit Profile</Card.Title>
+              </Card.Header>
+              <Card.Body>
+                <Form>
         <Row>
           <Col md="12">
             <Form.Group>
@@ -684,45 +980,79 @@ const ExhibitionOwner = () => {
             </Form.Group>
           </Col>
         </Row>
-        
-        <Button className="btn-fill pull-right" type="submit" variant="info" onClick={(e)=>updateExhibitionOwner(e)}>
-          Update 
+
+        <Button
+          className="btn-fill pull-right"
+          type="submit"
+          variant="info"
+          onClick={(e) => updateExhibitionOwner(e)}
+        >
+          Update
         </Button>
         <div className="clearfix"></div>
       </Form>
       <Modal
-                  style={{ marginTop: "10vh" }}
-                  className="modal-mini modal-primary"
-                  show={showModal}
-                  onHide={() => setShowModal(false)}
-                >
-                  <Modal.Header className="justify-content-center">
-                    <div className="modal-profile">
-                      <i className="nc-icon nc-notification-70"></i>
-                    </div>
-                  </Modal.Header>
-                  <Modal.Body className="text-center">
-                    <p>{notification}</p>
-                  </Modal.Body>
-                  <div className="modal-footer">
-                    <Button
-                      className="btn-simple"
-                      type="button"
-                      variant="link"
-                      onClick={() => setShowModal(false)}
-                    >
-                      Back
-                    </Button>
-                    <Button
-                      className="btn-simple"
-                      type="button"
-                      variant="link"
-                      onClick={() => setShowModal(false)}
-                    >
-                      Close
-                    </Button>
-                  </div>
-                </Modal>
+        style={{ marginTop: "10vh" }}
+        className="modal-mini modal-primary"
+        show={showModal}
+        onHide={() => setShowModal(false)}
+      >
+        <Modal.Header className="justify-content-center">
+          <div className="modal-profile">
+            <i className="nc-icon nc-notification-70"></i>
+          </div>
+        </Modal.Header>
+        <Modal.Body className="text-center">
+          <p>{notification}</p>
+        </Modal.Body>
+        <div className="modal-footer">
+          <Button
+            className="btn-simple"
+            type="button"
+            variant="link"
+            onClick={() => setShowModal(false)}
+          >
+            Back
+          </Button>
+          <Button
+            className="btn-simple"
+            type="button"
+            variant="link"
+            onClick={() => setShowModal(false)}
+          >
+            Close
+          </Button>
+        </div>
+      </Modal>
+      </Card.Body>
+      </Card>
+      </Col>
+      </Row>
+      <Row>
+      <Col lg='10'>
+      <Card>
+              <Card.Header>
+                <Card.Title as="h4">Added Exhibitions</Card.Title>
+              </Card.Header>
+              <Card.Body>
+              <p>no records to show</p>
+              </Card.Body>
+              </Card>
+              </Col>
+              </Row>
+              <Row>
+      <Col lg='10'>
+      <Card>
+              <Card.Header>
+                <Card.Title as="h4">Ongoing Exhibitions</Card.Title>
+              </Card.Header>
+              <Card.Body>
+              <p>no records to show</p>
+              </Card.Body>
+              </Card>
+              </Col>
+              </Row>
+      </Container>
     </>
   );
 };
@@ -775,20 +1105,7 @@ const Profile = () => {
 function User() {
   return (
     <>
-      <Container fluid>
-        <Row>
-          <Col md="8">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h4">Edit Profile</Card.Title>
-              </Card.Header>
-              <Card.Body>
-                <Profile />
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+      <Profile />
     </>
   );
 }

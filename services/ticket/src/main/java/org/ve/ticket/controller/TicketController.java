@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.ve.ticket.model.Ticket;
+import org.ve.ticket.model.TicketInfo;
 import org.ve.ticket.service.TicketService;
 
+import java.util.List;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 @CrossOrigin("*")
@@ -28,6 +31,11 @@ public class TicketController {
         return ticketService.getTicket(ticketId);
     }
 
+    @GetMapping("getTicketInfo/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TicketInfo> getTicketInfo(@PathVariable String userId) throws InterruptedException, ExecutionException {
+        return ticketService.getTickets(userId);
+    }
     @PutMapping ("/{ticketId}")
     public String updateTicket(@PathVariable String ticketId, @RequestParam boolean isExpired) throws InterruptedException, ExecutionException {
         return ticketService.updateTicket(ticketId, isExpired);

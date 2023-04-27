@@ -6,6 +6,7 @@ import { Button, Modal } from "react-bootstrap";
 import AttendPayment from "./AttendPayment";
 import EditExhibition from "../../views/EditExhibition";
 
+
 export default function GetExhibitions() {
   const history = useHistory();
   const [exhibitions, setExhibitions] = useState([]);
@@ -301,6 +302,7 @@ export default function GetExhibitions() {
                               <AttendPayment
                                   exhibitionId={exhibition.exhibitionId}
                                   userId={localStorage.getItem("email")}
+
                                   userType={"ATTENDEE"}
                                   price={parseInt(exhibition.ticketPrice)}
                               ></AttendPayment></>}

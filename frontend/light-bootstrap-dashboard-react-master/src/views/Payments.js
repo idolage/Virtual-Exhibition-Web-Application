@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import StripeCheckout from "react-stripe-checkout";
+
 const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
   const publishKey =
     "pk_test_51Mmz4YD6ZxcX2rToMJ2OGmR3HorqkdxlC7KfCFrdmmVRnaoQJHlmyhbff18ridO4IuUgdpErJ8lBjPxqQrIluwrk00volY2MsC";
