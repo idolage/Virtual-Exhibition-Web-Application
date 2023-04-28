@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import { Form, Card, Row, Col } from "react-bootstrap";
-import axios from "axios";
+import "../assets/css/custom-style.css";
 
 export default function EditSponsorVideos({exhibitionId}) {
 
@@ -12,16 +12,18 @@ export default function EditSponsorVideos({exhibitionId}) {
     const [files, setFiles] = useState([]);
 
     function handleUpload(e) {
-        const uploadedFiles = e.target.files;
-        setFiles([...files, uploadedFiles]);
-        console.log(files);
+        const uploadedFiles = Array.from(e.target.files);
+        setFiles((prevFiles) => [...prevFiles, ...uploadedFiles]);
+        console.log(uploadedFiles);
     }
 
     function submitVideo(e) {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('file', files[0][0]);
-        Axios.post(`http://localhost:8080/api/exhibitions/video/${exhibitionId}`, formData)
+         files.forEach((file, index) => {
+    formData.append('files', file);
+  });
+   Axios.post(`http://localhost:8080/api/exhibitions/video/${exhibitionId}`, formData)
             .then(res => {
                 console.log(res);
                 setFiles([]);
@@ -39,34 +41,35 @@ export default function EditSponsorVideos({exhibitionId}) {
                     </Card.Title>
                 </Card.Header>
                 <Card.Body>
-                    <Form>
-                        <Form.Group>
-                            <Form.Label>Videos</Form.Label>
-                            <Form.Control type="file" onChange={
-                                (e) => handleUpload(e)
-                            } multiple />
-                        </Form.Group>
+                   
+                    <div className="row mt-5">
+                    <div className="col-lg-9 align-self-center ">
+                      <div class="frame">
+                        <div class="center">
+                          <div class="title">
+                            <h1 style={{ fontSize: 18 }}>Upload sponsor videos here</h1>
+                          </div>
 
-                        <Form.Group>
-                            <button
-                                onClick={(e) => submitVideo(e)}
-                                className="secondary-button"
-                                type="submit"
-                                style={{
-                                    marginTop: "2vh",
-                                    width: "20vw",
-                                    minWidth: "200px",
-                                }}
-                            >
-                                Update
-                            </button>
-                        </Form.Group>
-                    </Form>
+                          <div class="dropzone">
+                            <img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" />
+                            <input type="file" class="upload-input" onChange={
+                              (e) => handleUpload(e)
+                            } multiple />
+
+                          </div>
+                          <button type="button" class="upload-button" name="uploadbutton" onClick={(e) => submitVideo(e)}>Submit</button>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                    
                     <Modal
                         style={{ marginTop: "10vh" }}
                         className="modal-mini modal-primary"
                         show={showModal}
-                        onHide={() => setShowModal(false)}
+                        onHide={() => setShowModal(true)}
                     >
                         <Modal.Header className="justify-content-center">
                             <div className="modal-profile">
