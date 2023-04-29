@@ -18,7 +18,8 @@ public class GatewayConfig {
 //                .route("AUTH-SERVICE", r -> r.path("/api/auth/**").filters(f -> f.filter(filter)).uri("lb://AUTH-SERVICE"))
 //                .route("EXHIBITION-SERVICE", r -> r.path("/api/exhibitions/**").filters(f -> f.filter(filter)).uri("lb://EXHIBITION-SERVICE"))
 //                .route("PAYMENT-SERVICE", r -> r.path("/api/payments/**").filters(f -> f.filter(filter)).uri("lb://PAYMENT-SERVICE"))
-//                .route("STALL-SERVICE", r -> r.path("/api/stalls/**").filters(f -> f.filter(filter)).uri("lb://STALL-SERVICE"))
+//                .route("STALL-SERVICE", r -> r.path("/api/stalls/**").filters(f -> f.filter(filter)).uri("lb://STALL-SERVICE"))//
+//                .route("FEEDBACK-SERVICE", r -> r.path("/api/feedbacks/**").filters(f -> f.filter(filter)).uri("lb://FEEDBACK-SERVICE"))
 //                .route("TICKET-SERVICE", r -> r.path("/api/tickets/**").filters(f -> f.filter(filter)).uri("lb://TICKET-SERVICE"))
 //                .route("STATS-SERVICE", r -> r.path("/api/stats/**").filters(f -> f.filter(filter)).uri("lb://STATS-SERVICE"))
 //                .route("PAYMENT-GATEWAY-SERVICE", r -> r.path("/api/payment-gateway/**").filters(f -> f.filter(filter)).uri("lb://PAYMENT-GATEWAY-SERVICE"))
@@ -33,6 +34,7 @@ public class GatewayConfig {
                 .route("EXHIBITION-SERVICE", r -> r.path("/api/exhibitions/**").uri("lb://EXHIBITION-SERVICE"))
                 .route("PAYMENT-SERVICE", r -> r.path("/api/payments/**").uri("lb://PAYMENT-SERVICE"))
                 .route("STALL-SERVICE", r -> r.path("/api/stalls/**").uri("lb://STALL-SERVICE"))
+                .route("FEEDBACK-SERVICE", r -> r.path("/api/feedbacks/**").uri("lb://FEEDBACK-SERVICE"))
                 .route("TICKET-SERVICE", r -> r.path("/api/tickets/**").uri("lb://TICKET-SERVICE"))
                 .route("STATS-SERVICE", r -> r.path("/api/stats/**").uri("lb://STATS-SERVICE"))
                 .route("PAYMENT-GATEWAY-SERVICE", r -> r.path("/api/payment-gateway/**").uri("lb://PAYMENT-GATEWAY-SERVICE"))

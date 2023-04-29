@@ -27,6 +27,7 @@
         <module>services/agora-token-server</module>
         <module>services/payment-gateway</module>
         <module>services/stats</module>
+        <module>services/feedback</module>
     </modules>
 
     <dependencyManagement>
