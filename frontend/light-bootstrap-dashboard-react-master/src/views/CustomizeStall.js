@@ -70,13 +70,14 @@ function CustomizeStall() {
   function handleFileUpload(e) {
     const uploadedFiles = e.target.files;
     setFiles([...files, uploadedFiles]);
-    // console.log(files);
+    console.log(uploadedFiles);
   }
  
   function submitLogo(e) {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', files[0][0]);
+    console.log(formData);
     Axios.post(logoUrl, formData)
       .then(res => {
         setFiles([]);
@@ -156,7 +157,7 @@ function CustomizeStall() {
                             } multiple />
 
                           </div>
-                          <button type="button" class="btn" name="uploadbutton" onClick={(e) => submitLogo(e)}>Upload file</button>
+                          <button type="button" class="upload-button" name="uploadbutton" onClick={(e) => submitLogo(e)}>Upload file</button>
 
                         </div>
                       </div>
@@ -180,7 +181,7 @@ function CustomizeStall() {
                             } multiple />
 
                           </div>
-                          <button type="button" class="btn" name="uploadbutton" onClick={(e) => submitBanner(e)}>Upload file</button>
+                          <button type="button" class="upload-button" name="uploadbutton" onClick={(e) => submitBanner(e)}>Upload file</button>
 
                         </div>
                       </div>
@@ -188,7 +189,7 @@ function CustomizeStall() {
 
                   </div>
                 </Carousel.Item>
-                {tier !== 'Gold' &&
+                {tier == 'Gold' &&
                 <Carousel.Item>
                 <div className="row mt-5">
                     <div className="col-lg-9 align-self-center ">
@@ -205,7 +206,7 @@ function CustomizeStall() {
                             } multiple />
 
                           </div>
-                          <button type="button" class="btn" name="uploadbutton" onClick={(e) => submitVideo(e)}>Upload file</button>
+                          <button type="button" class="upload-button" name="uploadbutton" onClick={(e) => submitVideo(e)}>Upload file</button>
 
                         </div>
                       </div>
