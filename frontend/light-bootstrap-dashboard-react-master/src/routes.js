@@ -191,7 +191,14 @@ switch (userRole) {
         name: "Exhibitions",
         icon: "nc-icon nc-tv-2",
         component: GetExhibitions,
-        layout: ""
+        layout: "/admin"
+      },
+      {
+        path: "/submitFeedback",
+        name: "Submit Feedback",
+        icon: "nc-icon nc-notes",
+        component: SubmitFeedback,
+        layout: "/admin"
       },
       {
         path: "/icons",

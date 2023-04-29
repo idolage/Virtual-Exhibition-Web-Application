@@ -37,7 +37,7 @@ export default function ViewFeedbacks() {
     axios
       .get(
         `http://localhost:8080/api/exhibitions/getByExhibitionOwner/${storedEmail}`
-      ) //
+      ) 
       .then((res) => {
         setExhibitions(res.data);
       })

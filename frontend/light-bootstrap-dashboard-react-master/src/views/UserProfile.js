@@ -255,6 +255,9 @@ const Attendee = () => {
   const [notification, setNotification] = useState(null);
   const [showModal, setShowModal] = React.useState(false);
 
+  const[exId, setExId]=useState("No records to show");
+  const[ticketId, setTicketId]=useState("No records to show");
+
   function updateAttendee(e) {
     e.preventDefault();
     if (pwd == rePwd) {
@@ -296,7 +299,23 @@ const Attendee = () => {
         console.error(e);
       }
     };
+
+    const fetchIds = () => {
+      const storedEmail = localStorage.getItem("email");
+      Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`)
+        .then((response) => {
+          if (!response.data[0].isExpired) {
+            setExId(response.data[0].exhibitionId);
+            setTicketId(response.data[0].ticketId);
+          }
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    };
+  
     fetchAttendeeDetails();
+    fetchIds();
   }, []);
 
   return (
@@ -316,7 +335,7 @@ const Attendee = () => {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  Ticket ID
+                  {ticketId}
                 </div>
               </Card.Footer>
             </Card>
@@ -336,7 +355,7 @@ const Attendee = () => {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  Exhibition ID
+                  {exId}
                 </div>
               </Card.Footer>
             </Card>
