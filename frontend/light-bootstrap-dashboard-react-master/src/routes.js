@@ -35,6 +35,10 @@ import CustomizeStall from "views/CustomizeStall";
 import LiveStream from "views/liveStream";
 import AddExhibition from "views/AddExhibition";
 import ApproveExhibitors from 'views/ApproveExhibitors';
+import SubmitFeedback from 'views/SubmitFeedback';
+import ViewFeedbacks from 'views/ViewFeedbacks';
+import UncontrolledExample from 'views/EditExhibition';
+import EditExhibitionDetails from 'views/EditExhibitionDetails';
 
 // const [userRole, setUserRole] = useState();
 
@@ -89,10 +93,24 @@ switch (userRole) {
         layout: ""
       },
       {
+        path: "/submitFeedback",
+        name: "Submit Feedback",
+        icon: "nc-icon nc-notes",
+        component: SubmitFeedback,
+        layout: "/admin"
+      },
+      {
+        path: "/viewFeedback",
+        name: "View Feedbacks",
+        icon: "nc-icon nc-chat-round",
+        component: ViewFeedbacks,
+        layout: "/admin"
+      },
+      {
         path: "/editExhibition",
         name: "Edit Exhibitions",
         icon: "nc-icon nc-ruler-pencil",
-        component: AddExhibition,
+        component: EditExhibitionDetails,
         layout: ""
       },
       {
