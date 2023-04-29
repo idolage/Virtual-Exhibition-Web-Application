@@ -14,7 +14,7 @@ export default function EditSponsorVideos({exhibitionId}) {
     function handleUpload(e) {
         const uploadedFiles = Array.from(e.target.files);
         setFiles((prevFiles) => [...prevFiles, ...uploadedFiles]);
-        console.log(uploadedFiles);
+        
     }
 
     function submitVideo(e) {
