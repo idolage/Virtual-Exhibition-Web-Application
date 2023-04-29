@@ -19,6 +19,7 @@ import org.ve.exhibition.ExhibitionRunner;
 import org.ve.exhibition.dto.ExhibitionOwner;
 import org.ve.exhibition.dto.ExhibitionResponse;
 import org.ve.exhibition.model.Exhibition;
+import org.ve.exhibition.model.Exhibitor;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -89,6 +90,35 @@ public class ExhibitionService {
             }
         }
         return new ResponseEntity<>("No exhibition found",HttpStatus.NOT_FOUND);
+    }
+
+    public List<Exhibitor> getByExhibitionOwner(String id) throws ExecutionException, InterruptedException {
+        Firestore firestore = FirestoreClient.getFirestore();
+        CollectionReference usersCollection = firestore.collection("users");
+        CollectionReference exhibitionsCollection = firestore.collection("exhibitions");
+
+        ApiFuture<QuerySnapshot> query = exhibitionsCollection.whereEqualTo("exhibitionOwnerId", id).get();
+
+        List<String> exhibitionIDs = new ArrayList<>();
+        List<Exhibitor> exhibitorList = new ArrayList<>();
+        for (DocumentSnapshot document : query.get().getDocuments()) {
+            exhibitionIDs.add(document.getString("exhibitionId"));
+        }
+
+        for (String exhibitionID : exhibitionIDs) {
+            ApiFuture<QuerySnapshot> userQuery = usersCollection.whereEqualTo("exhibitionId", exhibitionID).get();
+            for (DocumentSnapshot document : userQuery.get().getDocuments()) {
+                String exhibitionId = exhibitionID;
+                String emailAddress = document.getString("emailAddress");
+                String name = document.getString("name");
+                String contactNo = document.getString("contactNo");
+                String nic = document.getString("nic");
+                String company = document.getString("company");
+                boolean enabled = document.getBoolean("enabled");
+                exhibitorList.add(new Exhibitor(emailAddress,name,contactNo,nic,company,exhibitionId,enabled));
+            }
+        }
+        return exhibitorList;
     }
 
     /*
@@ -278,4 +308,5 @@ public class ExhibitionService {
                 .whereEqualTo("id",Id).get().get().getDocuments();
         return documents.get(0).toObject(Exhibition.class).getVisitedUsers();
     }
+
 }

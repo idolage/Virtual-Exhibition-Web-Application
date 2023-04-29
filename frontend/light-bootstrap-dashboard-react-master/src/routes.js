@@ -34,6 +34,13 @@ import StallsSelect from "views/StallsSelect";
 import CustomizeStall from "views/CustomizeStall";
 import LiveStream from "views/liveStream";
 import AddExhibition from "views/AddExhibition";
+import ApproveExhibitors from 'views/ApproveExhibitors';
+
+// const [userRole, setUserRole] = useState();
+
+// useEffect(() => {
+//   setUserRole(localStorage.getItem("userRole"))
+// }, [])
 
 const userRole = localStorage.getItem("userRole");
 let dashboardRoutes;
@@ -68,11 +75,11 @@ switch (userRole) {
         layout: "/admin"
       },
       {
-        path: "/registerExhibitor",
+        path: "/approve",
         name: "Approve Exhibitors",
         icon: "nc-icon nc-check-2",
-        component: RegisterExhibitor,
-        layout: ""
+        component: ApproveExhibitors,
+        layout: "/admin"
       },
       {
         path: "/addExhibition",

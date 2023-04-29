@@ -15,49 +15,6 @@ import {
   Table,
 } from "react-bootstrap";
 
-// const OngoingExhibitions = () => {
-//   const [exhibitions, setExhibitions] = useState([]);
-//   useEffect(() => {
-//     Axios.get("http://localhost:8080/api/exhibitions").then((response) => {
-//       const filteredExhibitions = response.data.filter(
-//         (exhibition) => exhibition.over === false
-//       );
-//       setExhibitions(filteredExhibitions);
-//     });
-//   }, []);
-
-//   return (
-//     <>
-//       <Table className="table-hover">
-//         <thead>
-//           <tr>
-//             <th className="border-0">Exhibition Name</th>
-//             <th className="border-0">Date & Time</th>
-//             <th className="border-0">Ticket Price</th>
-//             <th className="border-0"></th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {exhibitions.map((exhibition) => (
-//             <tr key={exhibition.exhibitionId}>
-//               <td>{exhibition.exhibitionName}</td>
-//               <td>{exhibition.datetime}</td>
-//               <td>{exhibition.ticketPrice}.00</td>
-//               <td>
-//                 {localStorage.getItem("userRole") === "ATTENDEE" ? (
-//                   <Button>Buy Ticket</Button>
-//                 ) : (
-//                   <p></p>
-//                 )}
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </Table>
-//     </>
-//   );
-// };
-
 const PurchasedTickets = () => {
   const [tickets, setTickets] = useState([]);
   const storedEmail = localStorage.getItem("email");
@@ -66,7 +23,7 @@ const PurchasedTickets = () => {
     Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`).then((response) => {
       setTickets(response.data);
     });
-  }, [tickets]);
+  }, []);
 
   return (
     <>
@@ -1042,7 +999,7 @@ const Profile = () => {
   useEffect(() => {
     setUserRole(localStorage.getItem("userRole"));
   },[])
-  
+
   if (userRole === "ATTENDEE") {
     return (
       <div>

@@ -95,7 +95,6 @@ root.render(
 
       <Route path="/editExhibition" render={(props)=> <EditExhibition {...props}/>}/>
 
-
       <Redirect from="/" to="/home" />
     </Switch>
   </BrowserRouter>
