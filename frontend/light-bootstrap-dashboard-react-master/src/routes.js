@@ -15,6 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import React, { useState, useEffect } from 'react';
 import Dashboard from "views/Dashboard.js";
 import UserProfile from "views/UserProfile.js";
 import TableList from "views/TableList.js";
@@ -32,6 +33,7 @@ import RegisterExhibitor from "views/RegisterExhibitor";
 import StallsSelect from "views/StallsSelect";
 import CustomizeStall from "views/CustomizeStall";
 import LiveStream from "views/liveStream";
+import AddExhibition from "views/AddExhibition";
 
 const userRole = localStorage.getItem("userRole");
 let dashboardRoutes;
@@ -67,10 +69,31 @@ switch (userRole) {
       },
       {
         path: "/registerExhibitor",
-        name: "Register Exhibitor",
-        icon: "nc-icon nc-simple-add",
+        name: "Approve Exhibitors",
+        icon: "nc-icon nc-check-2",
         component: RegisterExhibitor,
         layout: ""
+      },
+      {
+        path: "/addExhibition",
+        name: "Add Exhibition",
+        icon: "nc-icon nc-simple-add",
+        component: AddExhibition,
+        layout: ""
+      },
+      {
+        path: "/editExhibition",
+        name: "Edit Exhibitions",
+        icon: "nc-icon nc-ruler-pencil",
+        component: AddExhibition,
+        layout: ""
+      },
+      {
+        path: "/icons",
+        name: "Icons",
+        icon: "nc-icon nc-atom",
+        component: Icons,
+        layout: "/admin"
       },
     ];
     break;
@@ -157,6 +180,7 @@ switch (userRole) {
     default:
       dashboardRoutes=[{}]
   }  
+  export default dashboardRoutes;
 
 // const dashboardRoutes = [
   // {
@@ -210,4 +234,4 @@ switch (userRole) {
   // }
 // ];
 
-export default dashboardRoutes;
+

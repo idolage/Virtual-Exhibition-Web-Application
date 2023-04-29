@@ -1028,30 +1028,6 @@ const ExhibitionOwner = () => {
       </Card>
       </Col>
       </Row>
-      <Row>
-      <Col lg='10'>
-      <Card>
-              <Card.Header>
-                <Card.Title as="h4">Added Exhibitions</Card.Title>
-              </Card.Header>
-              <Card.Body>
-              <p>no records to show</p>
-              </Card.Body>
-              </Card>
-              </Col>
-              </Row>
-              <Row>
-      <Col lg='10'>
-      <Card>
-              <Card.Header>
-                <Card.Title as="h4">Ongoing Exhibitions</Card.Title>
-              </Card.Header>
-              <Card.Body>
-              <p>no records to show</p>
-              </Card.Body>
-              </Card>
-              </Col>
-              </Row>
       </Container>
     </>
   );
@@ -1062,7 +1038,11 @@ const Other = () => {
 };
 
 const Profile = () => {
-  const userRole = localStorage.getItem("userRole");
+  const [userRole, setUserRole] = useState();
+  useEffect(() => {
+    setUserRole(localStorage.getItem("userRole"));
+  },[])
+  
   if (userRole === "ATTENDEE") {
     return (
       <div>
