@@ -42,28 +42,14 @@ public class StallService {
                 .document(stallId).set(stall);
         return collectionApiFuture.get().getUpdateTime().toString();
     }
-    public ResponseEntity<String> uploadLogo(MultipartFile multipartFile, String stallId, String stallOwnerId, String exhibitionId, String tier) throws IOException {
-        String objectName = generateFileName(multipartFile);
-        ClassLoader classLoader = StallRunner.class.getClassLoader();
-        File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
-        FileInputStream serviceAccount = new FileInputStream(file.getAbsolutePath());
-        File file2 = convertMultiPartToFile(multipartFile);
-        Path filePath = file2.toPath();
+    public ResponseEntity<String> uploadLogo( String stallId,String logo, String stallOwnerId, String exhibitionId, String tier) throws IOException {
 
-        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).setProjectId(FIREBASE_PROJECT_ID).build().getService();
-        String directoryPath =exhibitionId+"/"+tier+"/"+stallOwnerId+"/"+"logo";
-        BlobId blobId = BlobId.of(FIREBASE_BUCKET,directoryPath+"/"+objectName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
-
-        storage.create(blobInfo, Files.readAllBytes(filePath));
-        String url= String.format("https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/%s?alt=media", URLEncoder.encode(directoryPath + "/" + objectName, StandardCharsets.UTF_8));
         JSONObject obj=new JSONObject();
-        obj.put("logoUrl",url);
+        obj.put("logoUrl",logo);
         System.out.print(obj);
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionApiFuture = firestore.collection("stalls")
                 .document(stallId).update(obj);
-
 
         return ResponseEntity.status(HttpStatus.CREATED).body("success");
 

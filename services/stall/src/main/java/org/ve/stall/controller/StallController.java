@@ -34,8 +34,8 @@ public class StallController {
     }
     @PostMapping("/upload-logo/{stallId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> uploadLogo(@PathVariable String stallId,@RequestParam("file") MultipartFile file,String stallOwnerId, String exhibitionId, String tier) throws Exception {
-        return stallService.uploadLogo(file,stallId,stallOwnerId,exhibitionId,tier);
+    public ResponseEntity<String> uploadLogo(@PathVariable String stallId, @RequestParam String logo, String stallOwnerId, String exhibitionId, String tier) throws Exception {
+        return stallService.uploadLogo(stallId,logo,stallOwnerId,exhibitionId,tier);
     }
     @PostMapping("/upload-banner/{stallId}")
     @ResponseStatus(HttpStatus.OK)
