@@ -23,7 +23,7 @@ function CustomizeStall() {
   // const stallId = '1';
   const stallOwnerId = 'abc';
   //const exhibitionId = '0c171753-685f-4cef-9b73-6eef6227eeb6';
-  var tier = '';
+  var tier = 'Diamond';
   //  const logoUrl = `http://localhost:8080/api/stalls/upload-logo/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`;
   //  const bannerUrl = `http://localhost:8080/api/stalls/upload-banner/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`
   //  const videoUrl = `http://localhost:8080/api/stalls/upload-video/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`
@@ -70,16 +70,16 @@ function CustomizeStall() {
     }
   }, [location]);
 
-   const storedEmail = 'exhibitionowner@gmail.com';
-   console.log(storedEmail);
-   Axios.get( `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`)
-   .then((res) => {
-    console.log(res.data);
-    setIexhibitionId(res.data[0].exhibitionId);
-  })
-  .catch((e) => {
-    console.log(e);
-  });
+  const storedEmail = 'exhibitionowner@gmail.com';
+  console.log(storedEmail);
+  Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`)
+    .then((res) => {
+      console.log(res.data);
+      setIexhibitionId(res.data[0].exhibitionId);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 
   const params = new URLSearchParams();
   params.append('stallOwnerId', stallOwnerId);
@@ -95,29 +95,29 @@ function CustomizeStall() {
       console.log(e);
     });
   const stallId = localStorage.getItem('stallId');
-  if (
-    (stallId >= 1 && stallId < 9) ||
-    stallId == 22 ||
-    stallId == 23 ||
-    stallId == 44 ||
-    (stallId >= 37 && stallId < 44)
-  ) {
-    tier = 'Platinum';
-  } else if (
-    stallId == 11 ||
-    stallId == 15 ||
-    stallId == 19 ||
-    stallId == 27 ||
-    stallId == 31 ||
-    stallId == 35
-  ) {
-    tier = 'Diamond';
-  }
-  else {
-    {
-      tier = 'Gold';
-    }
-  }
+  // if (
+  //   (stallId >= 1 && stallId < 9) ||
+  //   stallId == 22 ||
+  //   stallId == 23 ||
+  //   stallId == 44 ||
+  //   (stallId >= 37 && stallId < 44)
+  // ) {
+  //   tier = 'Platinum';
+  // } else if (
+  //   stallId == 11 ||
+  //   stallId == 15 ||
+  //   stallId == 19 ||
+  //   stallId == 27 ||
+  //   stallId == 31 ||
+  //   stallId == 35
+  // ) {
+  //   tier = 'Diamond';
+  // }
+  // else {
+  //   {
+  //     tier = 'Gold';
+  //   }
+  // }
   const logoUrl = `http://localhost:8080/api/stalls/upload-logo/${stallId}`;
   const bannerUrl = `http://localhost:8080/api/stalls/upload-banner/${stallId}`;
   const videoUrl = `http://localhost:8080/api/stalls/upload-video/${stallId}`;
@@ -174,7 +174,7 @@ function CustomizeStall() {
         chooseFileInputs.forEach(input => {
           input.value = "";
         });
-      }).catch(error=>{
+      }).catch(error => {
         alert("Upload Fail!");
       })
   }
@@ -187,7 +187,8 @@ function CustomizeStall() {
       .then(res => {
         setVideo([]);
         alert("Successfully Uploaded");
-      }).catch(error=>{
+        document.getElementById("videoField").value = "";
+      }).catch(error => {
         alert("Upload Fail!");
       })
   }
@@ -525,9 +526,9 @@ function CustomizeStall() {
                               <h1 style={{ fontSize: 18 }}>Upload your video here</h1>
                             </div>
 
-                            <div class="dropzone">
-                              <img src="http://100dayscss.com/codepen/upload.svg" class="upload-icon" />
-                              <input type="file" class="upload-input" onChange={
+                            <div class="dropzone" >
+                              <div class="upload-icon"> {video[0] ? video[0].name : 'No file chosen...'} </div>
+                              <input type="file" class="upload-input" id="videoField" onChange={
                                 (e) => handleVideoUpload(e)
                               } multiple />
 

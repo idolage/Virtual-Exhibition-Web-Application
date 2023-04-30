@@ -73,11 +73,13 @@ h1 {
 }
 
 .dropzone {
-	width: 100px;
+	width: 350px;
 	height: 80px;
-	border: 1px dashed #999;
+	border: 1px solid #0f0909;
 	border-radius: 3px;
 	text-align: center;
+	font-weight: 300;
+	
 }
 
 .upload-icon {
