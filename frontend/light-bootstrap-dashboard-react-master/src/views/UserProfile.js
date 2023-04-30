@@ -529,6 +529,9 @@ const Exhibitor = () => {
   const [notification, setNotification] = useState(null);
   const [showModal, setShowModal] = React.useState(false);
 
+  const[exId, setExId]=useState("No records to show");
+  const[ticketId, setTicketId]=useState("No records to show");
+
   function updateExhibitor(e) {
     e.preventDefault();
     if (pwd == rePwd) {
@@ -574,7 +577,23 @@ const Exhibitor = () => {
         console.error(e);
       }
     };
+
+    const fetchIds = () => {
+      const storedEmail = localStorage.getItem("email");
+      Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`)
+        .then((response) => {
+          if (!response.data[0].isExpired) {
+            setExId(response.data[0].exhibitionId);
+            setTicketId(response.data[0].ticketId);
+          }
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    };
+
     fetchExhibitorDetails();
+    fetchIds();
   }, []);
 
   return (
@@ -594,7 +613,7 @@ const Exhibitor = () => {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  Ticket ID
+                {ticketId}
                 </div>
               </Card.Footer>
             </Card>
@@ -614,7 +633,7 @@ const Exhibitor = () => {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  Exhibition ID
+                {exId}
                 </div>
               </Card.Footer>
             </Card>
@@ -777,17 +796,6 @@ const Exhibitor = () => {
             </Card.Body>
           </Card>
         </Col>
-        </Row>
-        <Row>
-          <Col lg='12'>
-        <Card>
-              <Card.Header>
-                <Card.Title as="h4">Uploaded Marketing Material</Card.Title>
-              </Card.Header>
-              <Card.Body>
-                <p>no records to show</p>
-              </Card.Body>
-            </Card></Col>
         </Row>
       </Container>
     </>

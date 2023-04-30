@@ -37,9 +37,8 @@ import AddExhibition from "views/AddExhibition";
 import ApproveExhibitors from 'views/ApproveExhibitors';
 import SubmitFeedback from 'views/SubmitFeedback';
 import ViewFeedbacks from 'views/ViewFeedbacks';
-import UncontrolledExample from 'views/EditExhibition';
-import EditExhibitionDetails from 'views/EditExhibitionDetails';
-
+import EditExhibition from "views/EditExhibition";
+import ViewMaterials from 'views/ViewMaterials';
 // const [userRole, setUserRole] = useState();
 
 // useEffect(() => {
@@ -110,7 +109,7 @@ switch (userRole) {
         path: "/editExhibition",
         name: "Edit Exhibitions",
         icon: "nc-icon nc-ruler-pencil",
-        component: EditExhibitionDetails,
+        component: EditExhibition,
         layout: ""
       },
       {
@@ -134,7 +133,7 @@ switch (userRole) {
       },
       {
         path: "/stalls-select",
-        name: "Select Stalls",
+        name: "Select Stall",
         icon: "nc-icon nc-tap-01",
         component: StallsSelect,
         layout: ""
@@ -145,6 +144,13 @@ switch (userRole) {
         icon: "nc-icon nc-palette",
         component: CustomizeStall,
         layout: ""
+      },
+      {
+        path: "/viewMaterials",
+        name: "View Materials",
+        icon: "nc-icon nc-cloud-download-93",
+        component: ViewMaterials,
+        layout: "/admin"
       },
       {
         path: "/live-streaming",
@@ -158,7 +164,14 @@ switch (userRole) {
         name: "Exhibitions",
         icon: "nc-icon nc-tv-2",
         component: GetExhibitions,
-        layout: ""
+        layout: "/admin"
+      },
+      {
+        path: "/submitFeedback",
+        name: "Submit Feedback",
+        icon: "nc-icon nc-notes",
+        component: SubmitFeedback,
+        layout: "/admin"
       },
       {
         path: "/icons",
