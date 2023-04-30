@@ -39,6 +39,7 @@ import SubmitFeedback from 'views/SubmitFeedback';
 import ViewFeedbacks from 'views/ViewFeedbacks';
 import EditExhibition from "views/EditExhibition";
 import ViewMaterials from 'views/ViewMaterials';
+import PlattformFB from 'views/PlattformFB';
 // const [userRole, setUserRole] = useState();
 
 // useEffect(() => {
@@ -64,6 +65,34 @@ switch (userRole) {
         icon: "nc-icon nc-simple-add",
         component: RegisterAdmin,
         layout: ""
+      },
+      {
+        path: "/plattformFeedback",
+        name: "Plattform Feedbacks",
+        icon: "nc-icon nc-chat-round",
+        component: PlattformFB,
+        layout: "/admin"
+      },
+      {
+        path: '/exhibitions',
+        name: "Exhibitions",
+        icon: "nc-icon nc-tv-2",
+        component: GetExhibitions,
+        layout: "/admin"
+      },
+      {
+        path: '/exhibitions',
+        name: "Stats",
+        icon: "nc-icon nc-chart-bar-32",
+        component: GetExhibitions,
+        layout: "/admin"
+      },
+      {
+        path: "/icons",
+        name: "Icons",
+        icon: "nc-icon nc-atom",
+        component: Icons,
+        layout: "/admin"
       },
     ];
     break;
