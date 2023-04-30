@@ -29,7 +29,7 @@ function CustomizeStall() {
   //  const bannerUrl = `http://localhost:8080/api/stalls/upload-banner/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`
   //  const videoUrl = `http://localhost:8080/api/stalls/upload-video/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`
   //const exhibitionId = '0c171753-685f-4cef-9b73-6eef6227eeb6';
- 
+
 
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
@@ -72,16 +72,16 @@ function CustomizeStall() {
     }
   }, [location]);
 
-   const storedEmail = 'exhibitionowner@gmail.com';
-   console.log(storedEmail);
-   Axios.get( `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`)
-   .then((res) => {
-    console.log(res.data);
-    setIexhibitionId(res.data[0].exhibitionId);
-  })
-  .catch((e) => {
-    console.log(e);
-  });
+  const storedEmail = 'exhibitionowner@gmail.com';
+  console.log(storedEmail);
+  Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`)
+    .then((res) => {
+      console.log(res.data);
+      setIexhibitionId(res.data[0].exhibitionId);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 
   const params = new URLSearchParams();
   params.append('stallOwnerId', stallOwnerId);
@@ -159,10 +159,10 @@ function CustomizeStall() {
 
   function submitLogo(e) {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('file', files[0][0]);
-    console.log(formData);
-    Axios.post(logoUrl, formData)
+    const urlParams = new URLSearchParams();
+    urlParams.append('logo', logo);
+    console.log(urlParams);
+    Axios.post(logoUrl, urlParams)
       .then(res => {
         setLogo('');
         document.getElementById("logoInput").value = "";
@@ -250,7 +250,7 @@ function CustomizeStall() {
                 </Carousel.Item>
                 <Carousel.Item>
 
-                <div className="row mt-5">
+                  <div className="row mt-5">
                     <div class="upload-card">
                       <div class="card-body">
                         <h5 class="card-topic ">Submit Logo</h5>
@@ -458,205 +458,10 @@ function CustomizeStall() {
                               </div>
                               <button type="button" class="upload-button align-self-center" name="uploadbutton" onClick={(e) => submitBanner(e)}>Submit</button>
 
-                              </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>)}
-
-                  {tier == 'Platinum' && (
-                    <div className="row mt-5">
-                      <div class="upload-card">
-                        <div class="card-body">
-                          <h5 class="card-topic ">Submit Banners</h5>
-
-                          <div className="row mt-5">
-                            <div className="col-lg-9 align-self-center ">
-
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[0] ? files[0].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[1] ? files[1].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[2] ? files[2].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[3] ? files[3].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[4] ? files[4].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[5] ? files[5].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
-                              <button type="button" class="upload-button align-self-center" name="uploadbutton" onClick={(e) => submitBanner(e)}>Submit</button>
-
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>)}
-
-                  {tier == 'Gold' && (
-                    <div className="row mt-5">
-                      <div class="upload-card">
-                        <div class="card-body">
-                          <h5 class="card-topic ">Submit Banners</h5>
-
-                          <div className="row mt-5">
-                            <div className="col-lg-9 align-self-center ">
-
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[0] ? files[0].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[1] ? files[1].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[2] ? files[2].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[3] ? files[3].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
-
-                              <button type="button" class="upload-button align-self-center" name="uploadbutton" onClick={(e) => submitBanner(e)}>Submit</button>
-
-                            </div>
-                            </div>
-                          </div>
-                        </div>
                     </div>)}
 
                   {tier == 'Diamond' && (
@@ -716,70 +521,8 @@ function CustomizeStall() {
                                   </div>
                                 </div>
                               </div>
-                              <button type="button" class="upload-button align-self-center" name="uploadbutton" onClick={(e) => submitBanner(e)}>Submit</button>
-                        </div>
-                        </div>
-                          </div>
-                        </div>
-                    </div>)}
 
-                  {tier == 'Diamond' && (
-                    <div className="row mt-5">
-                      <div class="upload-card">
-                        <div class="card-body">
-                          <h5 class="card-topic ">Submit Banners</h5>
 
-                          <div className="row mt-5">
-                            <div className="col-lg-9 align-self-center ">
-
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[0] ? files[0].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[1] ? files[1].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="file-upload">
-                                <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
-                                    Choose File
-                                  </div>
-                                  <input
-                                    type="file"
-                                    name="chooseFile"
-                                    id="chooseFile"
-                                    onChange={(e) => handleFileUpload(e)}
-                                  />
-                                  <div className="file-select-name" id="noFile">
-                                    {files[2] ? files[2].name : 'No file chosen...'}
-                                  </div>
-                                </div>
-                              </div>
                               <button type="button" class="upload-button align-self-center" name="uploadbutton" onClick={(e) => submitBanner(e)}>Submit</button>
 
                             </div>
@@ -787,15 +530,18 @@ function CustomizeStall() {
                         </div>
                       </div>
                     </div>)}
-                      
+
+
                 </Carousel.Item>
 
                 {tier !== 'Gold' &&
                   <Carousel.Item>
-                    <div className="row mt-5"><h5>Submit Video</h5></div>
+
                     <div className="row mt-5">
                       <div className="col-lg-9 align-self-center ">
+                        <div className="row"><h5>Submit Video</h5></div>
                         <div class="frame">
+
                           <div class="center">
                             <div class="title">
                               <h1 style={{ fontSize: 18 }}>Upload your video here</h1>
@@ -814,13 +560,13 @@ function CustomizeStall() {
                         </div>
                       </div>
 
-                      </div>
+                    </div>
                   </Carousel.Item>}
               </Carousel>
             </div>
-            </div>
+          </div>
 
-            {/* <StallCustomizationProvider>
+          {/* <StallCustomizationProvider>
               <div className="row mt-5">
                 <div className="col-lg-9 align-self-center ">
                   <Canvas
@@ -841,16 +587,16 @@ function CustomizeStall() {
                 </div>
               </div>
             </StallCustomizationProvider> */}
-          </div>
-          <Footer />
-      <FixedPlugin
-        hasImage={hasImage}
-        setHasImage={() => setHasImage(!hasImage)}
-        color={color}
-        setColor={(color) => setColor(color)}
-        image={image}
-        setImage={(image) => setImage(image)}
-      />
+        </div>
+        <Footer />
+        <FixedPlugin
+          hasImage={hasImage}
+          setHasImage={() => setHasImage(!hasImage)}
+          color={color}
+          setColor={(color) => setColor(color)}
+          image={image}
+          setImage={(image) => setImage(image)}
+        />
       </div>
     </>
   );
