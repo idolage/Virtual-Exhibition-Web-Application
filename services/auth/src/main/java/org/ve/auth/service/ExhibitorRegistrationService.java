@@ -50,7 +50,8 @@ public class ExhibitorRegistrationService {
                         request.getNic(),
                         request.getPassword(),
                         request.getCompany(),
-                        UserRole.EXHIBITOR
+                        UserRole.EXHIBITOR,
+                        request.getExhibitionId()
                 )
         );
         return token;

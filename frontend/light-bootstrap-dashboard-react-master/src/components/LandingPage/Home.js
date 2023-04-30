@@ -16,7 +16,7 @@ const Home = () => {
             <br />
             Join us and elevate your exhibition experience to new heights!
           </p>
-          <button className="secondary-button">Join as a Guest</button>
+          <button className="secondary-button">Download Nerambum</button>
         </div>
         <div className="home-image-section">
           <img src={BannerImage} alt="" />

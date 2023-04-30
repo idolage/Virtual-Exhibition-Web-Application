@@ -42,6 +42,7 @@ import LiveStream from "views/liveStream";
 import AddExhibition from "views/AddExhibition";
 import EditExhibition from "views/EditExhibition";
 import Test from "views/Test";
+import SubmitFeedback from "views/SubmitFeedback";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -94,7 +95,7 @@ root.render(
       <Route path="/test" render={(props)=> <Test {...props}/>}/>
 
       <Route path="/editExhibition" render={(props)=> <EditExhibition {...props}/>}/>
-
+      {/* <Route path="/submitFeedback" render={(props)=><SubmitFeedback {...props}/>}/> */}
 
       <Redirect from="/" to="/home" />
     </Switch>

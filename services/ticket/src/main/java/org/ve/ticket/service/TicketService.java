@@ -177,6 +177,7 @@ public class TicketService {
         for (QueryDocumentSnapshot document : documents) {
             String exhibitionId = document.getString("exhibitionId");
             String ticketId = document.getString("ticketId");
+            Boolean expired = document.getBoolean("isExpired");
 
             ApiFuture<DocumentSnapshot> exhibitionFuture = exhibitionsCollection.document(exhibitionId).get();
             DocumentSnapshot exhibitionSnapshot = exhibitionFuture.get();
@@ -188,11 +189,11 @@ public class TicketService {
 
 
 
-                TicketInfo ticketInfo = new TicketInfo(exhibitionName, ticketPrice, ticketId);
+                TicketInfo ticketInfo = new TicketInfo(exhibitionId,exhibitionName, ticketPrice, ticketId,expired);
                 ticketInfos.add(ticketInfo);
             }
             else{
-                TicketInfo ticketInfo = new TicketInfo("Exhibition doesn't exist", 0, ticketId);
+                TicketInfo ticketInfo = new TicketInfo("Exhibition doesn't exist", "",0, ticketId,true);
                 ticketInfos.add(ticketInfo);
             }
         }

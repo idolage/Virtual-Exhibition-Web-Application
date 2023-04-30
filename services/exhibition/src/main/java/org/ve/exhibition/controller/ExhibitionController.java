@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.ve.exhibition.model.Exhibition;
+import org.ve.exhibition.model.Exhibitor;
 import org.ve.exhibition.service.ExhibitionService;
 
 import java.util.Arrays;
@@ -30,6 +31,12 @@ public class ExhibitionController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getExhibition(@PathVariable String Id) throws InterruptedException, ExecutionException{
         return exhibitionService.getExhibition(Id);
+    }
+
+    @GetMapping ("getByExhibitionOwner/{Id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Exhibitor> getByExhibitionOwner(@PathVariable String Id) throws InterruptedException, ExecutionException{
+        return exhibitionService.getByExhibitionOwner(Id);
     }
 
     @GetMapping

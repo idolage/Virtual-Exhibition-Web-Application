@@ -15,6 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import React, { useState, useEffect } from 'react';
 import Dashboard from "views/Dashboard.js";
 import UserProfile from "views/UserProfile.js";
 import TableList from "views/TableList.js";
@@ -32,6 +33,18 @@ import RegisterExhibitor from "views/RegisterExhibitor";
 import StallsSelect from "views/StallsSelect";
 import CustomizeStall from "views/CustomizeStall";
 import LiveStream from "views/liveStream";
+import AddExhibition from "views/AddExhibition";
+import ApproveExhibitors from 'views/ApproveExhibitors';
+import SubmitFeedback from 'views/SubmitFeedback';
+import ViewFeedbacks from 'views/ViewFeedbacks';
+import EditExhibition from "views/EditExhibition";
+import ViewMaterials from 'views/ViewMaterials';
+import PlattformFB from 'views/PlattformFB';
+// const [userRole, setUserRole] = useState();
+
+// useEffect(() => {
+//   setUserRole(localStorage.getItem("userRole"))
+// }, [])
 
 const userRole = localStorage.getItem("userRole");
 let dashboardRoutes;
@@ -53,6 +66,34 @@ switch (userRole) {
         component: RegisterAdmin,
         layout: ""
       },
+      {
+        path: "/plattformFeedback",
+        name: "Plattform Feedbacks",
+        icon: "nc-icon nc-chat-round",
+        component: PlattformFB,
+        layout: "/admin"
+      },
+      {
+        path: '/exhibitions',
+        name: "Exhibitions",
+        icon: "nc-icon nc-tv-2",
+        component: GetExhibitions,
+        layout: "/admin"
+      },
+      {
+        path: '/exhibitions',
+        name: "Stats",
+        icon: "nc-icon nc-chart-bar-32",
+        component: GetExhibitions,
+        layout: "/admin"
+      },
+      {
+        path: "/icons",
+        name: "Icons",
+        icon: "nc-icon nc-atom",
+        component: Icons,
+        layout: "/admin"
+      },
     ];
     break;
 
@@ -66,11 +107,46 @@ switch (userRole) {
         layout: "/admin"
       },
       {
-        path: "/registerExhibitor",
-        name: "Register Exhibitor",
+        path: "/approve",
+        name: "Approve Exhibitors",
+        icon: "nc-icon nc-check-2",
+        component: ApproveExhibitors,
+        layout: "/admin"
+      },
+      {
+        path: "/addExhibition",
+        name: "Add Exhibition",
         icon: "nc-icon nc-simple-add",
-        component: RegisterExhibitor,
+        component: AddExhibition,
         layout: ""
+      },
+      {
+        path: "/submitFeedback",
+        name: "Submit Feedback",
+        icon: "nc-icon nc-notes",
+        component: SubmitFeedback,
+        layout: "/admin"
+      },
+      {
+        path: "/viewFeedback",
+        name: "View Feedbacks",
+        icon: "nc-icon nc-chat-round",
+        component: ViewFeedbacks,
+        layout: "/admin"
+      },
+      {
+        path: "/editExhibition",
+        name: "Edit Exhibitions",
+        icon: "nc-icon nc-ruler-pencil",
+        component: EditExhibition,
+        layout: ""
+      },
+      {
+        path: "/icons",
+        name: "Icons",
+        icon: "nc-icon nc-atom",
+        component: Icons,
+        layout: "/admin"
       },
     ];
     break;
@@ -86,7 +162,7 @@ switch (userRole) {
       },
       {
         path: "/stalls-select",
-        name: "Select Stalls",
+        name: "Select Stall",
         icon: "nc-icon nc-tap-01",
         component: StallsSelect,
         layout: ""
@@ -97,6 +173,13 @@ switch (userRole) {
         icon: "nc-icon nc-palette",
         component: CustomizeStall,
         layout: ""
+      },
+      {
+        path: "/viewMaterials",
+        name: "View Materials",
+        icon: "nc-icon nc-cloud-download-93",
+        component: ViewMaterials,
+        layout: "/admin"
       },
       {
         path: "/live-streaming",
@@ -110,7 +193,14 @@ switch (userRole) {
         name: "Exhibitions",
         icon: "nc-icon nc-tv-2",
         component: GetExhibitions,
-        layout: ""
+        layout: "/admin"
+      },
+      {
+        path: "/submitFeedback",
+        name: "Submit Feedback",
+        icon: "nc-icon nc-notes",
+        component: SubmitFeedback,
+        layout: "/admin"
       },
       {
         path: "/icons",
@@ -143,7 +233,14 @@ switch (userRole) {
         name: "Exhibitions",
         icon: "nc-icon nc-tv-2",
         component: GetExhibitions,
-        layout: ""
+        layout: "/admin"
+      },
+      {
+        path: "/submitFeedback",
+        name: "Submit Feedback",
+        icon: "nc-icon nc-notes",
+        component: SubmitFeedback,
+        layout: "/admin"
       },
       {
         path: "/icons",
@@ -157,6 +254,7 @@ switch (userRole) {
     default:
       dashboardRoutes=[{}]
   }  
+  export default dashboardRoutes;
 
 // const dashboardRoutes = [
   // {
@@ -210,4 +308,4 @@ switch (userRole) {
   // }
 // ];
 
-export default dashboardRoutes;
+

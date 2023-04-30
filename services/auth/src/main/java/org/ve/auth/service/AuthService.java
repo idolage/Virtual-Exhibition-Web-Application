@@ -73,10 +73,11 @@ public class AuthService {
             String contactNo  = documents.get(0).getString("contactNo");
             String nic  = documents.get(0).getString("nic");
             String company = documents.get(0).getString("company");
-            Exhibitor exhibitor = new Exhibitor(email,name, contactNo,nic,"",company,UserRole.EXHIBITOR);
+            String exhibitionId = documents.get(0).getString("exhibitionId");
+            Exhibitor exhibitor = new Exhibitor(email,name, contactNo,nic,"",company,UserRole.EXHIBITOR,exhibitionId);
             return exhibitor;
         }else{
-            return new Exhibitor(null,null,null,null,null,null,UserRole.INVALID);
+            return new Exhibitor(null,null,null,null,null,null,UserRole.INVALID,null);
         }
     }
 

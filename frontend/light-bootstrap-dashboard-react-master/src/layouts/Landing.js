@@ -9,6 +9,9 @@ import Home from "components/LandingPage/Home";
 import Features from "components/LandingPage/Features";
 import Contact from "components/LandingPage/Contact";
 import About from "components/LandingPage/About";
+import UpcomingExhibitions from "components/LandingPage/UpcomingExhibitions";
+import OngoingExhibitions from "components/LandingPage/OngoingExhibitions";
+import GetExhibitions from "components/Exhibitions/GetExhibitions";
 
 export default function Landing() {
   const mainPanel = React.useRef(null);
@@ -32,6 +35,8 @@ export default function Landing() {
           <WebNavBar />
           <div className="content">
             <Home />
+            <UpcomingExhibitions/>
+            <OngoingExhibitions/>
             <About />
             <Features />
             <Contact />
