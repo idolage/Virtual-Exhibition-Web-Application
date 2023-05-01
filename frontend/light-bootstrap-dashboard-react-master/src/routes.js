@@ -40,6 +40,7 @@ import ViewFeedbacks from 'views/ViewFeedbacks';
 import EditExhibition from "views/EditExhibition";
 import ViewMaterials from 'views/ViewMaterials';
 import PlattformFB from 'views/PlattformFB';
+import Approve from 'views/Approve';
 // const [userRole, setUserRole] = useState();
 
 // useEffect(() => {
@@ -78,6 +79,13 @@ switch (userRole) {
         name: "Exhibitions",
         icon: "nc-icon nc-tv-2",
         component: GetExhibitions,
+        layout: "/admin"
+      },
+      {
+        path: '/approve',
+        name: "Approve Exhibitions",
+        icon: "nc-icon nc-check-2",
+        component: Approve,
         layout: "/admin"
       },
       {

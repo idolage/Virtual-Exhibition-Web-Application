@@ -162,7 +162,7 @@ public class ExhibitionService {
         QuerySnapshot snapshot = future.get();
         if (!snapshot.isEmpty()) {
             DocumentReference docRef = snapshot.getDocuments().get(0).getReference();
-            docRef.update("isApproved", true);
+            docRef.update("approved", true);
             return "Exhibition approved successfully";
         }
         return "Failed to approve exhibition";
