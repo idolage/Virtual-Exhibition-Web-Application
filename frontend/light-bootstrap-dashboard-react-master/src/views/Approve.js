@@ -1,20 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from 'react-router-dom';
+import React, {useState, useEffect} from 'react'
 import axios from "axios";
 import DataTable from "react-data-table-component";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Card, Row, Col, Container } from "react-bootstrap";
 
-export default function  OngoingExhibitions() {
-    const history = useHistory();
+export default function Approve() {
     const [exhibitions, setExhibitions] = useState([]);
   const [show, setShow] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [exhibition, setExhibition] = useState({});
 
+  const [notification, setNotification] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
   const handleClose = () => {
     setShow(false);
     setShowDetails(false);
   };
+
+  const handleApprove = (id) =>axios.put(`http://localhost:8080/api/exhibitions/approve/${id}`).then((res) => {
+    setShowModal(true);
+    setNotification(res.data);
+  });
 
   const handleShowExhibition = (id) =>
     axios.get(`http://localhost:8080/api/exhibitions/${id}`).then((resOne) => {
@@ -24,12 +30,12 @@ export default function  OngoingExhibitions() {
 
     useEffect(() => {
         axios
-        .get("http://localhost:8080/api/exhibitions")
+        .get("http://localhost:8080/api/exhibitions") //
         .then((res) => {
             console.log(res.data);
             const filteredExhibitions = res.data.filter(
               (item) =>
-              item.over === false && item.start === true
+              item.approved === false
             );
             setExhibitions(filteredExhibitions);
           })
@@ -37,7 +43,7 @@ export default function  OngoingExhibitions() {
             console.log(e);
           });
       }, []);
-    
+
       const BootyPagination = ({
         rowsPerPage,
         rowCount,
@@ -122,27 +128,40 @@ export default function  OngoingExhibitions() {
 
       const columns = [
         {
-          name: "Name",
-          selector: (row) => row.exhibitionName,
-          sortable: true,
-        },
+            name: "Name",
+            selector: (row) => row.exhibitionName,
+            sortable: true,
+          },
+          {
+            name: "Date",
+            selector: (row) => row.datetime,
+            sortable: true,
+          },
         {
-          name: "Date",
-          selector: (row) => row.datetime,
-          sortable: true,
-        },
+            name: "Details",
+            selector: (row) => (
+              <button
+                style={{ fontSize: "12px", borderRadius: "20px" }}
+                className="secondary-button"
+                size="sm"
+                onClick={() => handleShowExhibition(row.id)}
+              >
+                View
+              </button>
+            ),
+          },
         {
-          name: "View Details",
-          selector: (row) => (
-            <button
-              style={{ fontSize: "12px", borderRadius: "20px" }}
-              className="secondary-button"
-              size="sm"
-              onClick={() => handleShowExhibition(row.id)}
-            >
-              View
-            </button>
-          ),
+            name: "Action",
+            selector: (row) => (
+              <button
+                style={{ fontSize: "12px", borderRadius: "20px" }}
+                className="secondary-button"
+                size="sm"
+                onClick={() => handleApprove(row.exhibitionId)}
+              >
+                Approve
+              </button>
+            ),
         },
       ];
 
@@ -176,37 +195,13 @@ export default function  OngoingExhibitions() {
           ></input>
         </div>
       );
-    
-      const GetFreeTicket=(exhibitionId, userId, userType, price)=>{
-        const newPayment = {
-          exhibitionId: exhibitionId,
-          userId: userId,
-          userType: userType,
-          amount: price,
-        };
-        axios
-            .post("http://localhost:8080/api/payments", newPayment)
-            .then((res) => {
-              console.log("done");
-            })
-            .catch((e) => {
-              console.log(e);
-            });
-    
-      }
-    
+
+
+
   return (
     <>
-    <br />
-      <h4 className="text-center">
-      ONGOING EXHIBITIONS
-    </h4>
-    <p className="text-center">
-          {" "}
-          Join now as an attendee and enjoy exhibitions like never before! 
-        </p>
-    <div>
-    <DataTable
+                <div>
+                <DataTable
             responsive
             subHeader
             columns={columns}
@@ -217,17 +212,18 @@ export default function  OngoingExhibitions() {
             pagination
             paginationComponent={BootyPagination}
             defaultSortFieldID={1}
-          />
-          <Modal size="lg" show={showDetails} onHide={() => handleClose()}>
+            />
+
+<Modal size="lg" show={showDetails} onHide={() => handleClose()}>
         <Modal.Header style={{ backgroundColor: "#002D62", color: "white" }}>
           <Modal.Title>Exhibition Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="card" style={{ margin: "20px", border: "none" }}>
+        <div className="card" style={{ margin: "20px", border: "none" }}>
             <div className="card-body">
               <div className="row">
                 <div className="col-lg-12">
-                  <h5
+                <h5
                     className="card-title"
                     style={{ textAlign: "center", textTransform: "uppercase" }}
                   >
@@ -246,42 +242,33 @@ export default function  OngoingExhibitions() {
                       <dt className="col-lg-5">Exhibition ID</dt>
                       <dd className="col-lg-7">{exhibition.exhibitionId}</dd>
                       <hr></hr>
-                      <dt className="col-lg-5">Active Users</dt>
-                      <dd className="col-lg-7">{exhibition.noOfUsers}</dd>
-                      <hr></hr>
-                      <dt className="col-lg-5">Join</dt>
+                      <dt className="col-lg-5">Ticket Price</dt>
+                      <dd className="col-lg-7">{exhibition.ticketPrice}</dd>
+                      {/* <hr></hr>
+                      <dt className="col-lg-5">Approve</dt>
                       <dd className="col-lg-7">
-                            {exhibition.ticketPrice==0?(<button
-                                style={{ fontSize: "14px", borderRadius: "10px" }}
-                                className="secondary-button"
-                                size="sm"
-                                onClick={()=>GetFreeTicket(exhibition.exhibitionId,"abc@gmail.com","ATTENDEE",0)}
-                            >
-                              Free
-                            </button>):<>
-                              USD&nbsp;{exhibition.ticketPrice}&nbsp;
-                              <button
-                              style={{ fontSize: "14px", borderRadius: "10px" }}
-                              className="secondary-button"
-                              size="sm"
-                              onClick={()=>history.push('/login')}
-                              >Login</button>
-                              </>}
-                        <br></br>
-                      </dd>
-                    </dl>
-                  </dl>
+                        {exhibition.approved==false?
+                        <button
+                        style={{ fontSize: "14px", borderRadius: "10px" }}
+                        className="secondary-button"
+                        size="sm"
+                        onClick={()=>handleApprove(exhibition.exhibitionId)}
+                        > Approve</button>:"Already approved"}
+                      </dd> */}
+                      <br/>
+                      </dl>
+                      </dl>
                   <h5
                       className="card-title"
                       style={{ textAlign: "center", textTransform: "uppercase" }}
                   >
                     Exhibition Owner Details
-                  </h5>
+                  </h5>  
                   <div className="d-flex flex-column align-items-center text-center">
                     <img src="https://img.icons8.com/fluency/48/null/microsoft-admin.png"/>
                   </div>
                   <hr></hr>
-                  <dl className="d-flex align-items-center">
+                <dl className="d-flex align-items-center">
                     <dl className="row">
                       <hr></hr>
                       <dt className="col-lg-5">Name</dt>
@@ -308,20 +295,56 @@ export default function  OngoingExhibitions() {
                       <dd className="col-lg-7">
                         {!showDetails?null:exhibition.exhibitionOwner.company}
                       </dd>
-                    </dl>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
+                      </dl>
+                      </dl>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+            </Modal.Body>
+            <Modal.Footer>
           <Button variant="secondary" onClick={() => handleClose()}>
             Close
           </Button>
         </Modal.Footer>
-      </Modal>
-            </div>
+            </Modal>
+
+            <Modal
+                  style={{ marginTop: "10vh" }}
+                  className="modal-mini modal-primary"
+                  show={showModal}
+                  onHide={() => setShowModal(false)}
+                >
+                  <Modal.Header className="justify-content-center">
+                    <div className="modal-profile">
+                      <i className="nc-icon nc-lock-circle-open"></i>
+                    </div>
+                  </Modal.Header>
+                  <Modal.Body className="text-center">
+                    <p>{notification}</p>
+                  </Modal.Body>
+                  <div className="modal-footer">
+                    <Button
+                      className="btn-simple"
+                      type="button"
+                      variant="link"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      className="btn-simple"
+                      type="button"
+                      variant="link"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Close
+                    </Button>
+                  </div>
+                </Modal>
+
+                </div>
     </>
   )
 }

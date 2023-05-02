@@ -20,4 +20,6 @@ public class Exhibition {
     private String sponsorVideoUrl4;
     private int noOfUsers;
     private int visitedUsers;
+    private  boolean isApproved;
+
 }

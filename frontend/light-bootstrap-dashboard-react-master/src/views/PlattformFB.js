@@ -25,8 +25,12 @@ export default function PlattformFB() {
     axios
       .get(`http://localhost:8080/api/feedbacks/exhibition/${id}`)
       .then((resOne) => {
+        const filteredFeedbacks = resOne.data.filter(
+            (item) =>
+            item.type === "PLATFORM"
+        );
         setShowModal(true);
-        setFeedbacks(resOne.data);
+        setFeedbacks(filteredFeedbacks);
       }).catch((e)=>{
         setShowModal(true);
         setFeedbacks(e);
@@ -38,7 +42,12 @@ export default function PlattformFB() {
             `http://localhost:8080/api/exhibitions`
           ) 
           .then((res) => {
-            setExhibitions(res.data);
+            console.log(res.data);
+            const filteredExhibitions = res.data.filter(
+              (item) =>
+              item.approved === true
+            );
+            setExhibitions(filteredExhibitions);
           })
           .catch((e) => {
             console.log(e);
@@ -60,7 +69,7 @@ export default function PlattformFB() {
               <Card.Body>
                 <div style={{ maxHeight: "60vh", overflowY: "scroll" }}>
                   {exhibitions.map((exhibition) => (
-                    exhibition.type=="PLATFORM"?
+                
                     <>
                       <Button
                         style={{ marginBottom: "15px" }}
@@ -69,7 +78,7 @@ export default function PlattformFB() {
                         Exhibition ID: {exhibition.exhibitionId}
                       </Button>
                       <br />
-                    </>:<></>
+                    </>
                   ))}
                 </div>
               </Card.Body>

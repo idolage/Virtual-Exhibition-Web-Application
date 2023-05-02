@@ -51,6 +51,12 @@ public class ExhibitionController {
         return exhibitionService.getExhibitionByExhibitionId(exhibitionId);
     }
 
+    @PutMapping ("approve/{exhibitionId}")
+    @ResponseStatus(HttpStatus.OK)
+    public String approveExhibition(@PathVariable String exhibitionId) throws InterruptedException, ExecutionException {
+        return exhibitionService.approveExhibition(exhibitionId);
+    }
+
     @PutMapping ("/{Id}")
     @ResponseStatus(HttpStatus.OK)
     public String updateExhibitions(@RequestBody Exhibition exhibition, @PathVariable String Id) throws InterruptedException, ExecutionException {

@@ -48,6 +48,7 @@ public class ExhibitionService {
         exhibition.setStart(false); //set exhibition start false
         exhibition.setNoOfUsers(0);
         exhibition.setVisitedUsers(0);
+        exhibition.setApproved(false);
         DocumentReference documentReference =  firestore.collection("exhibitions").document();
         exhibition.setId(documentReference.getId());
         ApiFuture<WriteResult> collectionApiFuture = documentReference.set(exhibition);
@@ -84,7 +85,8 @@ public class ExhibitionService {
                         exhibition.getSponsorVideoUrl3(),
                         exhibition.getSponsorVideoUrl4(),
                         exhibition.getNoOfUsers(),
-                        exhibition.getVisitedUsers()
+                        exhibition.getVisitedUsers(),
+                        exhibition.isApproved()
                 );
                 return new ResponseEntity<>(exhibitionResponse, HttpStatus.OK);
             }
@@ -152,6 +154,18 @@ public class ExhibitionService {
         List<QueryDocumentSnapshot> documents = firestore.collection("exhibitions")
                 .whereEqualTo("exhibitionId",exhibitionId).get().get().getDocuments();
         return documents.get(0).toObject(Exhibition.class);
+    }
+
+    public String approveExhibition(String exhibitionId) throws ExecutionException, InterruptedException {
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("exhibitions").whereEqualTo("exhibitionId", exhibitionId).get();
+        QuerySnapshot snapshot = future.get();
+        if (!snapshot.isEmpty()) {
+            DocumentReference docRef = snapshot.getDocuments().get(0).getReference();
+            docRef.update("approved", true);
+            return "Exhibition approved successfully";
+        }
+        return "Failed to approve exhibition";
     }
 
     /*
