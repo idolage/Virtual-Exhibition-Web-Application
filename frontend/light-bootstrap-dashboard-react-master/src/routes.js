@@ -41,6 +41,7 @@ import EditExhibition from "views/EditExhibition";
 import ViewMaterials from 'views/ViewMaterials';
 import PlattformFB from 'views/PlattformFB';
 import Approve from 'views/Approve';
+import Stat from 'views/Stat';
 // const [userRole, setUserRole] = useState();
 
 // useEffect(() => {
@@ -89,10 +90,10 @@ switch (userRole) {
         layout: "/admin"
       },
       {
-        path: '/exhibitions',
+        path: '/stat',
         name: "Stats",
         icon: "nc-icon nc-chart-bar-32",
-        component: GetExhibitions,
+        component: Stat,
         layout: "/admin"
       },
       {
