@@ -32,19 +32,19 @@ public class StallController {
         String stallId= stall.getStallId();
         return stallService.addStall(stall,stallId);
     }
-    @PostMapping("/upload-logo/{stallId}")
+    @PostMapping("/upload-logo/{exhibitionId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> uploadLogo(@PathVariable String stallId, @RequestParam String logo, String stallOwnerId, String exhibitionId, String tier) throws Exception {
-        return stallService.uploadLogo(stallId,logo,stallOwnerId,exhibitionId,tier);
+    public ResponseEntity<String> uploadLogo(@PathVariable String exhibitionId, @RequestParam String logo, @RequestParam String stallId, String stallOwnerId, String tier) throws Exception {
+        return stallService.uploadLogo(exhibitionId,stallId,logo,stallOwnerId,tier);
     }
-    @PostMapping("/upload-banner/{stallId}")
+    @PostMapping("/upload-banner/{exhibitionId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> uploadBanners(@PathVariable String stallId,@RequestParam("files") MultipartFile[] files,String stallOwnerId, String exhibitionId, String tier) throws Exception {
-        return stallService.uploadBanners(Arrays.asList(files),stallId,stallOwnerId,exhibitionId,tier);
+    public ResponseEntity<String> uploadBanners(@PathVariable String exhibitionId,@RequestParam("files") MultipartFile[] files, @RequestParam String stallId, String stallOwnerId, String tier) throws Exception {
+        return stallService.uploadBanners(Arrays.asList(files),stallId,exhibitionId,stallOwnerId,tier);
     }
-    @PostMapping("/upload-video/{stallId}")
+    @PostMapping("/upload-video/{exhibitionId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> uploadVideo(@PathVariable String stallId,@RequestParam("file") MultipartFile file,String stallOwnerId, String exhibitionId, String tier) throws Exception {
+    public ResponseEntity<String> uploadVideo(@PathVariable String exhibitionId, @RequestParam String stallId,@RequestParam("file") MultipartFile file,String stallOwnerId, String tier) throws Exception {
         return stallService.uploadVideo(file, stallId,stallOwnerId,exhibitionId,tier);
     }
 

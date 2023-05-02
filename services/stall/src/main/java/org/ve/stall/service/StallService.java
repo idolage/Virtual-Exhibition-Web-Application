@@ -42,46 +42,81 @@ public class StallService {
                 .document(stallId).set(stall);
         return collectionApiFuture.get().getUpdateTime().toString();
     }
-    public ResponseEntity<String> uploadLogo( String stallId,String logo, String stallOwnerId, String exhibitionId, String tier) throws IOException {
+    public ResponseEntity<String> uploadLogo( String exhibitionId,String stallId,String logo, String stallOwnerId,  String tier) throws IOException {
 
-        JSONObject obj=new JSONObject();
-        obj.put("logoUrl",logo);
-        System.out.print(obj);
         Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionApiFuture = firestore.collection("stalls")
-                .document(stallId).update(obj);
+        Query query = firestore.collection("stalls").whereEqualTo("stallId", stallId).whereEqualTo("exhibitionId", exhibitionId);
+        ApiFuture<QuerySnapshot> querySnapshotFuture = query.get();
+        try {
+            QuerySnapshot querySnapshot = querySnapshotFuture.get();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("success");
+            for (QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
+                String documentId = document.getId();
+
+                // Update the logoUrl field of the document
+                DocumentReference documentRef = firestore.collection("stalls").document(documentId);
+                Map<String, Object> updateData = new HashMap<>();
+                updateData.put("logoUrl", logo);
+                ApiFuture<WriteResult> updateFuture = documentRef.update(updateData);
+            }
+
+            // Return a success response
+            return ResponseEntity.ok("Success");
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error: " + e.getMessage());
+
+            // Return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update.");
+        }
 
     }
 
-    public ResponseEntity<String> uploadBanners(List<MultipartFile> multipartFiles, String stallId, String stallOwnerId, String exhibitionId, String tier) throws IOException {
+    public ResponseEntity<String> uploadBanners(List<MultipartFile> multipartFiles, String stallId, String exhibitionId,String stallOwnerId,  String tier) throws IOException {
 
         ClassLoader classLoader = StallRunner.class.getClassLoader();
         File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
         FileInputStream serviceAccount = new FileInputStream(file.getAbsolutePath());
         Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).setProjectId(FIREBASE_PROJECT_ID).build().getService();
         Firestore firestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = firestore.collection("stalls").document(stallId);
+        Query query = firestore.collection("stalls").whereEqualTo("stallId", stallId).whereEqualTo("exhibitionId", exhibitionId);
+        ApiFuture<QuerySnapshot> querySnapshotFuture = query.get();
+        try {
+            QuerySnapshot querySnapshot = querySnapshotFuture.get();
 
-        for(int i=0; i<multipartFiles.size();i++){
-            MultipartFile multipartFile = multipartFiles.get(i);
-            String objectName = generateFileName(multipartFile);
-            File file2 = convertMultiPartToFile(multipartFile);
-            Path filePath = file2.toPath();
-            String directoryPath =exhibitionId+"/"+tier+"/"+stallOwnerId+"/"+"banner";
-            BlobId blobId = BlobId.of(FIREBASE_BUCKET, directoryPath+"/"+objectName);
-            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
+            for (QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
+                String documentId = document.getId();
 
-            storage.create(blobInfo, Files.readAllBytes(filePath));
+                // Update the bannerUrl field of the document
+                DocumentReference documentRef = firestore.collection("stalls").document(documentId);
+                for(int i=0; i<multipartFiles.size();i++){
+                    MultipartFile multipartFile = multipartFiles.get(i);
+                    String objectName = generateFileName(multipartFile);
+                    File file2 = convertMultiPartToFile(multipartFile);
+                    Path filePath = file2.toPath();
+                    String directoryPath =exhibitionId+"/"+tier+"/"+stallOwnerId+"/"+"banner";
+                    BlobId blobId = BlobId.of(FIREBASE_BUCKET, directoryPath+"/"+objectName);
+                    BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
 
-            String url= String.format("https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/%s?alt=media", URLEncoder.encode(directoryPath + "/" + objectName, StandardCharsets.UTF_8));
-            String fieldName = "bannerUrl" + (i + 1);
-            Map<String, Object> fieldUpdate = new HashMap<>();
-            fieldUpdate.put(fieldName, url);
-            documentReference.update(fieldUpdate);
+                    storage.create(blobInfo, Files.readAllBytes(filePath));
+
+                    String url= String.format("https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/%s?alt=media", URLEncoder.encode(directoryPath + "/" + objectName, StandardCharsets.UTF_8));
+                    String fieldName = "bannerUrl" + (i + 1);
+                    Map<String, Object> fieldUpdate = new HashMap<>();
+                    fieldUpdate.put(fieldName, url);
+                    documentRef.update(fieldUpdate);
+                }
+
+            }
+
+            // Return a success response
+            return ResponseEntity.ok("Success");
+        }catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error: " + e.getMessage());
+
+            // Return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update.");
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body("success");
+
     }
 
     public ResponseEntity<String> uploadVideo(MultipartFile multipartFile,String stallId, String stallOwnerId, String exhibitionId, String tier) throws IOException {
@@ -98,14 +133,30 @@ public class StallService {
         storage.create(blobInfo, Files.readAllBytes(filePath));
 
         String url= String.format("https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/%s?alt=media", URLEncoder.encode(directoryPath + "/" + objectName, StandardCharsets.UTF_8));
-        JSONObject obj=new JSONObject();
-        obj.put("videoUrl",url);
         Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionApiFuture = firestore.collection("stalls")
-                .document(stallId).update(obj);
+        Query query = firestore.collection("stalls").whereEqualTo("stallId", stallId).whereEqualTo("exhibitionId", exhibitionId);
+        ApiFuture<QuerySnapshot> querySnapshotFuture = query.get();
+        try {
+            QuerySnapshot querySnapshot = querySnapshotFuture.get();
 
+            for (QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
+                String documentId = document.getId();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("success");
+                // Update the 3DModel field of the document
+                DocumentReference documentRef = firestore.collection("stalls").document(documentId);
+                Map<String, Object> updateData = new HashMap<>();
+                updateData.put("videoUrl", url);
+                ApiFuture<WriteResult> updateFuture = documentRef.update(updateData);
+            }
+
+            // Return a success response
+            return ResponseEntity.ok("Success");
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error: " + e.getMessage());
+
+            // Return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update.");
+        }
 
     }
 
@@ -124,19 +175,19 @@ public class StallService {
 
         String url= String.format("https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/%s?alt=media", URLEncoder.encode(directoryPath + "/" + objectName, StandardCharsets.UTF_8));
         Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<QuerySnapshot> future = firestore.collection("stalls").whereEqualTo("exhibitionId", exhibitionId).get();
-
+        Query query = firestore.collection("stalls").whereEqualTo("stallId", stallId).whereEqualTo("exhibitionId", exhibitionId);
+        ApiFuture<QuerySnapshot> querySnapshotFuture = query.get();
         try {
-            QuerySnapshot querySnapshot = future.get();
+            QuerySnapshot querySnapshot = querySnapshotFuture.get();
 
             for (QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
-                String stallNo = document.getId();
-                DocumentReference stallRef = firestore.collection("stalls").document(stallNo);
+                String documentId = document.getId();
 
-                // Update the 3DModel field of the stall document
+                // Update the 3DModel field of the document
+                DocumentReference documentRef = firestore.collection("stalls").document(documentId);
                 Map<String, Object> updateData = new HashMap<>();
                 updateData.put("model", url);
-                ApiFuture<WriteResult> updateFuture = stallRef.update(updateData);
+                ApiFuture<WriteResult> updateFuture = documentRef.update(updateData);
             }
 
             // Return a success response

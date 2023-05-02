@@ -120,9 +120,9 @@ function CustomizeStall() {
       tier = 'Gold';
     }
   }
-  const logoUrl = `http://localhost:8080/api/stalls/upload-logo/${stallId}`;
-  const bannerUrl = `http://localhost:8080/api/stalls/upload-banner/${stallId}`;
-  const videoUrl = `http://localhost:8080/api/stalls/upload-video/${stallId}`;
+  const logoUrl = `http://localhost:8080/api/stalls/upload-logo/${exhibitionId}`;
+  const bannerUrl = `http://localhost:8080/api/stalls/upload-banner/${exhibitionId}`;
+  const videoUrl = `http://localhost:8080/api/stalls/upload-video/${exhibitionId}`;
   console.log(logoUrl);
 
   function handleFileUpload(e) {
@@ -160,6 +160,7 @@ function CustomizeStall() {
   function submitLogo(e) {
     e.preventDefault();
     const urlParams = new URLSearchParams();
+    urlParams.append('stallId',stallId);
     urlParams.append('logo', logo);
     console.log(urlParams);
     Axios.post(logoUrl, urlParams)
@@ -176,12 +177,15 @@ function CustomizeStall() {
 
   function submitBanner(e) {
     e.preventDefault();
+    const urlParams = new URLSearchParams();
+    urlParams.append('stallId',stallId);
     const formData = new FormData();
     files.forEach((file) => {
       formData.append('files', file);
 
     });
-    Axios.post(bannerUrl, formData)
+    const url = `${bannerUrl}?${urlParams.toString()}`;
+    Axios.post(url, formData)
       .then(res => {
         setFiles([]);
         console.log([files]);
@@ -197,9 +201,12 @@ function CustomizeStall() {
   function submitVideo(e) {
     e.preventDefault();
     console.log([video]);
+    const urlParams = new URLSearchParams();
+    urlParams.append('stallId',stallId);
     const formData = new FormData();
     formData.append('file', video[0]);
-    Axios.post(videoUrl, formData)
+    const url = `${videoUrl}?${urlParams.toString()}`;
+    Axios.post(url, formData)
       .then(res => {
         setVideo([]);
         alert("Successfully Uploaded");
