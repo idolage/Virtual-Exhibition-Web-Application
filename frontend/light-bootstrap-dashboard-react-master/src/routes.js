@@ -123,6 +123,13 @@ switch (userRole) {
         layout: "/admin"
       },
       {
+        path: '/exhibitions',
+        name: "Exhibitions",
+        icon: "nc-icon nc-tv-2",
+        component: GetExhibitions,
+        layout: "/admin"
+      },
+      {
         path: "/addExhibition",
         name: "Add Exhibition",
         icon: "nc-icon nc-simple-add",
@@ -142,13 +149,6 @@ switch (userRole) {
         icon: "nc-icon nc-chat-round",
         component: ViewFeedbacks,
         layout: "/admin"
-      },
-      {
-        path: "/editExhibition",
-        name: "Edit Exhibitions",
-        icon: "nc-icon nc-ruler-pencil",
-        component: EditExhibition,
-        layout: ""
       },
       {
         path: "/icons",

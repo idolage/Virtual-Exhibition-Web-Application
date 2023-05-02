@@ -1,23 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import axios from "axios";
 import {
-    Badge,
-    Button,
     Card,
-    Navbar,
-    Nav,
     Table,
     Container,
     Row,
     Col,
-    Modal,
-    Form,
   } from "react-bootstrap";
 
 export default function Stat() {
     const [stats, setStats] = useState([]);
-    const [data, setData] = useState([]);
-
     useEffect(() => {
         const fetchStats = async () => {
           try {
@@ -69,7 +61,7 @@ export default function Stat() {
         </tr>
       </thead>
       <tbody>
-      {stats.length < 0 ? (
+      {stats.length > 0 ? (
                 <>
                  {stats.map((item) => (
           <tr key={item.exhibitionId}>
