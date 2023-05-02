@@ -108,6 +108,47 @@ public class StallService {
         return ResponseEntity.status(HttpStatus.CREATED).body("success");
 
     }
+
+    public ResponseEntity<String> upload3DModel(MultipartFile multipartFile,String stallId, String stallOwnerId, String exhibitionId, String tier) throws IOException {
+        String objectName = generateFileName(multipartFile);
+        ClassLoader classLoader = StallRunner.class.getClassLoader();
+        File file = new File(Objects.requireNonNull(classLoader.getResource("serviceAccountKey.json")).getFile());
+        FileInputStream serviceAccount = new FileInputStream(file.getAbsolutePath());
+        File file2 = convertMultiPartToFile(multipartFile);
+        Path filePath = file2.toPath();
+        String directoryPath =exhibitionId+"/"+tier+"/"+stallOwnerId+"/"+"models";
+        Storage storage = StorageOptions.newBuilder().setCredentials(GoogleCredentials.fromStream(serviceAccount)).setProjectId(FIREBASE_PROJECT_ID).build().getService();
+        BlobId blobId = BlobId.of(FIREBASE_BUCKET, directoryPath+"/"+objectName);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(multipartFile.getContentType()).build();
+        storage.create(blobInfo, Files.readAllBytes(filePath));
+
+        String url= String.format("https://firebasestorage.googleapis.com/v0/b/"+FIREBASE_BUCKET+"/o/%s?alt=media", URLEncoder.encode(directoryPath + "/" + objectName, StandardCharsets.UTF_8));
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> future = firestore.collection("stalls").whereEqualTo("exhibitionId", exhibitionId).get();
+
+        try {
+            QuerySnapshot querySnapshot = future.get();
+
+            for (QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
+                String stallNo = document.getId();
+                DocumentReference stallRef = firestore.collection("stalls").document(stallNo);
+
+                // Update the 3DModel field of the stall document
+                Map<String, Object> updateData = new HashMap<>();
+                updateData.put("model", url);
+                ApiFuture<WriteResult> updateFuture = stallRef.update(updateData);
+            }
+
+            // Return a success response
+            return ResponseEntity.ok("3DModel field updated successfully for all matching stalls.");
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error retrieving stalls: " + e.getMessage());
+
+            // Return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update 3DModel field.");
+        }
+
+    }
     public List<Stall> getAllStalls() {
         Firestore firestore = FirestoreClient.getFirestore();
         Iterable<DocumentReference> documentReference = firestore.collection("stalls").listDocuments();

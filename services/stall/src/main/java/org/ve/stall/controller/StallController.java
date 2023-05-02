@@ -47,6 +47,12 @@ public class StallController {
     public ResponseEntity<String> uploadVideo(@PathVariable String stallId,@RequestParam("file") MultipartFile file,String stallOwnerId, String exhibitionId, String tier) throws Exception {
         return stallService.uploadVideo(file, stallId,stallOwnerId,exhibitionId,tier);
     }
+
+    @PostMapping("/upload-3dmodel/{exhibitionId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> upload3DModel(@PathVariable String exhibitionId, @RequestParam String stallId,@RequestParam("file") MultipartFile file,String stallOwnerId, String tier) throws Exception {
+        return stallService.upload3DModel(file, stallId,stallOwnerId,exhibitionId,tier);
+    }
     @GetMapping ("/{stallOwnerId}")
     @ResponseStatus(HttpStatus.OK)
     public List<Stall> getStallsByOwner(@PathVariable String stallOwnerId) throws InterruptedException, ExecutionException{
