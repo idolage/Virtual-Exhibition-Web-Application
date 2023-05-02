@@ -29,7 +29,6 @@ import { Attendee } from "components/Register/Attendee";
 import CustomizeAvatar from "views/CustomizeAvatar";
 import GetExhibitions from "components/Exhibitions/GetExhibitions";
 import RegisterAdmin from "views/RegisterAdmin";
-import RegisterExhibitor from "views/RegisterExhibitor";
 import StallsSelect from "views/StallsSelect";
 import CustomizeStall from "views/CustomizeStall";
 import LiveStream from "views/liveStream";
@@ -37,7 +36,6 @@ import AddExhibition from "views/AddExhibition";
 import ApproveExhibitors from 'views/ApproveExhibitors';
 import SubmitFeedback from 'views/SubmitFeedback';
 import ViewFeedbacks from 'views/ViewFeedbacks';
-import EditExhibition from "views/EditExhibition";
 import ViewMaterials from 'views/ViewMaterials';
 import PlattformFB from 'views/PlattformFB';
 import Approve from 'views/Approve';
@@ -260,61 +258,62 @@ switch (userRole) {
       },
     ];
     break;
+  
     default:
-      dashboardRoutes=[{}]
+    dashboardRoutes=[{}]
   }  
-  export default dashboardRoutes;
+export default dashboardRoutes;
 
 // const dashboardRoutes = [
-  // {
-  //   path: "/dashboard",
-  //   name: "Dashboard",
-  //   icon: "nc-icon nc-chart-pie-35",
-  //   component: Dashboard,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/user",
-  //   name: "User Profile",
-  //   icon: "nc-icon nc-circle-09",
-  //   component: UserProfile,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/table",
-  //   name: "Table List",
-  //   icon: "nc-icon nc-notes",
-  //   component: TableList,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/typography",
-  //   name: "Typography",
-  //   icon: "nc-icon nc-paper-2",
-  //   component: Typography,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/icons",
-  //   name: "Icons",
-  //   icon: "nc-icon nc-atom",
-  //   component: Icons,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/maps",
-  //   name: "Maps",
-  //   icon: "nc-icon nc-pin-3",
-  //   component: Maps,
-  //   layout: "/admin"
-  // },
-  // {
-  //   path: "/notifications",
-  //   name: "Notifications",
-  //   icon: "nc-icon nc-bell-55",
-  //   component: Notifications,
-  //   layout: "/admin"
-  // }
+//   {
+//     path: "/dashboard",
+//     name: "Dashboard",
+//     icon: "nc-icon nc-chart-pie-35",
+//     component: Dashboard,
+//     layout: "/admin"
+//   },
+//   {
+//     path: "/user",
+//     name: "User Profile",
+//     icon: "nc-icon nc-circle-09",
+//     component: UserProfile,
+//     layout: "/admin"
+//   },
+//   {
+//     path: "/table",
+//     name: "Table List",
+//     icon: "nc-icon nc-notes",
+//     component: TableList,
+//     layout: "/admin"
+//   },
+//   {
+//     path: "/typography",
+//     name: "Typography",
+//     icon: "nc-icon nc-paper-2",
+//     component: Typography,
+//     layout: "/admin"
+//   },
+//   {
+//     path: "/icons",
+//     name: "Icons",
+//     icon: "nc-icon nc-atom",
+//     component: Icons,
+//     layout: "/admin"
+//   },
+//   {
+//     path: "/maps",
+//     name: "Maps",
+//     icon: "nc-icon nc-pin-3",
+//     component: Maps,
+//     layout: "/admin"
+//   },
+//   {
+//     path: "/notifications",
+//     name: "Notifications",
+//     icon: "nc-icon nc-bell-55",
+//     component: Notifications,
+//     layout: "/admin"
+//   }
 // ];
-
+// export default dashboardRoutes;
 
