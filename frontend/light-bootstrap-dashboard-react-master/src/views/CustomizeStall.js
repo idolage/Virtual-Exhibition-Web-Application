@@ -90,6 +90,7 @@ function CustomizeStall() {
   useEffect(() => {
     const fetchStallId = async () => {
       try {
+        if (exhibitionId) {
         const params = new URLSearchParams();
         params.append('stallOwnerId', storedEmail);
 
@@ -98,7 +99,7 @@ function CustomizeStall() {
         );
         console.log(response.data);
         localStorage.setItem("stallId", response.data);
-
+      }
       } catch (error) {
         console.log(error);
       }
