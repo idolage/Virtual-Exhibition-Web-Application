@@ -6,15 +6,19 @@ services:
     platform: linux/amd64
     image: hanzjk/discovery-server:latest
     container_name: discovery-server
+    pull_policy: always
     ports:
       - "8761:8761"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - api-network
 
   api-gateway:
     platform: linux/amd64
     image: hanzjk/api-gateway:latest
     container_name: api-gateway
+    pull_policy: always
     ports:
       - "8080:8080"
     environment:
@@ -22,11 +26,14 @@ services:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
     depends_on:
       - discovery-server
+    networks:
+      - api-network
 
   ## Agora Token-Service Docker Compose Config
   agora-token-server:
     platform: linux/amd64
-    container_name: product-service
+    container_name: agora-token-server
+    pull_policy: always
     image: hanzjk/agora-token-server:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -38,6 +45,7 @@ services:
   avatar:
     platform: linux/amd64
     container_name: avatar
+    pull_policy: always
     image: hanzjk/avatar:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -49,6 +57,7 @@ services:
   feedback:
     platform: linux/amd64
     container_name: feedback
+    pull_policy: always
     image: hanzjk/feedback:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -60,6 +69,7 @@ services:
   payment:
     platform: linux/amd64
     container_name: payment
+    pull_policy: always
     image: hanzjk/payment:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -70,6 +80,7 @@ services:
   ## Stats-Service Docker Compose Config
   stats:
     platform: linux/amd64
+    pull_policy: always
     container_name: stats
     image: hanzjk/stats:latest
     environment:
@@ -81,6 +92,7 @@ services:
   ## Auth-Service Docker Compose Config
   auth:
     platform: linux/amd64
+    pull_policy: always
     container_name: auth
     image: hanzjk/auth:latest
     environment:
@@ -93,6 +105,7 @@ services:
   exhibition:
     platform: linux/amd64
     container_name: exhibition
+    pull_policy: always
     image: hanzjk/exhibition:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -104,6 +117,7 @@ services:
   stall:
     platform: linux/amd64
     container_name: stall
+    pull_policy: always
     image: hanzjk/stall:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -115,10 +129,15 @@ services:
   ticket:
     platform: linux/amd64
     container_name: ticket
+    pull_policy: always
     image: hanzjk/ticket:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - discovery-server
       - api-gateway
+
+networks:
+  api-network:
+    driver: bridge
 
