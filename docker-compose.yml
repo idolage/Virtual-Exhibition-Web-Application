@@ -1,0 +1,124 @@
+---
+version: '3.7'
+services:
+  ## Eureka Server
+  discovery-server:
+    platform: linux/amd64
+    image: hanzjk/discovery-server:latest
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  api-gateway:
+    platform: linux/amd64
+    image: hanzjk/api-gateway:latest
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
+    depends_on:
+      - discovery-server
+
+  ## Agora Token-Service Docker Compose Config
+  agora-token-server:
+    platform: linux/amd64
+    container_name: product-service
+    image: hanzjk/agora-token-server:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - discovery-server
+      - api-gateway
+
+  ## Avatar-Service Docker Compose Config
+  avatar:
+    platform: linux/amd64
+    container_name: avatar
+    image: hanzjk/avatar:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - discovery-server
+      - api-gateway
+
+  ## Feedback-Service Docker Compose Config
+  feedback:
+    platform: linux/amd64
+    container_name: feedback
+    image: hanzjk/feedback:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - discovery-server
+      - api-gateway
+
+  ## Payment-Service Docker Compose Config
+  payment:
+    platform: linux/amd64
+    container_name: payment
+    image: hanzjk/payment:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - discovery-server
+      - api-gateway
+
+  ## Stats-Service Docker Compose Config
+  stats:
+    platform: linux/amd64
+    container_name: stats
+    image: hanzjk/stats:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - discovery-server
+      - api-gateway
+
+  ## Auth-Service Docker Compose Config
+  auth:
+    platform: linux/amd64
+    container_name: auth
+    image: hanzjk/auth:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - discovery-server
+      - api-gateway
+
+  ## Exhibition-Service Docker Compose Config
+  exhibition:
+    platform: linux/amd64
+    container_name: exhibition
+    image: hanzjk/exhibition:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - discovery-server
+      - api-gateway
+
+  ## Stall-Service Docker Compose Config
+  stall:
+    platform: linux/amd64
+    container_name: stall
+    image: hanzjk/stall:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - discovery-server
+      - api-gateway
+
+  ## Ticket-Service Docker Compose Config
+  ticket:
+    platform: linux/amd64
+    container_name: ticket
+    image: hanzjk/ticket:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - discovery-server
+      - api-gateway
+
