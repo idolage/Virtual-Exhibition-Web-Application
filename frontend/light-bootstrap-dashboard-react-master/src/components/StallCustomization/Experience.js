@@ -7,7 +7,7 @@ import DiamondStall from "./DiamondStall";
 
 const Experience = ({ stallType }) => {
   let stallComponent;
-
+  console.log(stallType)
   const [goldModelScale, setGoldModelScale] = useState([1, 1, 1]);
   const [goldModelPosition, setGoldModelPosition] = useState([0, 0, 0.5]);
 

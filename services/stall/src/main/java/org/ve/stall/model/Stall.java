@@ -22,5 +22,6 @@ public class Stall {
     private String bannerUrl6;
     private String logoUrl;
     private String videoUrl;
+    private String model;
 
 }

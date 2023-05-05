@@ -2,40 +2,38 @@ import { ColorInput, Slider, Stack, Text, Title, Button } from "@mantine/core";
 import { useState } from "react";
 
 import { useStallCustomization } from "../../contexts/StallCustomizationContext";
-
-export const Configurator = () => {
+import Axios from 'axios';
+export const Configurator = ({Id}) => {
   const { stallColor, setStallColor } = useStallCustomization();
 
   const [msg, setMsg] = useState([]);
+  const [exhibitionId, setIexhibitionId] = useState('');
+
+  //setIexhibitionId(Id);
+  console.log(Id);
+  const stallId = localStorage.getItem('stallId');
+  console.log(stallId);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(stallColor);
-    //  try {
-    //    const response = await fetch("http://localhost:8080/api/avatars/", {
-    //      method: "POST",
-    //      body: JSON.stringify({
-    //        avatarId: "2",
-    //        bottomColor: pantsColor,
-    //        topColor: shirtColor,
-    //        shoeColor: shoesColor,
-    //        hairColor: hairColor,
-    //        skinColor: skinColor,
-    //        gender: "Female",
-    //        userId: "hansijk@gmail.com",
-    //      }),
-    //      headers: {
-    //        "Content-type": "application/json; charset=UTF-8",
-    //      },
-    //    });
-    //    if (!response.ok) {
-    //      throw new Error("Failed to save avatar.");
-    //    }
-    //    setMsg("Avatar Saved Successfully");
-    //  } catch (err) {
-    //    setMsg(err.message);
-    //    console.log(err.message);
-    //  }
+    // setStallColor(stallColor);
+    const requestBody = {
+      stallColor: stallColor
+    };
+    const params = new URLSearchParams();
+    params.append('stallId', stallId);
+    Axios.put(
+      `http://localhost:8080/api/stalls/update-stall/${Id}?${params.toString()}`,requestBody
+    )
+      .then((res) => {
+        alert("Successfully Uploaded");
+  
+      })
+      .catch((e) => {
+        console.log(e);
+        alert("Upload Fail");
+      });
   };
 
   return (
