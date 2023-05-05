@@ -1,5 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, useEffect,Suspense } from "react";
 import { useLocation, Route, Switch } from "react-router-dom";
+import Axios from "axios";
+import { Html } from "@react-three/drei";
 
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
@@ -14,13 +16,35 @@ import Experience from "components/AvatarCustomization/Experience";
 import Interface from "components/AvatarCustomization/Interface";
 
 function CustomizeAvatar() {
-  const avatarIdVal = 1;
+  const storedEmail = localStorage.getItem("email");
+  const [avatarIdVal, setAvatarIdVal] = React.useState("");
+
+  // const avatarIdVal = 1;
 
   const [image, setImage] = React.useState(sidebarImage);
   const [color, setColor] = React.useState("black");
   const [hasImage, setHasImage] = React.useState(true);
+  const [hasModel, setHasModel] = React.useState(false);
+
   const location = useLocation();
   const mainPanel = React.useRef(null);
+
+  useEffect(() => {
+    console.log(storedEmail);
+    const fetchAvatarDetails = async () => {
+      try {
+        const response = await Axios.get(
+          `http://localhost:8080/api/avatars/${storedEmail}`
+        );
+        setAvatarIdVal(response.data.avatarId);
+        console.log(response.data.avatarId + "JJ" + avatarIdVal);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchAvatarDetails();
+  }, [avatarIdVal]);
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
@@ -58,7 +82,6 @@ function CustomizeAvatar() {
           <AdminNavbar />
           <div className="container">
             <Switch>{getRoutes(routes)}</Switch>
-
             <AvatarCustomizationProvider>
               <div className="row">
                 <div className="col-lg-6 align-self-center">

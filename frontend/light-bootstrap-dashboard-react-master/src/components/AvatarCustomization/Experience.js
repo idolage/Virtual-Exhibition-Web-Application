@@ -8,16 +8,16 @@ const Experience = ({avatarId}) => {
   let avatarComponent;
  
   switch (avatarId) {
-    case 1:
+    case "1":
       avatarComponent = <Attendeefemaleavatar1 />;
       break;
-    case 2:
+    case "3":
       avatarComponent = <Attendeefemaleavatar2 />;
       break;
-    case 3:
+    case "2":
       avatarComponent = <Attendeemaleavatar1 />;
       break;
-    case 4:
+    case "4":
       avatarComponent = <Attendeemaleavatar2 />;
       break;
     default:
