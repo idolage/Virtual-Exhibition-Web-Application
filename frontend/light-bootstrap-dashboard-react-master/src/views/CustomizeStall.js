@@ -21,12 +21,12 @@ function CustomizeStall() {
   const [video, setVideo] = useState([]);
   const [model, setModel] = useState('');
   const [exhibitionId, setIexhibitionId] = useState('');
-  
+
   // const stallId = '1';
 
-  const stallOwnerId = 'abc';
-  //const exhibitionId = '0c171753-685f-4cef-9b73-6eef6227eeb6';
-  var tier = 'Diamond';
+  // const stallOwnerId = 'abc';
+  // //const exhibitionId = '0c171753-685f-4cef-9b73-6eef6227eeb6';
+  var tier = '';
   //  const logoUrl = `http://localhost:8080/api/stalls/upload-logo/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`;
   //  const bannerUrl = `http://localhost:8080/api/stalls/upload-banner/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`
   //  const videoUrl = `http://localhost:8080/api/stalls/upload-video/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`
@@ -37,7 +37,7 @@ function CustomizeStall() {
     setIndex(selectedIndex);
   };
 
-  const stallType = "Platinum";
+
 
 
   const [image, setImage] = React.useState(sidebarImage);
@@ -74,7 +74,7 @@ function CustomizeStall() {
     }
   }, [location]);
 
-   const storedEmail = 'exhibitionowner@gmail.com';
+  const storedEmail = 'exhibitionowner@gmail.com';
   //const storedEmail = localStorage.getItem("email");
   console.log(storedEmail);
   Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`)
@@ -86,43 +86,51 @@ function CustomizeStall() {
       console.log(e);
     });
 
-  const params = new URLSearchParams();
-  params.append('stallOwnerId', stallOwnerId);
-  Axios.get(
-    `http://localhost:8080/api/stalls/${exhibitionId}/stall/?${params.toString()}`
-  )
-    .then((res) => {
-      console.log(res.data);
-      localStorage.setItem("stallId", res.data);
 
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+  useEffect(() => {
+    const fetchStallId = async () => {
+      try {
+        const params = new URLSearchParams();
+        params.append('stallOwnerId', storedEmail);
+
+        const response = await Axios.get(
+          `http://localhost:8080/api/stalls/${exhibitionId}/stall/?${params.toString()}`
+        );
+        console.log(response.data);
+        localStorage.setItem("stallId", response.data);
+
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchStallId();
+  }, [exhibitionId]);
   const stallId = localStorage.getItem('stallId');
-  // if (
-  //   (stallId >= 1 && stallId < 9) ||
-  //   stallId == 22 ||
-  //   stallId == 23 ||
-  //   stallId == 44 ||
-  //   (stallId >= 37 && stallId < 44)
-  // ) {
-  //   tier = 'Platinum';
-  // } else if (
-  //   stallId == 11 ||
-  //   stallId == 15 ||
-  //   stallId == 19 ||
-  //   stallId == 27 ||
-  //   stallId == 31 ||
-  //   stallId == 35
-  // ) {
-  //   tier = 'Diamond';
-  // }
-  // else {
-  //   {
-  //     tier = 'Gold';
-  //   }
-  // }
+  console.log(stallId);
+    if (
+      (stallId >= 1 && stallId < 9) ||
+      stallId == 22 ||
+      stallId == 23 ||
+      stallId == 44 ||
+      (stallId >= 37 && stallId < 44)
+    ) {
+      tier = 'Platinum';
+    } else if (
+      stallId == 11 ||
+      stallId == 15 ||
+      stallId == 19 ||
+      stallId == 27 ||
+      stallId == 31 ||
+      stallId == 35
+    ) {
+      tier = 'Diamond';
+    }
+    else {
+      {
+        tier = 'Gold';
+      }
+    }
+
   const logoUrl = `http://localhost:8080/api/stalls/upload-logo/${exhibitionId}`;
   const bannerUrl = `http://localhost:8080/api/stalls/upload-banner/${exhibitionId}`;
   const videoUrl = `http://localhost:8080/api/stalls/upload-video/${exhibitionId}`;
@@ -145,10 +153,10 @@ function CustomizeStall() {
     const uploadedVideo = Array.from(e.target.files);
     setVideo((prevFiles) => [...prevFiles, ...uploadedVideo]);
     console.log(uploadedVideo);
-   
+
   }
 
-  function handleModelUpload(e){
+  function handleModelUpload(e) {
     const uploadedModel = Array.from(e.target.files);
     setModel(uploadedModel);
 
@@ -156,7 +164,7 @@ function CustomizeStall() {
   function submitLogo(e) {
     e.preventDefault();
     const urlParams = new URLSearchParams();
-    urlParams.append('stallId',stallId);
+    urlParams.append('stallId', stallId);
     urlParams.append('logo', logo);
     console.log(urlParams);
     Axios.post(logoUrl, urlParams)
@@ -174,7 +182,7 @@ function CustomizeStall() {
   function submitBanner(e) {
     e.preventDefault();
     const urlParams = new URLSearchParams();
-    urlParams.append('stallId',stallId);
+    urlParams.append('stallId', stallId);
     const formData = new FormData();
     files.forEach((file) => {
       formData.append('files', file);
@@ -198,7 +206,7 @@ function CustomizeStall() {
     e.preventDefault();
     console.log([video]);
     const urlParams = new URLSearchParams();
-    urlParams.append('stallId',stallId);
+    urlParams.append('stallId', stallId);
     const formData = new FormData();
     formData.append('file', video[0]);
     const url = `${videoUrl}?${urlParams.toString()}`;
@@ -216,7 +224,7 @@ function CustomizeStall() {
     e.preventDefault();
     console.log([video]);
     const urlParams = new URLSearchParams();
-    urlParams.append('stallId',stallId);
+    urlParams.append('stallId', stallId);
     const formData = new FormData();
     formData.append('file', model[0]);
     const url = `${modelUrl}?${urlParams.toString()}`;
@@ -260,11 +268,11 @@ function CustomizeStall() {
                             alignItems: "center",
                           }}
                         >
-                          <Experience stallType={stallType} />
+                          <Experience stallType={tier} />
                         </Canvas>
                       </div>
                       <div className="col-lg-3">
-                        <Interface />
+                        <Interface exhibitionId={exhibitionId} />
                       </div>
                     </div>
                   </StallCustomizationProvider>
@@ -583,9 +591,9 @@ function CustomizeStall() {
 
                     </div>
                   </Carousel.Item>}
-                  {tier == 'Diamond' &&
-                   <Carousel.Item>
-                     <div className="row mt-5">
+                {tier == 'Diamond' &&
+                  <Carousel.Item>
+                    <div className="row mt-5">
                       <div className="col-lg-9 align-self-center ">
                         <div className="row"><h5>Submit 3D Model</h5></div>
                         <div class="frame">
@@ -609,8 +617,8 @@ function CustomizeStall() {
                       </div>
 
                     </div>
-                   </Carousel.Item>
-                  }
+                  </Carousel.Item>
+                }
               </Carousel>
             </div>
           </div>

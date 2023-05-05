@@ -1,11 +1,12 @@
 
 import { Configurator } from "./Configurator";
 
-const Interface = () => {
+const Interface = ({exhibitionId}) => {
+  const exId = exhibitionId;
   return (
     <>
       <div  className="mx-4 mt-lg-5">
-        <Configurator />
+        <Configurator Id={exId} />
       </div>
     </>
   );

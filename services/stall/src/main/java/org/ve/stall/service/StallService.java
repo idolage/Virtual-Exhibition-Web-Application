@@ -275,7 +275,7 @@ public class StallService {
                 .document(stallId).delete();
         return "Successfully deleted "+stallId;
     }
-    public String updateStall(Stall stall, String stallId)throws InterruptedException, ExecutionException{
+    public String updateStall(Stall stall, String exhibitionId,String stallId)throws InterruptedException, ExecutionException{
         JSONObject obj=new JSONObject();
         if(stall.getExhibitionId()!=null)
         {obj.put("exhibitionId",stall.getExhibitionId());}
@@ -288,9 +288,28 @@ public class StallService {
         if(stall.getTier()!=null)
         {obj.put("tier",stall.getTier());}
         Firestore firestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionApiFuture = firestore.collection("stalls")
-                .document(stallId).update(obj);
-        return "Updated "+collectionApiFuture.get().getUpdateTime().toString();
+        Query query = firestore.collection("stalls").whereEqualTo("stallId", stallId).whereEqualTo("exhibitionId", exhibitionId);
+        ApiFuture<QuerySnapshot> querySnapshotFuture = query.get();
+        try {
+            QuerySnapshot querySnapshot = querySnapshotFuture.get();
+
+            for (QueryDocumentSnapshot document : querySnapshot.getDocuments()) {
+                String documentId = document.getId();
+
+                // Update the 3DModel field of the document
+                DocumentReference documentRef = firestore.collection("stalls").document(documentId);
+                ApiFuture<WriteResult> updateFuture = documentRef.update(obj);
+            }
+
+            // Return a success response
+            return "Success";
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error retrieving stalls: " + e.getMessage());
+
+            // Return an error response
+            return "Failed to update";
+        }
+
     }
 
     private File convertMultiPartToFile(MultipartFile file) throws IOException {

@@ -73,10 +73,10 @@ public class StallController {
         return stallService.getBookedStall(exhibitionId, stallOwnerId);
     }
 
-    @PutMapping ("/{stallId}")
+    @PutMapping ("/update-stall/{exhibitionId}")
     @ResponseStatus(HttpStatus.OK)
-    public String updateStall(@PathVariable String stallId,@RequestBody Stall stall) throws InterruptedException, ExecutionException {
-        return stallService.updateStall(stall,stallId);
+    public String updateStall(@PathVariable String exhibitionId, @RequestParam String stallId,@RequestBody Stall stall) throws InterruptedException, ExecutionException {
+        return stallService.updateStall(stall,exhibitionId,stallId);
     }
     @DeleteMapping ("/{stallId}")
     @ResponseStatus(HttpStatus.OK)
