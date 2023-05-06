@@ -50,8 +50,7 @@ public class AvatarService {
                         avatar.getShoeColor(),
                         avatar.getHairColor(),
                         avatar.getBeardColor(),
-                        avatar.getSkinColor(),
-                        avatar.getGender()
+                        avatar.getSkinColor()
                         );
                 return new ResponseEntity<>(avatarResponseAttendee, HttpStatus.OK);
             } else if(Objects.equals(avatar.getUserType(), "EXHIBITOR")){
@@ -67,8 +66,7 @@ public class AvatarService {
                         avatar.getShoeColor(),
                         avatar.getHairColor(),
                         avatar.getBeardColor(),
-                        avatar.getSkinColor(),
-                        avatar.getGender()
+                        avatar.getSkinColor()
 
                 );
                 return new ResponseEntity<>(avatarResponseExhibitor, HttpStatus.OK);
@@ -85,8 +83,7 @@ public class AvatarService {
                         avatar.getShoeColor(),
                         avatar.getHairColor(),
                         avatar.getBeardColor(),
-                        avatar.getSkinColor(),
-                        avatar.getGender()
+                        avatar.getSkinColor()
 
                 );
                 return new ResponseEntity<>(avatarResponseExhibitionOwner, HttpStatus.OK);
@@ -113,7 +110,6 @@ public class AvatarService {
         Avatar existingAvatar=repository.findByUserId(avatar.getUserId());
         if(existingAvatar!=null) {
             existingAvatar.setAvatarId(avatar.getAvatarId());
-            existingAvatar.setGender(avatar.getGender());
             existingAvatar.setHairColor(avatar.getHairColor());
             existingAvatar.setBottomColor(avatar.getBottomColor());
             existingAvatar.setTopColor(avatar.getTopColor());

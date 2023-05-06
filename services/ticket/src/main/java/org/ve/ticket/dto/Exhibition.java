@@ -13,4 +13,6 @@ public class Exhibition {
     private boolean start;
     private boolean isOver;
     private String datetime;
+
+    private int ticketPrice;
 }

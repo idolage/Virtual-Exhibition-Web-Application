@@ -54,7 +54,7 @@ function StallsSelect() {
     }
     axios
       .get(
-        "http://localhost:8080/api/stalls/booked/5d4a0180-01c8-4ec2-b7d7-2045ecdffe0a"
+        "http://localhost:8080/api/stalls/booked/ae9e27ce-4ed0-4749-8eb3-89e23581d54e"
       )
       .then((res) => {
         stallIds.length = 0;
@@ -176,7 +176,7 @@ function StallsSelect() {
               <Row className="showcase">
                 <li>
                   <div className="stall"></div>
-                  <small>N/A Gold</small>
+                  <small>Gold</small>
                 </li>
                 <li>
                   <div className="stall-sel"></div>
@@ -184,7 +184,7 @@ function StallsSelect() {
                 </li>
                 <li>
                   <div className="pstall"></div>
-                  <small>N/A Platinum</small>
+                  <small>Platinum</small>
                 </li>
                 <li>
                   <div className="pstall-sel"></div>
@@ -192,7 +192,7 @@ function StallsSelect() {
                 </li>
                 <li>
                   <div className="dstall"></div>
-                  <small>N/A Diamond</small>
+                  <small>Diamond</small>
                 </li>
                 <li>
                   <div className="dstall-sel"></div>
@@ -448,8 +448,8 @@ function StallsSelect() {
                 <div>{console.log(amount)}</div>
                 <div>
                   <Payments
-                    exhibitionId={"5d4a0180-01c8-4ec2-b7d7-2045ecdffe0a"}
-                    userId={"abc@gmail.com"}
+                    exhibitionId={"ae9e27ce-4ed0-4749-8eb3-89e23581d54e"}
+                    userId={localStorage.getItem("email")}
                     userType={"EXHIBITOR"}
                     price={parseInt(amount)}
                     stallId={selectedStall}

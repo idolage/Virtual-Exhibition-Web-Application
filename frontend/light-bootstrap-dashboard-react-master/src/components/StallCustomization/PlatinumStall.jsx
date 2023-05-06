@@ -11,9 +11,15 @@ const PlatinumStall = (props) => {
   const { nodes, materials } = useGLTF("./stalls/platinumStall.gltf");
   const { stallColor, setStallColor } = useStallCustomization();
 
-    useEffect(() => {
+  useEffect(() => {
+    if (stallColor == null) {
       setStallColor(`#${materials.Platinum.color.getHexString()}`);
-    }, []);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   setStallColor(`#${materials.Platinum.color.getHexString()}`);
+  // }, []);
   return (
     <group {...props} dispose={null}>
       <group position={[-679, 940, 0]} rotation={[0, 0, -Math.PI / 2]}>

@@ -38,6 +38,21 @@ const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
               .post("http://localhost:8080/api/stalls", newStall)
               .then((res) => {
                 setMsg("Payment Successfull");
+
+                const newLiveStreamChannel = {
+                  exhibitionId: exhibitionId,
+                  stallId: stallId,
+                };
+                axios
+                  .post(
+                    "http://localhost:8080/api/agora/liveStreamChannel",
+                    newLiveStreamChannel
+                  )
+                  .then((res) => {})
+                  .catch((e) => {
+                    console.log(e);
+                    setMsg("Sorry! Please try again");
+                  });
               })
               .catch((e) => {
                 console.log(e);

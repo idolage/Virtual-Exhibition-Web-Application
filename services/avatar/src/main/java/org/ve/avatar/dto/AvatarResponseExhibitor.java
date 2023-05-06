@@ -18,5 +18,4 @@ public class AvatarResponseExhibitor {
 
     private String  skinColor;
 
-    private String  gender;
 }

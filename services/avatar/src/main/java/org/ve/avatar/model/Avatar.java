@@ -28,5 +28,4 @@ public class Avatar {
 
     private String  skinColor;
 
-    private String  gender;
 }

@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+frontend/light-bootstrap-dashboard-react-master/public/avatars/attendeemaleavatar2.gltf
+
+
 ### IntelliJ IDEA ###
 .idea
 *.iws

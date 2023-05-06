@@ -40,9 +40,8 @@ export default function SubmitFeedback() {
       <Container fluid>
         <Row>
           <Col md="8">
-            <Card style={{ overflow: "hidden" }}>
+            <Card style={{ overflow: "hidden", border: "none" }}>
               <Card.Header>
-                <Card.Title as="h4">Submit Feedback</Card.Title>
               </Card.Header>
               <Card.Body>
                 <Form>

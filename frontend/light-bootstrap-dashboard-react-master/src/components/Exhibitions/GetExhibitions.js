@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import DataTable from "react-data-table-component";
 import { Button, Modal } from "react-bootstrap";
 import AttendPayment from "./AttendPayment";
 import EditExhibition from "../../views/EditExhibition";
-
 
 export default function GetExhibitions() {
   const history = useHistory();
@@ -14,7 +13,7 @@ export default function GetExhibitions() {
   const [showDetails, setShowDetails] = useState(false);
   const [exhibition, setExhibition] = useState({});
   const [activeUsers, setActiveUsers] = useState(0);
-  let var1=0;
+  let var1 = 0;
 
   const handleClose = () => {
     setShow(false);
@@ -28,21 +27,21 @@ export default function GetExhibitions() {
     });
 
   useEffect(() => {
-    var1=0;
+    var1 = 0;
     axios
       .get("http://localhost:8080/api/exhibitions")
       .then((res) => {
         console.log(res.data);
         setExhibitions(res.data);
-        res.data.map((users)=>{
-          var1=users.noOfUsers+var1;
-        })
+        res.data.map((users) => {
+          var1 = users.noOfUsers + var1;
+        });
         setActiveUsers(var1);
       })
       .catch((e) => {
         console.log(e);
       });
-  },[exhibition]);
+  }, [exhibition]);
 
   const BootyPagination = ({
     rowsPerPage,
@@ -139,7 +138,7 @@ export default function GetExhibitions() {
     },
     {
       name: "Status",
-      selector: (row) => returnStatus(row.start),
+      selector: (row) => returnStatus(row.start, row.over),
       sortable: true,
     },
     {
@@ -157,7 +156,7 @@ export default function GetExhibitions() {
     },
   ];
 
-  function returnStatus(start) {
+  function returnStatus(start, over) {
     if (start) {
       return (
         <button
@@ -166,6 +165,16 @@ export default function GetExhibitions() {
           className="btn btn-success"
         >
           Started
+        </button>
+      );
+    } else if (!over) {
+      return (
+        <button
+          style={{ fontSize: "12px", borderRadius: "20px" }}
+          type="button"
+          className="btn btn-warning text-align"
+        >
+          Not Yet Started
         </button>
       );
     } else {
@@ -212,7 +221,7 @@ export default function GetExhibitions() {
     </div>
   );
 
-  const GetFreeTicket=(exhibitionId, userId, userType, price)=>{
+  const GetFreeTicket = (exhibitionId, userId, userType, price) => {
     const newPayment = {
       exhibitionId: exhibitionId,
       userId: userId,
@@ -220,20 +229,18 @@ export default function GetExhibitions() {
       amount: price,
     };
     axios
-        .post("http://localhost:8080/api/payments", newPayment)
-        .then((res) => {
-          console.log("done");
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-
-  }
+      .post("http://localhost:8080/api/payments", newPayment)
+      .then((res) => {
+        console.log("done");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   return (
     <div>
       <DataTable
-        title="Exhibitions"
         responsive
         subHeader
         columns={columns}
@@ -268,7 +275,7 @@ export default function GetExhibitions() {
                   <dl className="d-flex align-items-center">
                     <dl className="row">
                       <dt className="col-lg-5">Date</dt>
-                      <dd className="col-lg-7" >{exhibition.datetime}</dd>
+                      <dd className="col-lg-7">{exhibition.datetime}</dd>
                       <hr></hr>
                       <dt className="col-lg-5">Exhibition ID</dt>
                       <dd className="col-lg-7">{exhibition.exhibitionId}</dd>
@@ -286,7 +293,7 @@ export default function GetExhibitions() {
                       {/*<dd className="col-lg-7">{exhibition.noOfUsers}</dd>*/}
                       <dt className="col-lg-5"></dt>
                       <dd className="col-lg-7">
-                        {!exhibition.start ?
+                        {!exhibition.start ? (
                           <Button
                             style={{ fontSize: "12px", borderRadius: "20px" }}
                             variant="secondary"
@@ -294,31 +301,46 @@ export default function GetExhibitions() {
                           >
                             Ended
                           </Button>
-                        : (activeUsers==10?<Button
-                                    style={{ fontSize: "12px", borderRadius: "20px" }}
-                                    variant="danger"
-                                    size="md"
-                                >
-                                  Sorry Exhibition is Full. Please try again later!
-                                </Button>:
+                        ) : activeUsers == 10 ? (
+                          <Button
+                            style={{ fontSize: "12px", borderRadius: "20px" }}
+                            variant="danger"
+                            size="md"
+                          >
+                            Sorry Exhibition is Full. Please try again later!
+                          </Button>
+                        ) : (
                           <>
-                            {exhibition.ticketPrice==0?(<Button
-                                style={{ fontSize: "14px", borderRadius: "10px" }}
+                            {exhibition.ticketPrice == 0 ? (
+                              <Button
+                                style={{
+                                  fontSize: "14px",
+                                  borderRadius: "10px",
+                                }}
                                 variant="success"
                                 size="sm"
-                                onClick={()=>GetFreeTicket(exhibition.exhibitionId,"abc@gmail.com","ATTENDEE",0)}
-                            >
-                              Free
-                            </Button>):<>
-                              USD&nbsp;{exhibition.ticketPrice}&nbsp;
-                              <AttendPayment
+                                onClick={() =>
+                                  GetFreeTicket(
+                                    exhibition.exhibitionId,
+                                    "abc@gmail.com",
+                                    "ATTENDEE",
+                                    0
+                                  )
+                                }
+                              >
+                                Free
+                              </Button>
+                            ) : (
+                              <>
+                                USD&nbsp;{exhibition.ticketPrice}&nbsp;
+                                <AttendPayment
                                   exhibitionId={exhibition.exhibitionId}
                                   userId={localStorage.getItem("email")}
-
                                   userType={"ATTENDEE"}
                                   price={parseInt(exhibition.ticketPrice)}
-                              ></AttendPayment></>}
-
+                                ></AttendPayment>
+                              </>
+                            )}
                           </>
                         )}
                         <br></br>
@@ -326,13 +348,13 @@ export default function GetExhibitions() {
                     </dl>
                   </dl>
                   <h5
-                      className="card-title"
-                      style={{ textAlign: "center", textTransform: "uppercase" }}
+                    className="card-title"
+                    style={{ textAlign: "center", textTransform: "uppercase" }}
                   >
                     Exhibition Owner Details
                   </h5>
                   <div className="d-flex flex-column align-items-center text-center">
-                    <img src="https://img.icons8.com/fluency/48/null/microsoft-admin.png"/>
+                    <img src="https://img.icons8.com/fluency/48/null/microsoft-admin.png" />
                   </div>
                   <hr></hr>
                   <dl className="d-flex align-items-center">
@@ -340,27 +362,33 @@ export default function GetExhibitions() {
                       <hr></hr>
                       <dt className="col-lg-5">Name</dt>
                       <dd className="col-lg-7">
-                        {!showDetails?null:exhibition.exhibitionOwner.name}
+                        {!showDetails ? null : exhibition.exhibitionOwner.name}
                       </dd>
                       <hr></hr>
                       <dt className="col-lg-5">Email</dt>
                       <dd className="col-lg-7">
-                        {!showDetails?null:exhibition.exhibitionOwner.emailAddress}
+                        {!showDetails
+                          ? null
+                          : exhibition.exhibitionOwner.emailAddress}
                       </dd>
                       <hr></hr>
                       <dt className="col-lg-5">Contact Number</dt>
                       <dd className="col-lg-7">
-                        {!showDetails?null:exhibition.exhibitionOwner.contactNo}
+                        {!showDetails
+                          ? null
+                          : exhibition.exhibitionOwner.contactNo}
                       </dd>
                       <hr></hr>
                       <dt className="col-lg-5">NIC</dt>
                       <dd className="col-lg-7">
-                        {!showDetails?null:exhibition.exhibitionOwner.nic}
+                        {!showDetails ? null : exhibition.exhibitionOwner.nic}
                       </dd>
                       <hr></hr>
                       <dt className="col-lg-5">Company</dt>
                       <dd className="col-lg-7">
-                        {!showDetails?null:exhibition.exhibitionOwner.company}
+                        {!showDetails
+                          ? null
+                          : exhibition.exhibitionOwner.company}
                       </dd>
                     </dl>
                   </dl>
@@ -373,10 +401,17 @@ export default function GetExhibitions() {
           <Button variant="secondary" onClick={() => handleClose()}>
             Close
           </Button>
-          {!showDetails?null:exhibition.exhibitionOwner.emailAddress==="exhibitionowner@gmail.com"?
-              ( <Button variant="primary" onClick={() => history.push("/editExhibition",{exhibitionId:exhibition.id})}>
-                Edit
-              </Button>):null}
+          {!showDetails ? null : exhibition.exhibitionOwner.emailAddress ===
+            "exhibitionowner@gmail.com" ? (
+            <Button
+              variant="primary"
+              onClick={() =>
+                history.push("/editExhibition", { exhibitionId: exhibition.id })
+              }
+            >
+              Edit
+            </Button>
+          ) : null}
         </Modal.Footer>
       </Modal>
     </div>
