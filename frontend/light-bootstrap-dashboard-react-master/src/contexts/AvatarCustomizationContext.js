@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import Axios from "axios";
 
 const AvatarCustomizationContext = createContext({});
 
@@ -13,6 +14,42 @@ export const AvatarCustomizationProvider = ({ children }) => {
   const [shoesColor, setShoesColor] = useState();
   const [lacesColor, setLacesColor] = useState();
   const [soleColor, setSoleColor] = useState();
+
+  const storedEmail = localStorage.getItem("email");
+
+  useEffect(() => {
+    console.log(storedEmail);
+    const fetchAvatarDetails = async () => {
+      try {
+        const response = await Axios.get(
+          `http://localhost:8080/api/avatars/${storedEmail}`
+        );
+        if (response.data.topColor !== null) {
+          setShirtColor(response.data.topColor);
+        }
+
+         if (response.data.bottomColor !== null) {
+           setPantsColor(response.data.bottomColor);
+         }
+        
+         if (response.data.topColor !== null) {
+           setShoesColor(response.data.shoeColor);
+         }
+        
+         if (response.data.topColor !== null) {
+           setHairColor(response.data.hairColor);
+         }
+         if (response.data.skinColor !== null) {
+           setSkinColor(response.data.skinColor);
+         }
+        
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchAvatarDetails();
+  }, []);
+
   return (
     <AvatarCustomizationContext.Provider
       value={{

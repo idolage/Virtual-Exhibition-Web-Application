@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
-    Container,
-    Row,
-    Col,
-    Form,
-    Modal,
-    Button,
-    Table,
-    Card,
-  } from "react-bootstrap";
+  Container,
+  Row,
+  Col,
+  Form,
+  Modal,
+  Button,
+  Table,
+  Card,
+} from "react-bootstrap";
 
 export default function PlattformFB() {
-
-    const [exhibitions, setExhibitions] = useState([]);
+  const [exhibitions, setExhibitions] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
 
@@ -26,33 +25,31 @@ export default function PlattformFB() {
       .get(`http://localhost:8080/api/feedbacks/exhibition/${id}`)
       .then((resOne) => {
         const filteredFeedbacks = resOne.data.filter(
-            (item) =>
-            item.type === "PLATFORM"
+          (item) => item.type === "PLATFORM"
         );
         setShowModal(true);
         setFeedbacks(filteredFeedbacks);
-      }).catch((e)=>{
+      })
+      .catch((e) => {
         setShowModal(true);
         setFeedbacks(e);
       });
 
-      useEffect(() => {
-        axios
-          .get(
-            `http://localhost:8080/api/exhibitions`
-          ) 
-          .then((res) => {
-            console.log(res.data);
-            const filteredExhibitions = res.data.filter(
-              (item) =>
-              item.approved === true
-            );
-            setExhibitions(filteredExhibitions);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      }, []);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/api/exhibitions`)
+      .then((res) => {
+        console.log(res.data);
+        const filteredExhibitions = res.data.filter(
+          (item) => item.approved === true
+        );
+        setExhibitions(filteredExhibitions);
+        console.log(filteredExhibitions);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
 
   return (
     <>
@@ -69,7 +66,6 @@ export default function PlattformFB() {
               <Card.Body>
                 <div style={{ maxHeight: "60vh", overflowY: "scroll" }}>
                   {exhibitions.map((exhibition) => (
-                
                     <>
                       <Button
                         style={{ marginBottom: "15px" }}
@@ -112,5 +108,5 @@ export default function PlattformFB() {
         </Modal.Footer>
       </Modal>
     </>
-  )
+  );
 }

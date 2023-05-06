@@ -3,18 +3,23 @@ import Attendeefemaleavatar1 from "./Attendeefemaleavatar1";
 import Attendeefemaleavatar2 from "./Attendeefemaleavatar2";
 import Attendeemaleavatar1 from "./Attendeemaleavatar1";
 import Attendeemaleavatar2 from "./Attendeemaleavatar2";
-const Experience = ({avatarId}) => {
+
+
+const Experience = ({ avatarId }) => {
+
+
   console.log(avatarId);
+
   let avatarComponent;
- 
+
   switch (avatarId) {
     case "1":
       avatarComponent = <Attendeefemaleavatar1 />;
       break;
-    case "3":
+    case "2":
       avatarComponent = <Attendeefemaleavatar2 />;
       break;
-    case "2":
+    case "3":
       avatarComponent = <Attendeemaleavatar1 />;
       break;
     case "4":
@@ -24,8 +29,6 @@ const Experience = ({avatarId}) => {
       avatarComponent = null;
       break;
   }
-
-  
 
   return (
     <>
@@ -37,7 +40,7 @@ const Experience = ({avatarId}) => {
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
       />
-      <group position={[0, -1, 0]} scale={[1.2,1.2,1.2]}>
+      <group position={[0, -1, 0]} scale={[1.2, 1.2, 1.2]}>
         {avatarComponent}
       </group>
       <mesh
@@ -51,6 +54,5 @@ const Experience = ({avatarId}) => {
     </>
   );
 };
-
 
 export default Experience;

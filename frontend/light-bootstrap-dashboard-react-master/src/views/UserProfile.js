@@ -28,7 +28,10 @@ const PurchasedTickets = () => {
     Axios.get(
       `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`
     ).then((response) => {
-      setTickets(response.data);
+      console.log(response);
+      if (response.data != "") {
+        setTickets(response.data);
+      }
     });
   }, []);
 
@@ -332,13 +335,12 @@ const Attendee = () => {
   useEffect(() => {
     const fetchAvatarDetails = async () => {
       try {
-          const storedEmail = localStorage.getItem("email");
-          const response = await Axios.get(
-            `http://localhost:8080/api/avatars/${storedEmail}`
-          );
-          setAvatarIdVal(response.data.avatarId);
-          console.log(response.data.avatarId + "JJ" + avatarIdVal);
-        
+        const storedEmail = localStorage.getItem("email");
+        const response = await Axios.get(
+          `http://localhost:8080/api/avatars/${storedEmail}`
+        );
+        setAvatarIdVal(response.data.avatarId);
+        console.log(response.data.avatarId + "JJ" + avatarIdVal);
       } catch (e) {
         console.error(e);
       }
@@ -351,7 +353,7 @@ const Attendee = () => {
       <Container fluid>
         <Row>
           <Col lg="6" sm="6">
-            <Card className="card-stats">
+            <Card className="card-stats" style={{ border: "none" }}>
               <Card.Body>
                 <Row>
                   <div className="numbers text-center">
@@ -370,7 +372,7 @@ const Attendee = () => {
             </Card>
           </Col>
           <Col lg="6" sm="6">
-            <Card className="card-stats">
+            <Card className="card-stats" style={{ border: "none" }}>
               <Card.Body>
                 <Row>
                   <div className="numbers text-center">
@@ -390,8 +392,8 @@ const Attendee = () => {
           </Col>
         </Row>
         <Row>
-          <Col lg="6">
-            <Card>
+          <Col lg="12">
+            <Card style={{ border: "none" }}>
               <Card.Header>
                 <Card.Title as="h4">Edit Profile</Card.Title>
               </Card.Header>
@@ -461,9 +463,9 @@ const Attendee = () => {
                       </Form.Group>
                     </Col>
                   </Row>
-
+<br></br>
                   <Button
-                    className="btn-fill pull-right"
+                    className="btn-fill pull-right "
                     type="submit"
                     variant="info"
                     onClick={(e) => updateAttendee(e)}
@@ -508,29 +510,6 @@ const Attendee = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col lg="6">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h4">Avatar</Card.Title>
-              </Card.Header>
-              <Card.Body>
-                <p>3D Avatar goes here</p>
-
-                <AvatarCustomizationProvider>
-                  <div className="row">
-                    <div className="col-lg-6 align-self-center">
-                      <Canvas
-                        camera={{ position: [1, 1.5, 2.5], fov: 50 }}
-                        style={{ height: 900 }}
-                      >
-                        <Experience avatarId={avatarIdVal} />
-                      </Canvas>
-                    </div>
-                  </div>
-                </AvatarCustomizationProvider>
-              </Card.Body>
-            </Card>
-          </Col>
         </Row>
         {/* <Row>
           <Col lg='12'>
@@ -545,7 +524,7 @@ const Attendee = () => {
         </Row> */}
         <Row>
           <Col lg="12">
-            <Card>
+            <Card style={{ border: "none" }}>
               <Card.Header>
                 <Card.Title as="h4">Visited Exhibitions</Card.Title>
               </Card.Header>
@@ -645,7 +624,7 @@ const Exhibitor = () => {
       <Container fluid>
         <Row>
           <Col lg="6" sm="6">
-            <Card className="card-stats">
+            <Card className="card-stats" style={{ border: "none" }}>
               <Card.Body>
                 <Row>
                   <div className="numbers text-center">
@@ -664,7 +643,7 @@ const Exhibitor = () => {
             </Card>
           </Col>
           <Col lg="6" sm="6">
-            <Card className="card-stats">
+            <Card className="card-stats" style={{ border: "none" }}>
               <Card.Body>
                 <Row>
                   <div className="numbers text-center">
@@ -684,8 +663,8 @@ const Exhibitor = () => {
           </Col>
         </Row>
         <Row>
-          <Col lg="6">
-            <Card>
+          <Col lg="12">
+            <Card style={{ border: "none" }}>
               <Card.Header>
                 <Card.Title as="h4">Edit Profile</Card.Title>
               </Card.Header>
@@ -827,16 +806,6 @@ const Exhibitor = () => {
                     </Button>
                   </div>
                 </Modal>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col lg="6">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h4">Stall</Card.Title>
-              </Card.Header>
-              <Card.Body>
-                <p>3D Stall goes here</p>
               </Card.Body>
             </Card>
           </Col>

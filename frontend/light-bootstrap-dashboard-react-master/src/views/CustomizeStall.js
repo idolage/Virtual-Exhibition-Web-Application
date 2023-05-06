@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Route, Switch } from "react-router-dom";
-import Axios from 'axios';
+import Axios from "axios";
 import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
 import Sidebar from "components/Sidebar/Sidebar";
@@ -16,29 +16,19 @@ import Carousel from "react-bootstrap/Carousel";
 import "../assets/css/custom-style.css";
 function CustomizeStall() {
   const [index, setIndex] = useState(0);
+  const [stallId, setStallId] = useState();
+
   const [files, setFiles] = useState([]);
-  const [logo, setLogo] = useState('');
+  const [logo, setLogo] = useState("");
   const [video, setVideo] = useState([]);
-  const [model, setModel] = useState('');
-  const [exhibitionId, setIexhibitionId] = useState('');
+  const [model, setModel] = useState("");
+  const [exhibitionId, setIexhibitionId] = useState("");
 
-  // const stallId = '1';
-
-  // const stallOwnerId = 'abc';
-  // //const exhibitionId = '0c171753-685f-4cef-9b73-6eef6227eeb6';
-  var tier = '';
-  //  const logoUrl = `http://localhost:8080/api/stalls/upload-logo/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`;
-  //  const bannerUrl = `http://localhost:8080/api/stalls/upload-banner/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`
-  //  const videoUrl = `http://localhost:8080/api/stalls/upload-video/${stallId}/?stallOwnerId=${stallOwnerId}&exhibitionId=${exhibitionId}&tier=${tier}`
-  //const exhibitionId = '0c171753-685f-4cef-9b73-6eef6227eeb6';
-
+  var tier = "";
 
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
   };
-
-
-
 
   const [image, setImage] = React.useState(sidebarImage);
   const [color, setColor] = React.useState("black");
@@ -74,8 +64,9 @@ function CustomizeStall() {
     }
   }, [location]);
 
-  const storedEmail = 'exhibitionowner@gmail.com';
-  //const storedEmail = localStorage.getItem("email");
+  // const storedEmail = 'exhibitionowner@gmail.com';
+  const storedEmail = localStorage.getItem("email");
+
   console.log(storedEmail);
   Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`)
     .then((res) => {
@@ -86,51 +77,52 @@ function CustomizeStall() {
       console.log(e);
     });
 
-
   useEffect(() => {
     const fetchStallId = async () => {
       try {
         if (exhibitionId) {
-        const params = new URLSearchParams();
-        params.append('stallOwnerId', storedEmail);
+          const params = new URLSearchParams();
+          params.append("stallOwnerId", storedEmail);
 
-        const response = await Axios.get(
-          `http://localhost:8080/api/stalls/${exhibitionId}/stall/?${params.toString()}`
-        );
-        console.log(response.data);
-        localStorage.setItem("stallId", response.data);
-      }
+          const response = await Axios.get(
+            `http://localhost:8080/api/stalls/${exhibitionId}/stall/?${params.toString()}`
+          );
+          console.log("&&" + response.data);
+          setStallId(response.data);
+          // localStorage.setItem("stallId", response.data);
+        }
       } catch (error) {
         console.log(error);
       }
     };
     fetchStallId();
   }, [exhibitionId]);
-  const stallId = localStorage.getItem('stallId');
-  console.log(stallId);
-    if (
-      (stallId >= 1 && stallId < 9) ||
-      stallId == 22 ||
-      stallId == 23 ||
-      stallId == 44 ||
-      (stallId >= 37 && stallId < 44)
-    ) {
-      tier = 'Platinum';
-    } else if (
-      stallId == 11 ||
-      stallId == 15 ||
-      stallId == 19 ||
-      stallId == 27 ||
-      stallId == 31 ||
-      stallId == 35
-    ) {
-      tier = 'Diamond';
+
+  console.log("***" + stallId);
+  if (stallId == null) {
+    tier = "";
+  } else if (
+    (stallId >= 1 && stallId < 9) ||
+    stallId == 22 ||
+    stallId == 23 ||
+    stallId == 44 ||
+    (stallId >= 37 && stallId < 44)
+  ) {
+    tier = "Platinum";
+  } else if (
+    stallId == 11 ||
+    stallId == 15 ||
+    stallId == 19 ||
+    stallId == 27 ||
+    stallId == 31 ||
+    stallId == 35
+  ) {
+    tier = "Diamond";
+  } else {
+    {
+      tier = "Gold";
     }
-    else {
-      {
-        tier = 'Gold';
-      }
-    }
+  }
 
   const logoUrl = `http://localhost:8080/api/stalls/upload-logo/${exhibitionId}`;
   const bannerUrl = `http://localhost:8080/api/stalls/upload-banner/${exhibitionId}`;
@@ -154,91 +146,90 @@ function CustomizeStall() {
     const uploadedVideo = Array.from(e.target.files);
     setVideo((prevFiles) => [...prevFiles, ...uploadedVideo]);
     console.log(uploadedVideo);
-
   }
 
   function handleModelUpload(e) {
     const uploadedModel = Array.from(e.target.files);
     setModel(uploadedModel);
-
   }
   function submitLogo(e) {
     e.preventDefault();
     const urlParams = new URLSearchParams();
-    urlParams.append('stallId', stallId);
-    urlParams.append('logo', logo);
+    urlParams.append("stallId", stallId);
+    urlParams.append("logo", logo);
     console.log(urlParams);
     Axios.post(logoUrl, urlParams)
-      .then(res => {
-        setLogo('');
+      .then((res) => {
+        setLogo("");
         document.getElementById("logoInput").value = "";
         alert("Successfully Uploaded");
       })
-      .catch(error => {
-        setLogo('');
-        alert('Upload Fail!');
-      })
+      .catch((error) => {
+        setLogo("");
+        alert("Upload Fail!");
+      });
   }
 
   function submitBanner(e) {
     e.preventDefault();
     const urlParams = new URLSearchParams();
-    urlParams.append('stallId', stallId);
+    urlParams.append("stallId", stallId);
     const formData = new FormData();
     files.forEach((file) => {
-      formData.append('files', file);
-
+      formData.append("files", file);
     });
     const url = `${bannerUrl}?${urlParams.toString()}`;
     Axios.post(url, formData)
-      .then(res => {
+      .then((res) => {
         setFiles([]);
         console.log([files]);
         alert("Successfully Uploaded");
         var chooseFileInputs = document.querySelectorAll("#chooseFile");
-        chooseFileInputs.forEach(input => {
+        chooseFileInputs.forEach((input) => {
           input.value = "";
         });
-      }).catch(error => {
-        alert("Upload Fail!");
       })
+      .catch((error) => {
+        alert("Upload Fail!");
+      });
   }
   function submitVideo(e) {
     e.preventDefault();
     console.log([video]);
     const urlParams = new URLSearchParams();
-    urlParams.append('stallId', stallId);
+    urlParams.append("stallId", stallId);
     const formData = new FormData();
-    formData.append('file', video[0]);
+    formData.append("file", video[0]);
     const url = `${videoUrl}?${urlParams.toString()}`;
     Axios.post(url, formData)
-      .then(res => {
+      .then((res) => {
         setVideo([]);
         alert("Successfully Uploaded");
         document.getElementById("videoField").value = "";
-      }).catch(error => {
-        alert("Upload Fail!");
       })
+      .catch((error) => {
+        alert("Upload Fail!");
+      });
   }
 
   function submitModel(e) {
     e.preventDefault();
     console.log([video]);
     const urlParams = new URLSearchParams();
-    urlParams.append('stallId', stallId);
+    urlParams.append("stallId", stallId);
     const formData = new FormData();
-    formData.append('file', model[0]);
+    formData.append("file", model[0]);
     const url = `${modelUrl}?${urlParams.toString()}`;
     Axios.post(url, formData)
-      .then(res => {
+      .then((res) => {
         setVideo([]);
         alert("Successfully Uploaded");
         document.getElementById("videoField").value = "";
-      }).catch(error => {
-        alert("Upload Fail!");
       })
+      .catch((error) => {
+        alert("Upload Fail!");
+      });
   }
-
 
   return (
     <>
@@ -279,28 +270,44 @@ function CustomizeStall() {
                   </StallCustomizationProvider>
                 </Carousel.Item>
                 <Carousel.Item>
-
                   <div className="row mt-5">
                     <div class="upload-card">
                       <div class="card-body">
                         <h5 class="card-topic ">Submit Logo</h5>
                         <form class="row ">
                           <div class="input-group mb-3">
-                            <span class="input-group-text" id="inputGroup-sizing-default">Logo</span>
-                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Enter your logo here" onChange={(e) => handleLogoUpload(e)} id="logoInput"></input>
-
+                            <span
+                              class="input-group-text"
+                              id="inputGroup-sizing-default"
+                            >
+                              Logo
+                            </span>
+                            <input
+                              type="text"
+                              class="form-control"
+                              aria-label="Sizing example input"
+                              aria-describedby="inputGroup-sizing-default"
+                              placeholder="Enter your logo here"
+                              onChange={(e) => handleLogoUpload(e)}
+                              id="logoInput"
+                            ></input>
                           </div>
                           <div class="col-auto">
-                            <button type="button" class="upload-button" name="uploadbutton" onClick={(e) => submitLogo(e)}>Submit</button>
-
+                            <button
+                              type="button"
+                              class="upload-button"
+                              name="uploadbutton"
+                              onClick={(e) => submitLogo(e)}
+                            >
+                              Submit
+                            </button>
                           </div>
                         </form>
                       </div>
                     </div>
-
                   </div>
 
-                  {tier == 'Platinum' && (
+                  {tier == "Platinum" && (
                     <div className="row mt-5">
                       <div class="upload-card">
                         <div class="card-body">
@@ -308,10 +315,12 @@ function CustomizeStall() {
 
                           <div className="row mt-5">
                             <div className="col-lg-9 align-self-center ">
-
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -321,13 +330,18 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[0] ? files[0].name : 'No file chosen...'}
+                                    {files[0]
+                                      ? files[0].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -337,13 +351,18 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[1] ? files[1].name : 'No file chosen...'}
+                                    {files[1]
+                                      ? files[1].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -353,13 +372,18 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[2] ? files[2].name : 'No file chosen...'}
+                                    {files[2]
+                                      ? files[2].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -369,13 +393,18 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[3] ? files[3].name : 'No file chosen...'}
+                                    {files[3]
+                                      ? files[3].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -385,13 +414,18 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[4] ? files[4].name : 'No file chosen...'}
+                                    {files[4]
+                                      ? files[4].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -401,19 +435,28 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[5] ? files[5].name : 'No file chosen...'}
+                                    {files[5]
+                                      ? files[5].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
-                              <button type="button" class="upload-button align-self-center" name="uploadbutton" onClick={(e) => submitBanner(e)}>Submit</button>
-
+                              <button
+                                type="button"
+                                class="upload-button align-self-center"
+                                name="uploadbutton"
+                                onClick={(e) => submitBanner(e)}
+                              >
+                                Submit
+                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>)}
+                    </div>
+                  )}
 
-                  {tier == 'Gold' && (
+                  {tier == "Gold" && (
                     <div className="row mt-5">
                       <div class="upload-card">
                         <div class="card-body">
@@ -421,10 +464,12 @@ function CustomizeStall() {
 
                           <div className="row mt-5">
                             <div className="col-lg-9 align-self-center ">
-
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -434,13 +479,18 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[0] ? files[0].name : 'No file chosen...'}
+                                    {files[0]
+                                      ? files[0].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -450,13 +500,18 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[1] ? files[1].name : 'No file chosen...'}
+                                    {files[1]
+                                      ? files[1].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -466,13 +521,18 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[2] ? files[2].name : 'No file chosen...'}
+                                    {files[2]
+                                      ? files[2].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -482,19 +542,28 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[3] ? files[3].name : 'No file chosen...'}
+                                    {files[3]
+                                      ? files[3].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
-                              <button type="button" class="upload-button align-self-center" name="uploadbutton" onClick={(e) => submitBanner(e)}>Submit</button>
-
+                              <button
+                                type="button"
+                                class="upload-button align-self-center"
+                                name="uploadbutton"
+                                onClick={(e) => submitBanner(e)}
+                              >
+                                Submit
+                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>)}
+                    </div>
+                  )}
 
-                  {tier == 'Diamond' && (
+                  {tier == "Diamond" && (
                     <div className="row mt-5">
                       <div class="upload-card">
                         <div class="card-body">
@@ -502,10 +571,12 @@ function CustomizeStall() {
 
                           <div className="row mt-5">
                             <div className="col-lg-9 align-self-center ">
-
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -515,13 +586,18 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[0] ? files[0].name : 'No file chosen...'}
+                                    {files[0]
+                                      ? files[0].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -531,13 +607,18 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[1] ? files[1].name : 'No file chosen...'}
+                                    {files[1]
+                                      ? files[1].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
                               <div className="file-upload">
                                 <div className="file-select">
-                                  <div className="file-select-button" id="fileName">
+                                  <div
+                                    className="file-select-button"
+                                    id="fileName"
+                                  >
                                     Choose File
                                   </div>
                                   <input
@@ -547,79 +628,117 @@ function CustomizeStall() {
                                     onChange={(e) => handleFileUpload(e)}
                                   />
                                   <div className="file-select-name" id="noFile">
-                                    {files[2] ? files[2].name : 'No file chosen...'}
+                                    {files[2]
+                                      ? files[2].name
+                                      : "No file chosen..."}
                                   </div>
                                 </div>
                               </div>
 
-
-                              <button type="button" class="upload-button align-self-center" name="uploadbutton" onClick={(e) => submitBanner(e)}>Submit</button>
-
+                              <button
+                                type="button"
+                                class="upload-button align-self-center"
+                                name="uploadbutton"
+                                onClick={(e) => submitBanner(e)}
+                              >
+                                Submit
+                              </button>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>)}
-
-
+                    </div>
+                  )}
                 </Carousel.Item>
 
-                {tier !== 'Gold' &&
-                  <Carousel.Item>
-
-                    <div className="row mt-5">
-                      <div className="col-lg-9 align-self-center ">
-                        <div className="row"><h5>Submit Video</h5></div>
-                        <div class="frame">
-
-                          <div class="center">
-                            <div class="title">
-                              <h1 style={{ fontSize: 18 }}>Upload your video here</h1>
-                            </div>
-
-                            <div class="dropzone" >
-                              <div class="upload-icon"> {video[0] ? video[0].name : 'No file chosen...'} </div>
-                              <input type="file" class="upload-input" id="videoField" onChange={
-                                (e) => handleVideoUpload(e)
-                              } multiple />
-
-                            </div>
-                            <button type="button" class="upload-button" name="uploadbutton" onClick={(e) => submitVideo(e)}>Submit</button>
-
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                  </Carousel.Item>}
-                {tier == 'Diamond' &&
+                {tier !== "Gold" && (
                   <Carousel.Item>
                     <div className="row mt-5">
                       <div className="col-lg-9 align-self-center ">
-                        <div className="row"><h5>Submit 3D Model</h5></div>
+                        <div className="row">
+                          <h5>Submit Video</h5>
+                        </div>
                         <div class="frame">
-
                           <div class="center">
                             <div class="title">
-                              <h1 style={{ fontSize: 18 }}>Upload your 3D Model Here(zip file)</h1>
+                              <h1 style={{ fontSize: 18 }}>
+                                Upload your video here
+                              </h1>
                             </div>
 
-                            <div class="dropzone" >
-                              <div class="upload-icon"> {model[0] ? model[0].name : 'No file chosen...'} </div>
-                              <input type="file" class="upload-input" id="modelField" onChange={
-                                (e) => handleModelUpload(e)
-                              } multiple />
-
+                            <div class="dropzone">
+                              <div class="upload-icon">
+                                {" "}
+                                {video[0]
+                                  ? video[0].name
+                                  : "No file chosen..."}{" "}
+                              </div>
+                              <input
+                                type="file"
+                                class="upload-input"
+                                id="videoField"
+                                onChange={(e) => handleVideoUpload(e)}
+                                multiple
+                              />
                             </div>
-                            <button type="button" class="upload-button" name="uploadbutton" onClick={(e) => submitModel(e)}>Submit</button>
-
+                            <button
+                              type="button"
+                              class="upload-button"
+                              name="uploadbutton"
+                              onClick={(e) => submitVideo(e)}
+                            >
+                              Submit
+                            </button>
                           </div>
                         </div>
                       </div>
-
                     </div>
                   </Carousel.Item>
-                }
+                )}
+                {tier == "Diamond" && (
+                  <Carousel.Item>
+                    <div className="row mt-5">
+                      <div className="col-lg-9 align-self-center ">
+                        <div className="row">
+                          <h5>Submit 3D Model</h5>
+                        </div>
+                        <div class="frame">
+                          <div class="center">
+                            <div class="title">
+                              <h1 style={{ fontSize: 18 }}>
+                                Upload your 3D Model Here(zip file)
+                              </h1>
+                            </div>
+
+                            <div class="dropzone">
+                              <div class="upload-icon">
+                                {" "}
+                                {model[0]
+                                  ? model[0].name
+                                  : "No file chosen..."}{" "}
+                              </div>
+                              <input
+                                type="file"
+                                class="upload-input"
+                                id="modelField"
+                                onChange={(e) => handleModelUpload(e)}
+                                multiple
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              class="upload-button"
+                              name="uploadbutton"
+                              onClick={(e) => submitModel(e)}
+                            >
+                              Submit
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Carousel.Item>
+                )}
               </Carousel>
             </div>
           </div>
