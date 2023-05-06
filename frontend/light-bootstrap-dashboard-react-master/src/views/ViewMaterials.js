@@ -38,12 +38,27 @@ export default function ViewMaterials() {
 
   const handleVideo = async (val, e) => {
     e.preventDefault();
-    const response = await Axios.get(val, { responseType: 'blob' });
-    const blob = new Blob([response.data], { type: response.headers['content-type'] });
+    const response = await Axios.get(val, { responseType: "blob" });
+    const blob = new Blob([response.data], {
+      type: response.headers["content-type"],
+    });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.download = 'video.mp4';
+    link.download = "video.mp4";
+    link.click();
+  };
+
+  const handleModel = async (val, e) => {
+    e.preventDefault();
+    const response = await Axios.get(val, { responseType: "blob" });
+    const blob = new Blob([response.data], {
+      type: response.headers["content-type"],
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "model.zip";
     link.click();
   };
 
@@ -63,7 +78,7 @@ export default function ViewMaterials() {
       <Container fluid>
         <Row>
           <Col>
-            <Card>
+            <Card style={{ border: "none" }}>
               <Card.Header>
                 <Card.Title as="h4">Uploaded materials</Card.Title>
               </Card.Header>
@@ -81,41 +96,7 @@ export default function ViewMaterials() {
                             />
                           </Form.Group>
                         </Col>
-                      </Row>
-                      <Row>
-                        <Col mb="3">
-                          <Form.Group>
-                            <Form.Label>Stall ID</Form.Label>
-                            <Form.Control disabled value={material.stallId} />
-                          </Form.Group>
-                        </Col>
-                        <Col mb="3">
-                          <Form.Group>
-                            <Form.Label>Stall Name</Form.Label>
-                            <Form.Control disabled value={material.stallName} />
-                          </Form.Group>
-                        </Col>
-                        <Col mb="3">
-                          <Form.Group>
-                            <Form.Label>Stall Tier</Form.Label>
-                            <Form.Control disabled value={material.tier} />
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col mb="3">
-                          <Form.Group controlId="formHexValue">
-                            <Form.Label>Stall Color</Form.Label>
-                            <div
-                            md="6"
-                              style={{
-                                backgroundColor: material.stallColor,
-                                height: "5vh",
-                                
-                              }}
-                            ></div>
-                          </Form.Group>
-                        </Col>
+
                         <Col mb="3">
                           <Form.Group>
                             <Form.Label>Logo</Form.Label>
@@ -126,6 +107,35 @@ export default function ViewMaterials() {
                       <Row>
                         <Col mb="3">
                           <Form.Group>
+                            <Form.Label>Stall ID</Form.Label>
+                            <Form.Control disabled value={material.stallId} />
+                          </Form.Group>
+                        </Col>
+
+                        <Col mb="3">
+                          <Form.Group>
+                            <Form.Label>Stall Tier</Form.Label>
+                            <Form.Control disabled value={material.tier} />
+                          </Form.Group>
+                        </Col>
+
+                        <Col mb="3">
+                          <Form.Group controlId="formHexValue">
+                            <Form.Label>Stall Color</Form.Label>
+                            <div
+                              md="6"
+                              style={{
+                                backgroundColor: material.stallColor,
+                                height: "5vh",
+                              }}
+                            ></div>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                      <Row></Row>
+                      <Row>
+                        <Col mb="3">
+                          <Form.Group>
                             <br />
                             <Form.Label>Banners</Form.Label>
                             {material.bannerUrl1 == null ? (
@@ -133,8 +143,8 @@ export default function ViewMaterials() {
                             ) : (
                               <>
                                 <button
-                                className="secondary-button"
-                                style={{
+                                  className="secondary-button"
+                                  style={{
                                     marginTop: "2vh",
                                     minWidth: "200px",
                                     maxHeight: "20px",
@@ -152,8 +162,8 @@ export default function ViewMaterials() {
                             ) : (
                               <>
                                 <button
-                                className="secondary-button"
-                                style={{
+                                  className="secondary-button"
+                                  style={{
                                     marginTop: "2vh",
                                     minWidth: "200px",
                                     maxHeight: "20px",
@@ -171,8 +181,8 @@ export default function ViewMaterials() {
                             ) : (
                               <>
                                 <button
-                                className="secondary-button"
-                                style={{
+                                  className="secondary-button"
+                                  style={{
                                     marginTop: "2vh",
                                     minWidth: "200px",
                                     maxHeight: "20px",
@@ -190,8 +200,8 @@ export default function ViewMaterials() {
                             ) : (
                               <>
                                 <button
-                                className="secondary-button"
-                                style={{
+                                  className="secondary-button"
+                                  style={{
                                     marginTop: "2vh",
                                     minWidth: "200px",
                                     maxHeight: "20px",
@@ -209,8 +219,8 @@ export default function ViewMaterials() {
                             ) : (
                               <>
                                 <button
-                                className="secondary-button"
-                                style={{
+                                  className="secondary-button"
+                                  style={{
                                     marginTop: "2vh",
                                     minWidth: "200px",
                                     maxHeight: "20px",
@@ -228,8 +238,8 @@ export default function ViewMaterials() {
                             ) : (
                               <>
                                 <button
-                                className="secondary-button"
-                                style={{
+                                  className="secondary-button"
+                                  style={{
                                     marginTop: "2vh",
                                     minWidth: "200px",
                                     maxHeight: "20px",
@@ -244,20 +254,19 @@ export default function ViewMaterials() {
                             )}
                           </Form.Group>
                         </Col>
-                      </Row>
-                            {material.videoUrl == null ? (
-                              <></>
-                            ) : (
-                              <>
-                              <Row>
-                              <Col mb="3">
-                          <Form.Group>
-                            <br />
-                            <Form.Label>Video</Form.Label>
+
+                        {material.videoUrl == null ? (
+                          <></>
+                        ) : (
+                          <>
+                            <Col mb="3">
+                              <Form.Group>
+                                <br />
+                                <Form.Label>Video</Form.Label>
                                 <button
-                                className="secondary-button"
-                                style={{
-                                    marginTop: "2vh",
+                                  className="secondary-button"
+                                  style={{
+                                    marginTop: "",
                                     minWidth: "200px",
                                     maxHeight: "20px",
                                   }}
@@ -268,13 +277,41 @@ export default function ViewMaterials() {
                                   Download Video
                                 </button>
                               </Form.Group>
-                              </Col>
-                              </Row>
-                              </>
-                            )}
+                            </Col>
+                          </>
+                        )}
+
+                        {material.model == null ? (
+                          <></>
+                        ) : (
+                          <>
+                            <Col mb="3">
+                              <Form.Group>
+                                <br />
+                                <Form.Label>3D Models</Form.Label>
+                                <button
+                                  className="secondary-button"
+                                  style={{
+                                    marginTop: "2vh",
+                                    minWidth: "200px",
+                                    maxHeight: "20px",
+                                  }}
+                                  onClick={(e) =>
+                                    handleModel(material.model, e)
+                                  }
+                                >
+                                  Download Model Zip File
+                                </button>
+                              </Form.Group>
+                            </Col>
+                          </>
+                        )}
+                      </Row>
                     </Form>
                   </>
                 ))}
+
+                <br></br>
               </Card.Body>
             </Card>
           </Col>

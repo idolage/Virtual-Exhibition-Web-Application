@@ -20,10 +20,10 @@ const Experience = ({ avatarId }) => {
       avatarComponent = <Attendeefemaleavatar2 />;
       break;
     case "3":
-      avatarComponent = <Attendeemaleavatar1 />;
+      avatarComponent = <Attendeemaleavatar2 />;
       break;
     case "4":
-      avatarComponent = <Attendeemaleavatar2 />;
+      avatarComponent = <Attendeemaleavatar1 />;
       break;
     default:
       avatarComponent = null;

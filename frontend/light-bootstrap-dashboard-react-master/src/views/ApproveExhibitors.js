@@ -28,6 +28,9 @@ function ApproveExhibitors() {
       console.log(res);
       setShowModal(true);
       setNotification(res.data);
+
+
+      
     });
 
   const handleDelete = (id) =>

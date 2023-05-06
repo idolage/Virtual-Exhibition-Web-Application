@@ -4,18 +4,24 @@ Command: npx gltfjsx@6.1.4 public/stalls/diamondStall.gltf
 */
 
 import React, { useEffect, useRef } from "react";
-import { useGLTF } from '@react-three/drei'
+import { useGLTF } from "@react-three/drei";
 import { useStallCustomization } from "contexts/StallCustomizationContext";
 
 const DiamondStall = (props) => {
   const { nodes, materials } = useGLTF("./stalls/diamondStall.gltf");
 
-   const { stallColor, setStallColor } = useStallCustomization();
+  const { stallColor, setStallColor } = useStallCustomization();
 
-   useEffect(() => {
-     setStallColor(`#${materials.Diamond_2.color.getHexString()}`);
-   }, []);
-  
+  useEffect(() => {
+    if (stallColor == null) {
+      setStallColor(`#${materials.Diamond_2.color.getHexString()}`);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   setStallColor(`#${materials.Diamond_2.color.getHexString()}`);
+  // }, []);
+
   return (
     <group {...props} dispose={null}>
       <group rotation={[Math.PI / 2, 0, Math.PI / 2]} scale={0.001}>
@@ -786,7 +792,6 @@ const DiamondStall = (props) => {
   );
 };
 
-
 export default DiamondStall;
 
-useGLTF.preload('.stalls/diamondStall.gltf')
+useGLTF.preload(".stalls/diamondStall.gltf");

@@ -42,6 +42,8 @@ function Header() {
     localStorage.removeItem("jwt");
     localStorage.removeItem("userRole");
     localStorage.removeItem("email");
+    localStorage.removeItem("avatarId");
+
     history.push("/login");
   }
 

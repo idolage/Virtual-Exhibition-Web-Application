@@ -176,7 +176,7 @@ function StallsSelect() {
               <Row className="showcase">
                 <li>
                   <div className="stall"></div>
-                  <small>N/A Gold</small>
+                  <small>Gold</small>
                 </li>
                 <li>
                   <div className="stall-sel"></div>
@@ -184,7 +184,7 @@ function StallsSelect() {
                 </li>
                 <li>
                   <div className="pstall"></div>
-                  <small>N/A Platinum</small>
+                  <small>Platinum</small>
                 </li>
                 <li>
                   <div className="pstall-sel"></div>
@@ -192,7 +192,7 @@ function StallsSelect() {
                 </li>
                 <li>
                   <div className="dstall"></div>
-                  <small>N/A Diamond</small>
+                  <small>Diamond</small>
                 </li>
                 <li>
                   <div className="dstall-sel"></div>
