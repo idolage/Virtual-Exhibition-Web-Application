@@ -9,6 +9,7 @@ import org.ve.stats.repository.StatsRepository;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,12 +64,59 @@ public class StatsService {
         }
     }
 
-    public ResponseEntity<?> getStatByExhibitionId(String exhibitionId){
+    public ResponseEntity<?> getStatSumByExhibitionId(String exhibitionId){
         List<Stats> stats = statsRepository.findByExhibitionId(exhibitionId);
+        int sum=0;
         if(stats.size()>0){
-            return new ResponseEntity<>(stats, HttpStatus.OK);
+            for(int i=0;i<stats.size();i++){
+                sum+=stats.get(i).getDuration();
+            }
+            return new ResponseEntity<>(sum, HttpStatus.OK);
         } else{
-            return new ResponseEntity<>("No stats found",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(sum,HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<?> getStatAvgByExhibitionId(String exhibitionId){
+        List<Stats> stats = statsRepository.findByExhibitionId(exhibitionId);
+        int sum=0;
+        if(stats.size()>0){
+            for(int i=0;i<stats.size();i++){
+                sum+=stats.get(i).getDuration();
+            }
+            return new ResponseEntity<>((sum/stats.size()), HttpStatus.OK);
+        } else{
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<?> getStatMaxByExhibitionId(String exhibitionId){
+        List<Stats> stats = statsRepository.findByExhibitionId(exhibitionId);
+        int max;
+        if(stats.size()>0){
+            max=stats.get(0).getDuration();
+            for(int i=1;i<stats.size();i++){
+                if(max<stats.get(i).getDuration())
+                    max=stats.get(i).getDuration();
+            }
+            return new ResponseEntity<>(max, HttpStatus.OK);
+        } else{
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<?> getStatMinByExhibitionId(String exhibitionId){
+        List<Stats> stats = statsRepository.findByExhibitionId(exhibitionId);
+        int min;
+        if(stats.size()>0){
+            min=stats.get(0).getDuration();
+            for(int i=1;i<stats.size();i++){
+                if(min>stats.get(i).getDuration())
+                    min=stats.get(i).getDuration();
+            }
+            return new ResponseEntity<>(min, HttpStatus.OK);
+        } else{
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
         }
     }
 }

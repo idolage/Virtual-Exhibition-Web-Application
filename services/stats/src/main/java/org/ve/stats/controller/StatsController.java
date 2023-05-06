@@ -40,9 +40,27 @@ public class StatsController {
         return statsService.updateStat(id);
     }
 
-    @GetMapping("/exhibition/{exhibitionId}")
+    @GetMapping("/exhibition/sum/{exhibitionId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> getStats(@PathVariable String exhibitionId){
-        return statsService.getStatByExhibitionId(exhibitionId);
+    public ResponseEntity<?> getStatSumByExhibitionId(@PathVariable String exhibitionId){
+        return statsService.getStatSumByExhibitionId(exhibitionId);
+    }
+
+    @GetMapping("/exhibition/avg/{exhibitionId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> getStatAvgByExhibitionId(@PathVariable String exhibitionId){
+        return statsService.getStatAvgByExhibitionId(exhibitionId);
+    }
+
+    @GetMapping("/exhibition/max/{exhibitionId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> getStatMaxByExhibitionId(@PathVariable String exhibitionId){
+        return statsService.getStatMaxByExhibitionId(exhibitionId);
+    }
+
+    @GetMapping("/exhibition/min/{exhibitionId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> getStatMinByExhibitionId(@PathVariable String exhibitionId){
+        return statsService.getStatMinByExhibitionId(exhibitionId);
     }
 }
