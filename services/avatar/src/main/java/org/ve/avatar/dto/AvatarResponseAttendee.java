@@ -17,5 +17,4 @@ public class AvatarResponseAttendee {
     private String  beardColor;
     private String  skinColor;
 
-    private String  gender;
 }

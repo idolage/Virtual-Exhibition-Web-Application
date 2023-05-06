@@ -32,11 +32,24 @@ const Attendeemaleavatar1 = (props) => {
   }, []);
 
   useEffect(() => {
-    setHairColor(`#${materials.Ch01_hair.color.getHexString()}`);
-    setSkinColor(`#${materials.Ch01_body.color.getHexString()}`);
-    setShirtColor(`#${materials.Ch01_body.color.getHexString()}`);
-    setPantsColor(`#${materials.Ch01_body.color.getHexString()}`);
-    setShoesColor(`#${materials.Ch01_body.color.getHexString()}`);
+    if (hairColor == null) {
+      setHairColor(`#${materials.Ch01_hair.color.getHexString()}`);
+    }
+    if (skinColor == null) {
+      setSkinColor(`#${materials.Ch01_body.color.getHexString()}`);
+    }
+
+    if (shirtColor == null) {
+      setShirtColor(`#${materials.Ch01_body.color.getHexString()}`);
+    }
+
+    if (pantsColor == null) {
+      setPantsColor(`#${materials.Ch01_body.color.getHexString()}`);
+    }
+
+    if (shoesColor == null) {
+      setShoesColor(`#${materials.Ch01_body.color.getHexString()}`);
+    }
   }, []);
   return (
     <group ref={group} {...props} dispose={null}>

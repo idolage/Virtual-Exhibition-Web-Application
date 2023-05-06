@@ -31,12 +31,30 @@ const Attendeefemaleavatar1=(props) =>{
      actions[names[0]].reset().fadeIn(0.5).play();
    }, []);
   
- useEffect(() => {
-   setHairColor(`#${materials.Ch22_hair.color.getHexString()}`);
-   setSkinColor(`#${materials.Ch22_body.color.getHexString()}`);
-   setShirtColor(`#${materials.Ch22_body.color.getHexString()}`);
-   setPantsColor(`#${materials.Ch22_body.color.getHexString()}`);
-   setShoesColor(`#${materials.Ch22_body.color.getHexString()}`);
+  useEffect(() => {
+     if (hairColor == null) {
+       setHairColor(`#${materials.Ch22_hair.color.getHexString()}`);
+     }
+     if (skinColor == null) {
+       setSkinColor(`#${materials.Ch22_body.color.getHexString()}`);
+     }
+
+     if (shirtColor == null) {
+       setShirtColor(`#${materials.Ch22_body.color.getHexString()}`);
+     }
+
+     if (pantsColor == null) {
+       setPantsColor(`#${materials.Ch22_body.color.getHexString()}`);
+     }
+
+     if (shoesColor == null) {
+       setShoesColor(`#${materials.Ch22_body.color.getHexString()}`);
+     }
+
+
+
+  
+  
  }, []);
   
   return (

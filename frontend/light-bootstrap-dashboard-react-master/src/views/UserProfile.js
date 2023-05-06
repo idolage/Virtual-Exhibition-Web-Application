@@ -14,20 +14,30 @@ import {
   Col,
   Table,
 } from "react-bootstrap";
+import { AvatarCustomizationProvider } from "contexts/AvatarCustomizationContext";
+import { Canvas } from "@react-three/fiber";
+import Experience from "components/AvatarCustomization/Experience";
+import Interface from "components/AvatarCustomization/Interface";
 
 const PurchasedTickets = () => {
   const [tickets, setTickets] = useState([]);
+
   const storedEmail = localStorage.getItem("email");
 
   useEffect(() => {
-    Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`).then((response) => {
-      setTickets(response.data);
+    Axios.get(
+      `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`
+    ).then((response) => {
+      console.log(response);
+      if (response.data != "") {
+        setTickets(response.data);
+      }
     });
   }, []);
 
   return (
     <>
-    <Table className="table-hover">
+      <Table className="table-hover">
         <thead>
           <tr>
             <th className="border-0">Ticket ID</th>
@@ -38,7 +48,7 @@ const PurchasedTickets = () => {
           </tr>
         </thead>
         <tbody>
-        {tickets.map((ticket,i) => (
+          {tickets.map((ticket, i) => (
             <tr key={i}>
               <td>{ticket.ticketId}</td>
               <td>{ticket.exhibitionName}</td>
@@ -46,10 +56,10 @@ const PurchasedTickets = () => {
             </tr>
           ))}
         </tbody>
-        </Table>
+      </Table>
     </>
-  )
-}
+  );
+};
 
 const Admin = () => {
   const [email, setEmail] = useState("");
@@ -91,7 +101,7 @@ const Admin = () => {
       try {
         const storedEmail = localStorage.getItem("email");
         const response = await Axios.get(
-          `http://localhost:8080/api/auth/getAdmin/${storedEmail}`
+          `http://localhost:8080/api/avatars/getAdmin/${storedEmail}`
         );
         setEmail(response.data.emailAddress);
         setName(response.data.name);
@@ -255,8 +265,10 @@ const Attendee = () => {
   const [notification, setNotification] = useState(null);
   const [showModal, setShowModal] = React.useState(false);
 
-  const[exId, setExId]=useState("No records to show");
-  const[ticketId, setTicketId]=useState("No records to show");
+  const [exId, setExId] = useState("No records to show");
+  const [ticketId, setTicketId] = useState("No records to show");
+
+  const [avatarIdVal, setAvatarIdVal] = useState("");
 
   function updateAttendee(e) {
     e.preventDefault();
@@ -302,7 +314,9 @@ const Attendee = () => {
 
     const fetchIds = () => {
       const storedEmail = localStorage.getItem("email");
-      Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`)
+      Axios.get(
+        `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`
+      )
         .then((response) => {
           if (!response.data[0].isExpired) {
             setExId(response.data[0].exhibitionId);
@@ -313,57 +327,73 @@ const Attendee = () => {
           console.error(e);
         });
     };
-  
+
     fetchAttendeeDetails();
     fetchIds();
   }, []);
+
+  useEffect(() => {
+    const fetchAvatarDetails = async () => {
+      try {
+        const storedEmail = localStorage.getItem("email");
+        const response = await Axios.get(
+          `http://localhost:8080/api/avatars/${storedEmail}`
+        );
+        setAvatarIdVal(response.data.avatarId);
+        console.log(response.data.avatarId + "JJ" + avatarIdVal);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchAvatarDetails();
+  }, [avatarIdVal]);
 
   return (
     <>
       <Container fluid>
         <Row>
           <Col lg="6" sm="6">
-            <Card className="card-stats">
+            <Card className="card-stats" style={{ border: "none" }}>
               <Card.Body>
                 <Row>
-                    <div className="numbers text-center">
-                    <i className="nc-icon nc-tag-content text-primary" style={{fontSize:'28px'}}></i>
-                      <Card.Title as="h5">Ticket ID</Card.Title>
-                    </div>
+                  <div className="numbers text-center">
+                    <i
+                      className="nc-icon nc-tag-content text-primary"
+                      style={{ fontSize: "28px" }}
+                    ></i>
+                    <Card.Title as="h5">Ticket ID</Card.Title>
+                  </div>
                 </Row>
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
-                <div className="stats">
-                  {ticketId}
-                </div>
+                <div className="stats">{ticketId}</div>
               </Card.Footer>
             </Card>
           </Col>
           <Col lg="6" sm="6">
-            <Card className="card-stats">
+            <Card className="card-stats" style={{ border: "none" }}>
               <Card.Body>
                 <Row>
-                    <div className="numbers text-center">
-                    <i className="nc-icon nc-album-2 text-primary" style={{fontSize:'28px'}}></i>
-                      <Card.Title as="h5">
-                        Exhibition ID
-                        </Card.Title>
-                    </div>
+                  <div className="numbers text-center">
+                    <i
+                      className="nc-icon nc-album-2 text-primary"
+                      style={{ fontSize: "28px" }}
+                    ></i>
+                    <Card.Title as="h5">Exhibition ID</Card.Title>
+                  </div>
                 </Row>
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
-                <div className="stats">
-                  {exId}
-                </div>
+                <div className="stats">{exId}</div>
               </Card.Footer>
             </Card>
           </Col>
         </Row>
         <Row>
-          <Col lg="6">
-            <Card>
+          <Col lg="12">
+            <Card style={{ border: "none" }}>
               <Card.Header>
                 <Card.Title as="h4">Edit Profile</Card.Title>
               </Card.Header>
@@ -433,9 +463,9 @@ const Attendee = () => {
                       </Form.Group>
                     </Col>
                   </Row>
-
+<br></br>
                   <Button
-                    className="btn-fill pull-right"
+                    className="btn-fill pull-right "
                     type="submit"
                     variant="info"
                     onClick={(e) => updateAttendee(e)}
@@ -480,16 +510,6 @@ const Attendee = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col lg="6">
-            <Card>
-              <Card.Header>
-                <Card.Title as="h4">Avatar</Card.Title>
-              </Card.Header>
-              <Card.Body>
-                <p>3D Avatar goes here</p>
-              </Card.Body>
-            </Card>
-          </Col>
         </Row>
         {/* <Row>
           <Col lg='12'>
@@ -503,15 +523,16 @@ const Attendee = () => {
             </Card></Col>
         </Row> */}
         <Row>
-          <Col lg='12'>
-        <Card>
+          <Col lg="12">
+            <Card style={{ border: "none" }}>
               <Card.Header>
                 <Card.Title as="h4">Visited Exhibitions</Card.Title>
               </Card.Header>
               <Card.Body>
-                <PurchasedTickets/>
+                <PurchasedTickets />
               </Card.Body>
-            </Card></Col>
+            </Card>
+          </Col>
         </Row>
       </Container>
     </>
@@ -529,8 +550,8 @@ const Exhibitor = () => {
   const [notification, setNotification] = useState(null);
   const [showModal, setShowModal] = React.useState(false);
 
-  const[exId, setExId]=useState("No records to show");
-  const[ticketId, setTicketId]=useState("No records to show");
+  const [exId, setExId] = useState("No records to show");
+  const [ticketId, setTicketId] = useState("No records to show");
 
   function updateExhibitor(e) {
     e.preventDefault();
@@ -580,7 +601,9 @@ const Exhibitor = () => {
 
     const fetchIds = () => {
       const storedEmail = localStorage.getItem("email");
-      Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`)
+      Axios.get(
+        `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`
+      )
         .then((response) => {
           if (!response.data[0].isExpired) {
             setExId(response.data[0].exhibitionId);
@@ -599,49 +622,49 @@ const Exhibitor = () => {
   return (
     <>
       <Container fluid>
-      <Row>
+        <Row>
           <Col lg="6" sm="6">
-            <Card className="card-stats">
+            <Card className="card-stats" style={{ border: "none" }}>
               <Card.Body>
                 <Row>
-                    <div className="numbers text-center">
-                    <i className="nc-icon nc-tag-content text-primary" style={{fontSize:'28px'}}></i>
-                      <Card.Title as="h5">Ticket ID</Card.Title>
-                    </div>
+                  <div className="numbers text-center">
+                    <i
+                      className="nc-icon nc-tag-content text-primary"
+                      style={{ fontSize: "28px" }}
+                    ></i>
+                    <Card.Title as="h5">Ticket ID</Card.Title>
+                  </div>
                 </Row>
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
-                <div className="stats">
-                {ticketId}
-                </div>
+                <div className="stats">{ticketId}</div>
               </Card.Footer>
             </Card>
           </Col>
           <Col lg="6" sm="6">
-            <Card className="card-stats">
+            <Card className="card-stats" style={{ border: "none" }}>
               <Card.Body>
                 <Row>
-                    <div className="numbers text-center">
-                    <i className="nc-icon nc-album-2 text-primary" style={{fontSize:'28px'}}></i>
-                      <Card.Title as="h5">
-                        Exhibition ID
-                        </Card.Title>
-                    </div>
+                  <div className="numbers text-center">
+                    <i
+                      className="nc-icon nc-album-2 text-primary"
+                      style={{ fontSize: "28px" }}
+                    ></i>
+                    <Card.Title as="h5">Exhibition ID</Card.Title>
+                  </div>
                 </Row>
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
-                <div className="stats">
-                {exId}
-                </div>
+                <div className="stats">{exId}</div>
               </Card.Footer>
             </Card>
           </Col>
         </Row>
         <Row>
-          <Col lg="6">
-            <Card>
+          <Col lg="12">
+            <Card style={{ border: "none" }}>
               <Card.Header>
                 <Card.Title as="h4">Edit Profile</Card.Title>
               </Card.Header>
@@ -786,16 +809,6 @@ const Exhibitor = () => {
               </Card.Body>
             </Card>
           </Col>
-        <Col lg="6">
-          <Card>
-            <Card.Header>
-              <Card.Title as="h4">Stall</Card.Title>
-            </Card.Header>
-            <Card.Body>
-              <p>3D Stall goes here</p>
-            </Card.Body>
-          </Card>
-        </Col>
         </Row>
       </Container>
     </>
@@ -863,155 +876,155 @@ const ExhibitionOwner = () => {
 
   return (
     <>
-    <Container fluid>
-    <Row>
-      <Col lg='10'>
-      <Card>
+      <Container fluid>
+        <Row>
+          <Col lg="10">
+            <Card>
               <Card.Header>
                 <Card.Title as="h4">Edit Profile</Card.Title>
               </Card.Header>
               <Card.Body>
                 <Form>
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Email</label>
-              <Form.Control
-                defaultValue={email}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Email</label>
+                        <Form.Control
+                          defaultValue={email}
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Name</label>
+                        <Form.Control
+                          defaultValue={name}
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Contact No</label>
+                        <Form.Control
+                          defaultValue={tel}
+                          value={tel}
+                          onChange={(e) => setTel(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>NIC</label>
+                        <Form.Control
+                          defaultValue={nic}
+                          value={nic}
+                          onChange={(e) => setNIC(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col md="12">
+                      <Form.Group>
+                        <label>Company name</label>
+                        <Form.Control
+                          defaultValue={company}
+                          value={company}
+                          onChange={(e) => setCompany(e.target.value)}
+                          type="text"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col md="6">
+                      <Form.Group>
+                        <label>Password</label>
+                        <Form.Control
+                          value={pwd}
+                          onChange={(e) => setPwd(e.target.value)}
+                          type="password"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                    <Col md="6">
+                      <Form.Group>
+                        <label>Re-enter password</label>
+                        <Form.Control
+                          value={rePwd}
+                          onChange={(e) => setRePwd(e.target.value)}
+                          type="password"
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  <Button
+                    className="btn-fill pull-right"
+                    type="submit"
+                    variant="info"
+                    onClick={(e) => updateExhibitionOwner(e)}
+                  >
+                    Update
+                  </Button>
+                  <div className="clearfix"></div>
+                </Form>
+                <Modal
+                  style={{ marginTop: "10vh" }}
+                  className="modal-mini modal-primary"
+                  show={showModal}
+                  onHide={() => setShowModal(false)}
+                >
+                  <Modal.Header className="justify-content-center">
+                    <div className="modal-profile">
+                      <i className="nc-icon nc-notification-70"></i>
+                    </div>
+                  </Modal.Header>
+                  <Modal.Body className="text-center">
+                    <p>{notification}</p>
+                  </Modal.Body>
+                  <div className="modal-footer">
+                    <Button
+                      className="btn-simple"
+                      type="button"
+                      variant="link"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      className="btn-simple"
+                      type="button"
+                      variant="link"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Close
+                    </Button>
+                  </div>
+                </Modal>
+              </Card.Body>
+            </Card>
           </Col>
         </Row>
-
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Name</label>
-              <Form.Control
-                defaultValue={name}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Contact No</label>
-              <Form.Control
-                defaultValue={tel}
-                value={tel}
-                onChange={(e) => setTel(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>NIC</label>
-              <Form.Control
-                defaultValue={nic}
-                value={nic}
-                onChange={(e) => setNIC(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col md="12">
-            <Form.Group>
-              <label>Company name</label>
-              <Form.Control
-                defaultValue={company}
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                type="text"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col md="6">
-            <Form.Group>
-              <label>Password</label>
-              <Form.Control
-                value={pwd}
-                onChange={(e) => setPwd(e.target.value)}
-                type="password"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-          <Col md="6">
-            <Form.Group>
-              <label>Re-enter password</label>
-              <Form.Control
-                value={rePwd}
-                onChange={(e) => setRePwd(e.target.value)}
-                type="password"
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
-
-        <Button
-          className="btn-fill pull-right"
-          type="submit"
-          variant="info"
-          onClick={(e) => updateExhibitionOwner(e)}
-        >
-          Update
-        </Button>
-        <div className="clearfix"></div>
-      </Form>
-      <Modal
-        style={{ marginTop: "10vh" }}
-        className="modal-mini modal-primary"
-        show={showModal}
-        onHide={() => setShowModal(false)}
-      >
-        <Modal.Header className="justify-content-center">
-          <div className="modal-profile">
-            <i className="nc-icon nc-notification-70"></i>
-          </div>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-          <p>{notification}</p>
-        </Modal.Body>
-        <div className="modal-footer">
-          <Button
-            className="btn-simple"
-            type="button"
-            variant="link"
-            onClick={() => setShowModal(false)}
-          >
-            Back
-          </Button>
-          <Button
-            className="btn-simple"
-            type="button"
-            variant="link"
-            onClick={() => setShowModal(false)}
-          >
-            Close
-          </Button>
-        </div>
-      </Modal>
-      </Card.Body>
-      </Card>
-      </Col>
-      </Row>
       </Container>
     </>
   );
@@ -1025,7 +1038,7 @@ const Profile = () => {
   const [userRole, setUserRole] = useState();
   useEffect(() => {
     setUserRole(localStorage.getItem("userRole"));
-  },[])
+  }, []);
 
   if (userRole === "ATTENDEE") {
     return (

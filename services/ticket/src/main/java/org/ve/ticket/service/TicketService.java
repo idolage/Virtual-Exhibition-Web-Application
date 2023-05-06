@@ -179,16 +179,14 @@ public class TicketService {
             String ticketId = document.getString("ticketId");
             Boolean expired = document.getBoolean("isExpired");
 
-            ApiFuture<DocumentSnapshot> exhibitionFuture = exhibitionsCollection.document(exhibitionId).get();
-            DocumentSnapshot exhibitionSnapshot = exhibitionFuture.get();
 
-            if (exhibitionSnapshot.exists()) {
-                String exhibitionName = exhibitionSnapshot.getString("exhibitionName");
-                long ticketPriceLong = exhibitionSnapshot.getLong("ticketPrice");
-                int ticketPrice = (int) ticketPriceLong;
+            Exhibition exhibition = exhibitionsCollection
+                    .whereEqualTo("exhibitionId",exhibitionId).get().get().getDocuments().get(0).toObject(Exhibition.class);
 
 
-
+            if (exhibition!=null) {
+                String exhibitionName = exhibition.getExhibitionName();
+                int ticketPrice =exhibition.getTicketPrice();
                 TicketInfo ticketInfo = new TicketInfo(exhibitionId,exhibitionName, ticketPrice, ticketId,expired);
                 ticketInfos.add(ticketInfo);
             }
