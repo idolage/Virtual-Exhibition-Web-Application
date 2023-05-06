@@ -18,6 +18,8 @@ import { AvatarCustomizationProvider } from "contexts/AvatarCustomizationContext
 import { Canvas } from "@react-three/fiber";
 import Experience from "components/AvatarCustomization/Experience";
 import Interface from "components/AvatarCustomization/Interface";
+import ExhibitorMale from "../assets/img/exhibitorImages/maleExhibitor.png";
+import ExhibitorFemale from "../assets/img/exhibitorImages/femaleExhibitor.png";
 
 const PurchasedTickets = () => {
   const [tickets, setTickets] = useState([]);
@@ -119,7 +121,7 @@ const Admin = () => {
       <Container fluid>
         <Row>
           <Col md="8">
-            <Card>
+            <Card style={{ border: "none" }}>
               <Card.Header>
                 <Card.Title as="h4">Edit Profile</Card.Title>
               </Card.Header>
@@ -203,6 +205,7 @@ const Admin = () => {
                       </Form.Group>
                     </Col>
                   </Row>
+                  <br></br>
 
                   <Button
                     className="btn-fill pull-right"
@@ -393,7 +396,11 @@ const Attendee = () => {
         </Row>
         <Row>
           <Col lg="12">
-            <Card style={{ border: "none" }}>
+            <Card
+              style={{
+                border: "none",
+              }}
+            >
               <Card.Header>
                 <Card.Title as="h4">Edit Profile</Card.Title>
               </Card.Header>
@@ -463,7 +470,7 @@ const Attendee = () => {
                       </Form.Group>
                     </Col>
                   </Row>
-<br></br>
+                  <br></br>
                   <Button
                     className="btn-fill pull-right "
                     type="submit"
@@ -552,6 +559,73 @@ const Exhibitor = () => {
 
   const [exId, setExId] = useState("No records to show");
   const [ticketId, setTicketId] = useState("No records to show");
+
+  const [selectedExhibitor, setSelectedExhibitor] = useState();
+  const [ExhibitorAvatar, setExhibitorAvatar] = useState(false);
+
+  const handleExhibitorSelect = async (avatarId) => {
+    //if the exhibitor has already selected the avatar for the first time
+    if (ExhibitorAvatar === true) {
+      console.log("Updating the avatar:" + avatarId);
+      try {
+        const response = await fetch("http://localhost:8080/api/avatars/", {
+          method: "PUT",
+          body: JSON.stringify({
+            avatarId: avatarId,
+            userId: localStorage.getItem("email"),
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Failed to save avatar.");
+        }
+        setSelectedExhibitor(avatarId);
+      } catch (err) {
+        console.log(err.message);
+      }
+    } else {
+      try {
+        const response = await fetch("http://localhost:8080/api/avatars/", {
+          method: "POST",
+          body: JSON.stringify({
+            avatarId: avatarId,
+            userId: localStorage.getItem("email"),
+            userType: localStorage.getItem("userRole"),
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Failed to save avatar.");
+        }
+        setSelectedExhibitor(avatarId);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+
+    const fetchAvatarDetails = async () => {
+      try {
+        const response = await Axios.get(
+          `http://localhost:8080/api/avatars/${storedEmail}`
+        );
+        if (response.data.avatarId !== null) {
+          setSelectedExhibitor(response.data.avatarId);
+          setExhibitorAvatar(true);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchAvatarDetails();
+  }, []);
 
   function updateExhibitor(e) {
     e.preventDefault();
@@ -669,6 +743,54 @@ const Exhibitor = () => {
                 <Card.Title as="h4">Edit Profile</Card.Title>
               </Card.Header>
               <Card.Body>
+                <Row>
+                  <button
+                    onClick={() => handleExhibitorSelect("5")}
+                    style={{
+                      border:
+                        selectedExhibitor === "5"
+                          ? "5px solid #3458c2"
+                          : "none",
+                      borderRadius: "50%",
+                      backgroundColor: "transparent",
+                      padding: 0,
+                    }}
+                  >
+                    <img
+                      src={ExhibitorFemale}
+                      alt="Female Exhibitor"
+                      style={{
+                        borderRadius: "50%",
+                        width: "100px",
+                        height: "100px",
+                      }}
+                    />
+                  </button>
+                  <span className="mx-2"></span>
+                  <button
+                    onClick={() => handleExhibitorSelect("6")}
+                    style={{
+                      border:
+                        selectedExhibitor === "6"
+                          ? "5px solid #3458c2"
+                          : "none",
+                      borderRadius: "50%",
+                      backgroundColor: "transparent",
+                      padding: 0,
+                    }}
+                  >
+                    <img
+                      src={ExhibitorMale}
+                      alt="Male Exhibitor"
+                      style={{
+                        borderRadius: "50%",
+                        width: "100px",
+                        height: "100px",
+                      }}
+                    />
+                  </button>
+                </Row>
+
                 <Form>
                   <Row>
                     <Col md="12">
@@ -762,6 +884,7 @@ const Exhibitor = () => {
                       </Form.Group>
                     </Col>
                   </Row>
+                  <br></br>
 
                   <Button
                     className="btn-fill pull-right"
@@ -879,7 +1002,7 @@ const ExhibitionOwner = () => {
       <Container fluid>
         <Row>
           <Col lg="10">
-            <Card>
+            <Card style={{ border: "none" }}>
               <Card.Header>
                 <Card.Title as="h4">Edit Profile</Card.Title>
               </Card.Header>
@@ -977,6 +1100,7 @@ const ExhibitionOwner = () => {
                       </Form.Group>
                     </Col>
                   </Row>
+                  <br></br>
 
                   <Button
                     className="btn-fill pull-right"

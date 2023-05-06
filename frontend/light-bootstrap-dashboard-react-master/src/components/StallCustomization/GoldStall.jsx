@@ -14,9 +14,16 @@ const GoldStall = (props) => {
 
   const { stallColor, setStallColor } = useStallCustomization();
 
-  useEffect(() => {
-    setStallColor(`#${materials.gold_7.color.getHexString()}`);
-  }, []);
+
+   useEffect(() => {
+     if (stallColor == null) {
+       setStallColor(`#${materials.gold_7.color.getHexString()}`);
+     }
+   }, []);
+  
+  // useEffect(() => {
+  //   setStallColor(`#${materials.gold_7.color.getHexString()}`);
+  // }, []);
 
   return (
     <group {...props} dispose={null}>

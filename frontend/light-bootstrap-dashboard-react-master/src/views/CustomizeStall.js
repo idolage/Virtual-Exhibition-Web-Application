@@ -14,6 +14,9 @@ import Experience from "components/StallCustomization/Experience";
 import Interface from "components/StallCustomization/Interface";
 import Carousel from "react-bootstrap/Carousel";
 import "../assets/css/custom-style.css";
+
+import Alert from "react-bootstrap/Alert";
+
 function CustomizeStall() {
   const [index, setIndex] = useState(0);
   const [stallId, setStallId] = useState();
@@ -35,6 +38,19 @@ function CustomizeStall() {
   const [hasImage, setHasImage] = React.useState(true);
   const location = useLocation();
   const mainPanel = React.useRef(null);
+
+  const [msgUploadLogo, setMsgUploadLogo] = useState();
+  const [msgUploadLogoErr, setMsgUploadLogoErr] = useState();
+
+  const [msgUploadBanner, setMsgUploadBanner] = useState();
+  const [msgUploadBannerErr, setMsgUploadBannerErr] = useState();
+
+  const [msgUploadVideo, setMsgUploadVideo] = useState();
+  const [msgUploadVideoErr, setMsgUploadVideoErr] = useState();
+
+  const [msgUploadModel, setMsgUploadModel] = useState();
+  const [msgUploadModelErr, setMsgUploadModelErr] = useState();
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
@@ -89,7 +105,7 @@ function CustomizeStall() {
           );
           console.log("&&" + response.data);
           setStallId(response.data);
-          // localStorage.setItem("stallId", response.data);
+          localStorage.setItem("stallId", response.data);
         }
       } catch (error) {
         console.log(error);
@@ -162,11 +178,14 @@ function CustomizeStall() {
       .then((res) => {
         setLogo("");
         document.getElementById("logoInput").value = "";
-        alert("Successfully Uploaded");
+        // alert("Successfully Uploaded");
+        setMsgUploadLogo("Logo Uploaded Successfully");
       })
       .catch((error) => {
         setLogo("");
-        alert("Upload Fail!");
+        setMsgUploadLogoErr("Upload Failed!");
+
+        // alert("Upload Fail!");
       });
   }
 
@@ -183,14 +202,17 @@ function CustomizeStall() {
       .then((res) => {
         setFiles([]);
         console.log([files]);
-        alert("Successfully Uploaded");
+        // alert("Successfully Uploaded");
+        setMsgUploadBanner("Banners Uploaded Successfully");
+
         var chooseFileInputs = document.querySelectorAll("#chooseFile");
         chooseFileInputs.forEach((input) => {
           input.value = "";
         });
       })
       .catch((error) => {
-        alert("Upload Fail!");
+        // alert("Upload Fail!");
+        setMsgUploadBannerErr("Upload Failed!");
       });
   }
   function submitVideo(e) {
@@ -204,11 +226,15 @@ function CustomizeStall() {
     Axios.post(url, formData)
       .then((res) => {
         setVideo([]);
-        alert("Successfully Uploaded");
+        setMsgUploadVideo("Video Uploaded Successfully");
+
+        // alert("Successfully Uploaded");
         document.getElementById("videoField").value = "";
       })
       .catch((error) => {
-        alert("Upload Fail!");
+        setMsgUploadVideoErr("Upload Failed!");
+
+        // alert("Upload Fail!");
       });
   }
 
@@ -223,11 +249,15 @@ function CustomizeStall() {
     Axios.post(url, formData)
       .then((res) => {
         setVideo([]);
-        alert("Successfully Uploaded");
+        // alert("Successfully Uploaded");
+        setMsgUploadModel("Model Uploaded Successfully");
+
         document.getElementById("videoField").value = "";
       })
       .catch((error) => {
-        alert("Upload Fail!");
+        setMsgUploadModelErr("Upload Failed!");
+
+        // alert("Upload Fail!");
       });
   }
 
@@ -248,8 +278,8 @@ function CustomizeStall() {
               >
                 <Carousel.Item>
                   <StallCustomizationProvider>
-                    <div className="row mt-5">
-                      <div className="col-lg-9 align-self-center ">
+                    <div className="row ">
+                      <div className="col-lg-8 align-self-center mt-5 ">
                         <Canvas
                           camera={{ position: [1.8, 1.0, 2.5], fov: 50 }}
                           style={{
@@ -263,13 +293,47 @@ function CustomizeStall() {
                           <Experience stallType={tier} />
                         </Canvas>
                       </div>
-                      <div className="col-lg-3">
+                      <div className="col-lg-3 align-self-center  ">
                         <Interface exhibitionId={exhibitionId} />
                       </div>
+
+                      <div className="col-lg-1"></div>
                     </div>
                   </StallCustomizationProvider>
                 </Carousel.Item>
                 <Carousel.Item>
+                  {msgUploadLogo ? (
+                    <div className="row">
+                      <Alert variant="success">{msgUploadLogo}</Alert>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+
+                  {msgUploadLogoErr ? (
+                    <div className="row">
+                      <Alert variant="danger">{msgUploadLogoErr}</Alert>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+
+                  {msgUploadBanner ? (
+                    <div className="row">
+                      <Alert variant="success">{msgUploadBanner}</Alert>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+
+                  {msgUploadBannerErr ? (
+                    <div className="row">
+                      <Alert variant="danger">{msgUploadBannerErr}</Alert>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+
                   <div className="row mt-5">
                     <div class="upload-card">
                       <div class="card-body">
@@ -653,6 +717,22 @@ function CustomizeStall() {
 
                 {tier !== "Gold" && (
                   <Carousel.Item>
+                    {msgUploadVideo ? (
+                      <div className="row">
+                        <Alert variant="success">{msgUploadVideo}</Alert>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+
+                    {msgUploadVideoErr ? (
+                      <div className="row">
+                        <Alert variant="danger">{msgUploadVideoErr}</Alert>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+
                     <div className="row mt-5">
                       <div className="col-lg-9 align-self-center ">
                         <div className="row">
@@ -697,6 +777,22 @@ function CustomizeStall() {
                 )}
                 {tier == "Diamond" && (
                   <Carousel.Item>
+                    {msgUploadModel ? (
+                      <div className="row">
+                        <Alert variant="success">{msgUploadModel}</Alert>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+
+                    {msgUploadModelErr ? (
+                      <div className="row">
+                        <Alert variant="danger">{msgUploadModelErr}</Alert>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+
                     <div className="row mt-5">
                       <div className="col-lg-9 align-self-center ">
                         <div className="row">
