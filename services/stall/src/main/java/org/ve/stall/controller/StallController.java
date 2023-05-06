@@ -29,8 +29,7 @@ public class StallController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public String addStall(@RequestBody Stall stall) throws InterruptedException, ExecutionException{
-        String stallId= stall.getStallId();
-        return stallService.addStall(stall,stallId);
+        return stallService.addStall(stall);
     }
     @PostMapping("/upload-logo/{exhibitionId}")
     @ResponseStatus(HttpStatus.OK)

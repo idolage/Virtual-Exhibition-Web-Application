@@ -74,7 +74,7 @@ function CustomizeStall() {
     }
   }, [location]);
 
-  const storedEmail = 'exhibitionowner@gmail.com';
+  const storedEmail = 'exhibitornew@gmail.com';
   //const storedEmail = localStorage.getItem("email");
   console.log(storedEmail);
   Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`)
