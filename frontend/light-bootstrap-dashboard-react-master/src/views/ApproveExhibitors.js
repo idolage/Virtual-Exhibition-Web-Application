@@ -28,9 +28,9 @@ function ApproveExhibitors() {
       console.log(res);
       setShowModal(true);
       setNotification(res.data);
-
-
-      
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     });
 
   const handleDelete = (id) =>
