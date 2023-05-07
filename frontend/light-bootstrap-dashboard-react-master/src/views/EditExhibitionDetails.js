@@ -79,33 +79,7 @@ export default function EditExhibitionDetails({exhibitionId}) {
                   type="datetime-local"
                 />
               </Form.Group>
-              {/* {!start && !over ? (
-              <button
-                style={{ 
-                    fontSize: "12px", 
-                    borderRadius: "20px",
-                    marginTop: "2vh",
-                    width: "20vw",
-                    minWidth: "200px",
-                 }}
-                type="button"
-                className="btn btn-success"
-              >
-                Start
-              </button>
-            ) : start && !over ? (
-              <button
-                style={{ fontSize: "12px", borderRadius: "20px" }}
-                type="button"
-                className="btn btn-danger"
-              >
-                End
-              </button>
-            ) : over ? (
-              <>Exhibition Ended</>
-            ) : (
-              <></>
-            )} */}
+              
               <Form.Group>
                 <button
                   onClick={(e) => edit(e)}

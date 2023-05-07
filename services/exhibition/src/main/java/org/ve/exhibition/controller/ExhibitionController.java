@@ -21,6 +21,12 @@ import java.util.concurrent.ExecutionException;
 public class ExhibitionController {
     private final ExhibitionService exhibitionService;
 
+    @GetMapping ("/user/{exhibitionOwnerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> getExhibitionByExhibitionOwnerId(@PathVariable String exhibitionOwnerId) throws InterruptedException, ExecutionException {
+        return exhibitionService.getExhibitionByExhibitionOwnerId(exhibitionOwnerId);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public String addExhibition(@RequestBody Exhibition exhibition) throws InterruptedException, ExecutionException{
