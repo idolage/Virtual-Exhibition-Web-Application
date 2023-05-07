@@ -51,7 +51,8 @@ public class ExhibitorRegistrationService {
                         request.getPassword(),
                         request.getCompany(),
                         UserRole.EXHIBITOR,
-                        request.getExhibitionId()
+                        request.getExhibitionId(),
+                        request.getExhibitionOwnerId()
                 )
         );
         return token;

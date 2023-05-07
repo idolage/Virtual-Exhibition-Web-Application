@@ -21,6 +21,7 @@ export default function UpcomingExhibitions() {
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [exId, setExId] = useState("");
+  const [exOwnerId, setExOwnerId] = useState("");
 
   function register(e) {
     e.preventDefault();
@@ -34,6 +35,7 @@ export default function UpcomingExhibitions() {
           password: password,
           company: company,
           exhibitionId: exId,
+          exhibitionOwnerId: exOwnerId,
         })
         .then((res) => {
           console.log(res.data);
@@ -54,8 +56,9 @@ export default function UpcomingExhibitions() {
     setShowDetails(false);
   };
 
-  const handleInquiry = (id) => {
+  const handleInquiry = (id, ownerID) => {
     setExId(id);
+    setExOwnerId(ownerID);
     setShowDetails(false);
     setInquire(true);
   };
@@ -489,7 +492,7 @@ export default function UpcomingExhibitions() {
                               className="secondary-button"
                               size="sm"
                               onClick={() =>
-                                handleInquiry(exhibition.exhibitionId)
+                                handleInquiry(exhibition.exhibitionId, exhibition.exhibitionOwner.emailAddress)
                               }
                             >
                               Inquire
