@@ -8,6 +8,7 @@ import Carousel from "./CarouselUpcoming";
 export default function UpcomingExhibitions() {
   const [exhibitions, setExhibitions] = useState([]);
 
+
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/exhibitions")
@@ -39,6 +40,8 @@ export default function UpcomingExhibitions() {
           ) : (
             <p>Loading...</p>
           )}
+
+                  
         </div>
       </div>
     </>

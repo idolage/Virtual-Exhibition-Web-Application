@@ -35,11 +35,11 @@ import static org.ve.stall.common.Constants.*;
 @Service
 public class StallService {
 
-    public String addStall(Stall stall, String stallId) throws InterruptedException, ExecutionException{
+    public String addStall(Stall stall) throws InterruptedException, ExecutionException{
 
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<WriteResult> collectionApiFuture = firestore.collection("stalls")
-                .document(stallId).set(stall);
+                .document().set(stall);
         return collectionApiFuture.get().getUpdateTime().toString();
     }
     public ResponseEntity<String> uploadLogo( String exhibitionId,String stallId,String logo, String stallOwnerId,  String tier) throws IOException {

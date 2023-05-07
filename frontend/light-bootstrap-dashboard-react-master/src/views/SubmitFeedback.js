@@ -18,6 +18,18 @@ export default function SubmitFeedback() {
   const [exID, setExID] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [type, setType]=useState(null);
+  const [exhibitions, setExhibitions] = useState([]);
+  const [fetch, setFetch]=useState(false);
+
+useEffect(()=>{
+  Axios.get("http://localhost:8080/api/exhibitions").then((res)=>{
+    setExhibitions(res.data);
+    setFetch(true)
+    console.log(res.data)
+  }).catch((e)=>{
+    console.log(e);
+  })
+},[fetch])
 
   function submitFeedback(e){
     e.preventDefault();
@@ -30,6 +42,8 @@ export default function SubmitFeedback() {
         console.log(res.data);
         setShowModal(true);
         setNotification("Feedback Submitted!");
+        setFeedback("");
+        setType(null);
       })
       .catch((e) => {
         console.log(e);
@@ -48,14 +62,17 @@ export default function SubmitFeedback() {
                   <Row>
                     <Col className="mb-3">
                       <Form.Group>
-                        <Form.Label>Exhibition ID</Form.Label>
+                        <Form.Label>Exhibition</Form.Label>
                         <Form.Control
-                            required
                           value={exID}
+                            as="select"
                           onChange={(e) => setExID(e.target.value)}
-                          type="text"
-                          placeholder="Enter Exhibition ID"
-                        />
+                        >
+                          {exhibitions.map((exhibition,index)=>{
+                            return(
+                          <option value={exhibition.id} key={{index}}>{exhibition.exhibitionName}</option>)
+                        })}
+                        </Form.Control>
                       </Form.Group>
                     </Col>
                   </Row>

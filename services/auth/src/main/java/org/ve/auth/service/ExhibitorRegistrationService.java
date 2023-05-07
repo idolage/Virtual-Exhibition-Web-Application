@@ -51,7 +51,9 @@ public class ExhibitorRegistrationService {
                         request.getPassword(),
                         request.getCompany(),
                         UserRole.EXHIBITOR,
-                        request.getExhibitionId()
+                        request.getExhibitionId(),
+                        request.getExhibitionOwnerId(),
+                        false
                 )
         );
         return token;
@@ -75,6 +77,6 @@ public class ExhibitorRegistrationService {
         exhibitor.setPassword(encodedPassword);
         Firestore firestore = FirestoreClient.getFirestore();
         firestore.collection("users").document().set(exhibitor);
-        return "Exhibitor registered successfully! Confirmation email is sent to the provided email";
+        return "Exhibitor registered successfully! Once the exhibition owner approves your inquiry you'll get notified via an email";
     }
 }
