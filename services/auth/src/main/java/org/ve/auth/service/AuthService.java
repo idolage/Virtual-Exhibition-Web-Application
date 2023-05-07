@@ -75,10 +75,11 @@ public class AuthService {
             String company = documents.get(0).getString("company");
             String exhibitionId = documents.get(0).getString("exhibitionId");
             String exhibitionOwnerId = documents.get(0).getString("exhibitionOwnerId");
-            Exhibitor exhibitor = new Exhibitor(email,name, contactNo,nic,"",company,UserRole.EXHIBITOR,exhibitionId,exhibitionOwnerId);
+            boolean enabled = documents.get(0).getBoolean("enabled");
+            Exhibitor exhibitor = new Exhibitor(email,name, contactNo,nic,"",company,UserRole.EXHIBITOR,exhibitionId,exhibitionOwnerId,enabled);
             return exhibitor;
         }else{
-            return new Exhibitor(null,null,null,null,null,null,UserRole.INVALID,null,null);
+            return new Exhibitor(null,null,null,null,null,null,UserRole.INVALID,null,null,false);
         }
     }
 

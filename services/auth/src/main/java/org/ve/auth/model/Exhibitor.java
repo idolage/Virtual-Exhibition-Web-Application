@@ -34,9 +34,9 @@ public class Exhibitor implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private boolean locked = false;
-    private boolean enabled = false;
+    private boolean enabled;
 
-    public Exhibitor(String emailAddress, String name, String contactNo, String nic, String password, String company, UserRole userRole, String exhibitionId, String exhibitionOwnerId) {
+    public Exhibitor(String emailAddress, String name, String contactNo, String nic, String password, String company, UserRole userRole, String exhibitionId, String exhibitionOwnerId, boolean enabled) {
         this.emailAddress = emailAddress;
         this.name = name;
         this.contactNo = contactNo;
@@ -46,6 +46,7 @@ public class Exhibitor implements UserDetails {
         this.userRole = userRole;
         this.exhibitionId = exhibitionId;
         this.exhibitionOwnerId = exhibitionOwnerId;
+        this.enabled=enabled;
     }
 
     @Override
