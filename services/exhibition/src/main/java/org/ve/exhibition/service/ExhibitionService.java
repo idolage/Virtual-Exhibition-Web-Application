@@ -224,6 +224,9 @@ public class ExhibitionService {
         DocumentSnapshot documentSnapshot = documentSnapshotApiFuture.get();
         Exhibition exhibition = documentSnapshot.toObject(Exhibition.class);
         if(exhibition!=null){
+            if(!start){
+                exhibition.setOver(false);
+            }
             exhibition.setStart(start);
             ApiFuture<WriteResult> collectionApiFuture = firestore.collection("exhibitions")
                     .document(Id).set(exhibition);
