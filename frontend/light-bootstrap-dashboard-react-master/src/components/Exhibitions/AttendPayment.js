@@ -7,7 +7,7 @@ const AttendPayment = ({ exhibitionId, userId, userType, price }) => {
     "pk_test_51Mmz4YD6ZxcX2rToMJ2OGmR3HorqkdxlC7KfCFrdmmVRnaoQJHlmyhbff18ridO4IuUgdpErJ8lBjPxqQrIluwrk00volY2MsC";
   const stripePrice = price * 100;
   const [msg, setMsg] = React.useState("Please wait");
-
+  const [show, setShow] = React.useState(false);
   const onToken = (token) => {
     axios
       .post("http://localhost:8080/api/payment-gateway/charge", {
@@ -24,16 +24,20 @@ const AttendPayment = ({ exhibitionId, userId, userType, price }) => {
         axios
           .post("http://localhost:8080/api/payments", newPayment)
           .then((res) => {
+            setMsg("Payment Successfull");
+                setShow(true);
             console.log("done");
           })
           .catch((e) => {
             console.log(e);
             setMsg("Sorry! Please try again");
+            setShow(true);
           });
       })
       .catch((e) => {
         console.log(e);
         setMsg("Sorry! Please try again");
+        setShow(true);
       });
   };
 
@@ -76,6 +80,7 @@ const AttendPayment = ({ exhibitionId, userId, userType, price }) => {
   };
 
   return (
+    <>
     <StripeCheckout
       amount={stripePrice}
       name="Nerambum - නැරඹුම්"
@@ -85,6 +90,43 @@ const AttendPayment = ({ exhibitionId, userId, userType, price }) => {
       stripeKey={publishKey}
       currency="USD"
     />
+    <Modal
+          style={{ marginTop: "10vh" }}
+          className="modal modal-primary"
+          show={show}
+          onHide={() => setShow(false)}
+        >
+          <Modal.Body className="text-center">
+            {msg == "Payment Successfull" ? (
+              <div className="alert alert-success" role="alert">
+                {msg}
+              </div>
+            ) : (
+              <div className="alert alert-danger" role="alert">
+                {msg}
+              </div>
+            )}
+          </Modal.Body>
+          <div className="modal-footer">
+            <Button
+              className="btn-simple"
+              type="button"
+              variant="link"
+              onClick={() => setShow(false)}
+            >
+              Back
+            </Button>
+            <Button
+              className="btn-simple"
+              type="button"
+              variant="link"
+              onClick={() => setShow(false)}
+            >
+              Close
+            </Button>
+          </div>
+        </Modal>
+    </>
   );
 };
 export default AttendPayment;
