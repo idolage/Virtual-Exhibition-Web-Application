@@ -39,6 +39,8 @@ export default function UpcomingExhibitions() {
           ) : (
             <p>Loading...</p>
           )}
+
+                  
         </div>
       </div>
     </>
