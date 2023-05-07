@@ -20,6 +20,7 @@ import Experience from "components/AvatarCustomization/Experience";
 import Interface from "components/AvatarCustomization/Interface";
 import ExhibitorMale from "../assets/img/exhibitorImages/maleExhibitor.png";
 import ExhibitorFemale from "../assets/img/exhibitorImages/femaleExhibitor.png";
+import Carousel from "./StartExhibitions";
 
 const PurchasedTickets = () => {
   const [tickets, setTickets] = useState([]);
@@ -948,6 +949,7 @@ const ExhibitionOwner = () => {
   const [company, setCompany] = useState("");
   const [notification, setNotification] = useState(null);
   const [showModal, setShowModal] = React.useState(false);
+  const [cards, setCards] = useState([]);
 
   function updateExhibitionOwner(e) {
     e.preventDefault();
@@ -994,12 +996,29 @@ const ExhibitionOwner = () => {
         console.error(e);
       }
     };
+
+    const fetchExhibitiosByOwner = async () =>{
+      try {
+        const storedEmail = localStorage.getItem("email");
+        const response = await Axios.get(
+          `http://localhost:8080/api/exhibitions/user/${storedEmail}`
+        );
+        setCards(response.data);
+        console.log(cards);
+      } catch (error) {
+        console.error(e);
+      }
+    };
+    fetchExhibitiosByOwner();
     fetchExhibitionOwnerDetails();
   }, []);
 
   return (
     <>
       <Container fluid>
+        <Row>
+          {cards.length > 0?<><Carousel data={cards}/></>:<></>}
+        </Row>
         <Row>
           <Col lg="10">
             <Card style={{ border: "none" }}>
@@ -1158,234 +1177,80 @@ const Other = () => {
   return <p>Please log in first</p>;
 };
 
-const Profile = () => {
+const User = () => {
   const [userRole, setUserRole] = useState();
+
+
   useEffect(() => {
-    setUserRole(localStorage.getItem("userRole"));
+    const role = localStorage.getItem("userRole");
+    if (role) {
+      setUserRole(role);
+    }
+    else{
+      console.log("hjhjggjhgjhghjgj");
+    }
+    
   }, []);
 
-  if (userRole === "ATTENDEE") {
-    return (
-      <div>
-        <Attendee />
-      </div>
-    );
-  }
-
-  if (userRole === "EX_OWNER") {
-    return (
-      <div>
-        <ExhibitionOwner />
-      </div>
-    );
-  }
-
-  if (userRole === "EXHIBITOR") {
-    return (
-      <div>
-        <Exhibitor />
-      </div>
-    );
-  }
-
-  if (userRole === "ADMIN") {
-    return (
-      <div>
-        <Admin />
-      </div>
-    );
-  }
-
-  return (
+  return userRole === "ATTENDEE" ? (
     <div>
-      <Other />
+      <Attendee />
     </div>
-  );
-};
-
-function User() {
-  return (
+  ) : userRole === "EX_OWNER" ? (
+    <div>
+      <ExhibitionOwner />
+    </div>
+  ) : userRole === "EXHIBITOR" ? (
+    <div>
+      <Exhibitor />
+    </div>
+  ) : userRole === "ADMIN" ? (
+    <div>
+      <Admin />
+    </div>
+  ) : (
     <>
-      <Profile />
+      <Other />
     </>
   );
-}
+
+  // if (userRole === "ATTENDEE") {
+  //   return (
+  //     <div>
+  //       <Attendee />
+  //     </div>
+  //   );
+  // }
+
+  // if (userRole === "EX_OWNER") {
+  //   return (
+  //     <div>
+  //       <ExhibitionOwner />
+  //     </div>
+  //   );
+  // }
+
+  // if (userRole === "EXHIBITOR") {
+  //   return (
+  //     <div>
+  //       <Exhibitor />
+  //     </div>
+  //   );
+  // }
+
+  // if (userRole === "ADMIN") {
+  //   return (
+  //     <div>
+  //       <Admin />
+  //     </div>
+  //   );
+  // }
+
+  // return (
+  //   <div>
+  //     <Other />
+  //   </div>
+  // );
+};
 
 export default User;
-
-{
-  /* <Col md="4">
-            <Card className="card-user">
-              <div className="card-image">
-                <img
-                  alt="..."
-                  src={require("assets/img/photo-1431578500526-4d9613015464.jpeg")}
-                ></img>
-              </div>
-              <Card.Body>
-                <div className="author">
-                  <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                    <img
-                      alt="..."
-                      className="avatar border-gray"
-                      src={require("assets/img/faces/face-3.jpg")}
-                    ></img>
-                    <h5 className="title">Mike Andrew</h5>
-                  </a>
-                  <p className="description">michael24</p>
-                </div>
-                <p className="description text-center">
-                  "Lamborghini Mercy <br></br>
-                  Your chick she so thirsty <br></br>
-                  I'm in that two seat Lambo"
-                </p>
-              </Card.Body>
-              <hr></hr>
-              <div className="button-container mr-auto ml-auto">
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-facebook-square"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-twitter"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-google-plus-square"></i>
-                </Button>
-              </div>
-            </Card>
-          </Col> */
-}
-
-// const UserProfile = () => {
-//   return (
-//     <>
-//       <Form>
-//         <Row>
-//           <Col className="pr-1" md="5">
-//             <Form.Group>
-//               <label>Company (disabled)</label>
-//               <Form.Control
-//                 defaultValue="Creative Code Inc."
-//                 disabled
-//                 placeholder="Company"
-//                 type="text"
-//               ></Form.Control>
-//             </Form.Group>
-//           </Col>
-//           <Col className="px-1" md="3">
-//             <Form.Group>
-//               <label>Username</label>
-//               <Form.Control
-//                 defaultValue="michael23"
-//                 placeholder="Username"
-//                 type="text"
-//               ></Form.Control>
-//             </Form.Group>
-//           </Col>
-//           <Col className="pl-1" md="4">
-//             <Form.Group>
-//               <label htmlFor="exampleInputEmail1">Email address</label>
-//               <Form.Control placeholder="Email" type="email"></Form.Control>
-//             </Form.Group>
-//           </Col>
-//         </Row>
-//         <Row>
-//           <Col className="pr-1" md="6">
-//             <Form.Group>
-//               <label>First Name</label>
-//               <Form.Control
-//                 defaultValue="Mike"
-//                 placeholder="Company"
-//                 type="text"
-//               ></Form.Control>
-//             </Form.Group>
-//           </Col>
-//           <Col className="pl-1" md="6">
-//             <Form.Group>
-//               <label>Last Name</label>
-//               <Form.Control
-//                 defaultValue="Andrew"
-//                 placeholder="Last Name"
-//                 type="text"
-//               ></Form.Control>
-//             </Form.Group>
-//           </Col>
-//         </Row>
-//         <Row>
-//           <Col md="12">
-//             <Form.Group>
-//               <label>Address</label>
-//               <Form.Control
-//                 defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-//                 placeholder="Home Address"
-//                 type="text"
-//               ></Form.Control>
-//             </Form.Group>
-//           </Col>
-//         </Row>
-//         <Row>
-//           <Col className="pr-1" md="4">
-//             <Form.Group>
-//               <label>City</label>
-//               <Form.Control
-//                 defaultValue="Mike"
-//                 placeholder="City"
-//                 type="text"
-//               ></Form.Control>
-//             </Form.Group>
-//           </Col>
-//           <Col className="px-1" md="4">
-//             <Form.Group>
-//               <label>Country</label>
-//               <Form.Control
-//                 defaultValue="Andrew"
-//                 placeholder="Country"
-//                 type="text"
-//               ></Form.Control>
-//             </Form.Group>
-//           </Col>
-//           <Col className="pl-1" md="4">
-//             <Form.Group>
-//               <label>Postal Code</label>
-//               <Form.Control placeholder="ZIP Code" type="number"></Form.Control>
-//             </Form.Group>
-//           </Col>
-//         </Row>
-//         <Row>
-//           <Col md="12">
-//             <Form.Group>
-//               <label>About Me</label>
-//               <Form.Control
-//                 cols="80"
-//                 defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in
-//                           that two seat Lambo."
-//                 placeholder="Here can be your description"
-//                 rows="4"
-//                 as="textarea"
-//               ></Form.Control>
-//             </Form.Group>
-//           </Col>
-//         </Row>
-//         <Button className="btn-fill pull-right" type="submit" variant="info">
-//           Update Profile
-//         </Button>
-//         <div className="clearfix"></div>
-//       </Form>
-//     </>
-//   );
-// };

@@ -323,4 +323,15 @@ public class ExhibitionService {
         return documents.get(0).toObject(Exhibition.class).getVisitedUsers();
     }
 
+    public ResponseEntity<?> getExhibitionByExhibitionOwnerId(String exhibitionOwnerId) throws CancellationException,InterruptedException,ExecutionException {
+        Firestore firestore = FirestoreClient.getFirestore();
+        List<QueryDocumentSnapshot> documents = firestore.collection("exhibitions")
+                .whereEqualTo("exhibitionOwnerId", exhibitionOwnerId).whereEqualTo("over", false).get().get().getDocuments();
+        List<Exhibition> exhibitions = new ArrayList<>();;
+        for (QueryDocumentSnapshot document : documents) {
+            exhibitions.add(document.toObject(Exhibition.class));
+        }
+        return new ResponseEntity<>(exhibitions, HttpStatus.OK);
+    }
+
 }

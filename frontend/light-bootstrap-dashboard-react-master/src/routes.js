@@ -49,7 +49,7 @@ import Stat from 'views/Stat';
 const userRole = localStorage.getItem("userRole");
 let dashboardRoutes;
 
-switch (userRole) {
+switch (localStorage.getItem("userRole")) {
   case "ADMIN":
     dashboardRoutes = [
       {
@@ -260,7 +260,15 @@ switch (userRole) {
     break;
   
     default:
-    dashboardRoutes=[{}]
+      // window.location.reload();
+    dashboardRoutes=[{
+      path: "/user",
+      name: "User Profile",
+      icon: "nc-icon nc-circle-09",
+      component: UserProfile,
+      layout: "/admin"
+    }]
+    
   }  
 export default dashboardRoutes;
 

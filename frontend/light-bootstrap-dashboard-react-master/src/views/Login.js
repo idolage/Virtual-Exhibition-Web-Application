@@ -70,15 +70,17 @@ const LoginForm = () => {
       emailAddress: email,
       password: password,
     })
-      .then((res) => {
+      .then(async (res) => {
         console.log(res.data);
         if (res.data.userRole === "null") {
           setNotification(res.data.token);
         } else {
-          localStorage.setItem("userLoggedIn", true);
-          localStorage.setItem("email", email);
-          localStorage.setItem("userRole", res.data.userRole);
-          localStorage.setItem("jwt", res.data.token);
+          
+          await localStorage.setItem("userLoggedIn", true);
+          await localStorage.setItem("email", email);
+          await localStorage.setItem("userRole", res.data.userRole);
+          await localStorage.setItem("jwt", res.data.token);
+          
           history.push("/admin/user");
         }
       })
