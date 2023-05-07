@@ -9,7 +9,7 @@ const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
     "pk_test_51Mmz4YD6ZxcX2rToMJ2OGmR3HorqkdxlC7KfCFrdmmVRnaoQJHlmyhbff18ridO4IuUgdpErJ8lBjPxqQrIluwrk00volY2MsC";
   const stripePrice = price * 100;
   const [msg, setMsg] = React.useState("Please wait");
-  const [show, setShow] = React.useState(true);
+  const [show, setShow] = React.useState(false);
 
   const onToken = (token) => {
     axios
@@ -40,7 +40,6 @@ const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
               .post("http://localhost:8080/api/stalls", newStall)
               .then((res) => {
                 setMsg("Payment Successfull");
-                setType("success");
                 setShow(true);
                 const newLiveStreamChannel = {
                   exhibitionId: exhibitionId,
@@ -132,11 +131,6 @@ const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
         stripeKey={publishKey}
         currency="USD"
       />
-
-      <div
-        className="modal show"
-        style={{ display: "block", position: "initial" }}
-      >
         <Modal
           style={{ marginTop: "10vh" }}
           className="modal modal-primary"
@@ -173,7 +167,6 @@ const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
             </Button>
           </div>
         </Modal>
-      </div>
     </>
   );
 };
