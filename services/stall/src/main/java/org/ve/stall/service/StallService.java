@@ -251,7 +251,7 @@ public class StallService {
         if (!documents.isEmpty()) {
             documents.forEach((element) -> {
                 if (element.exists()) {
-                    Stalls tempStall = new Stalls(element.getString("stallId"),element.getString("stallName"),element.getString("stallColor"));
+                    Stalls tempStall = new Stalls(element.getString("stallId"),element.getString("logoUrl"),element.getString("stallColor"));
                     stalls.add((tempStall));
                 }
             });
