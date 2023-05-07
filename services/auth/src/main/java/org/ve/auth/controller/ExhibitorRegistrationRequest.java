@@ -17,4 +17,5 @@ public class ExhibitorRegistrationRequest {
     private String password;
     private String company;
     private String exhibitionId;
+    private String exhibitionOwnerId;
 }

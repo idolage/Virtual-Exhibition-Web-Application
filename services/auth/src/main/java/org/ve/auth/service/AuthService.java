@@ -74,10 +74,12 @@ public class AuthService {
             String nic  = documents.get(0).getString("nic");
             String company = documents.get(0).getString("company");
             String exhibitionId = documents.get(0).getString("exhibitionId");
-            Exhibitor exhibitor = new Exhibitor(email,name, contactNo,nic,"",company,UserRole.EXHIBITOR,exhibitionId);
+            String exhibitionOwnerId = documents.get(0).getString("exhibitionOwnerId");
+            boolean enabled = documents.get(0).getBoolean("enabled");
+            Exhibitor exhibitor = new Exhibitor(email,name, contactNo,nic,"",company,UserRole.EXHIBITOR,exhibitionId,exhibitionOwnerId,enabled);
             return exhibitor;
         }else{
-            return new Exhibitor(null,null,null,null,null,null,UserRole.INVALID,null);
+            return new Exhibitor(null,null,null,null,null,null,UserRole.INVALID,null,null,false);
         }
     }
 
