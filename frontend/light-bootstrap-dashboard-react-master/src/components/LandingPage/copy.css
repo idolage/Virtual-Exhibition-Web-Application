@@ -1,0 +1,18 @@
+.copy-btn {
+    font-size: 1.5em;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #666;
+}
+
+.copy-btn:hover {
+    color: #000;
+}
+
+.copy-btn::before {
+    content: "\2398";
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}

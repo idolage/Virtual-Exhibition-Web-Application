@@ -167,8 +167,8 @@ const Carousel = ({ data }) => {
       <br />
       <br />
 
-      <Modal size="lg" show={showDetails} onHide={() => handleClose()}>
-        <Modal.Header style={{ backgroundColor: "#002D62", color: "white" }}>
+      <Modal size="md" show={showDetails} onHide={() => handleClose()}>
+        <Modal.Header className="bg-primary d-flex justify-content-center align-items-center" style={{color: "white" }} >
           <Modal.Title>Exhibition Owner Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -214,11 +214,11 @@ const Carousel = ({ data }) => {
                           : exhibition.exhibitionOwner.company}
                       </dd>
                       <hr></hr>
-                      <dt className="col-lg-5">Inquire</dt>
+                      <dt className="col-lg-5"></dt>
                       <dd className="col-lg-7">
                         <button
-                          style={{ fontSize: "14px", borderRadius: "10px" }}
-                          className="secondary-button"
+                          style={{ fontSize: "14px", borderRadius: "10px"}}
+                          className="btn btn-primary"
                           size="sm"
                           onClick={() => handleInquiry(exhibition.exhibitionId)}
                         >
@@ -240,9 +240,9 @@ const Carousel = ({ data }) => {
       </Modal>
 
       <Modal size="lg" show={inquire} onHide={() => handleClose()}>
-        <Modal.Header style={{ backgroundColor: "#002D62", color: "white" }}>
+        <Modal.Header className="bg-primary d-flex justify-content-center align-items-center" style={{color: "white" }} >
           <Modal.Title>
-            Fill your details to register as an exhibitor
+            Exhibitor Registration
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -349,18 +349,21 @@ const Carousel = ({ data }) => {
                   </Col>
                 </Row>
                 <Form.Group>
-                  <button
+                  <div className="d-grid">
+                  <Button
+                      size="lg"
                     onClick={(e) => register(e)}
-                    className="secondary-button"
+                    variant="primary"
                     type="submit"
                     style={{
                       marginTop: "2vh",
-                      width: "20vw",
+                      width: "100%",
                       minWidth: "200px",
                     }}
                   >
                     Register
-                  </button>
+                  </Button>
+                </div>
                 </Form.Group>
               </Form>
               <Modal
@@ -400,9 +403,10 @@ const Carousel = ({ data }) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setInquire(false)}>
+          <button type="button"
+                  className="btn btn-secondary d-grid" onClick={() => setInquire(false)}>
             Close
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
     </div>

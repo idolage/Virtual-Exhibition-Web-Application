@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button, Form, Col, Modal, Row, Card } from "react-bootstrap";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import "./copy.css";
 
 const Carousel = ({ data }) => {
   const [page, setPage] = useState(0);
@@ -9,6 +10,7 @@ const Carousel = ({ data }) => {
   const [cardsPerPage, setCardsPerPage] = useState(1);
 
   const history = useHistory();
+  const inputRef = useRef(null);
   const [show, setShow] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [exhibition, setExhibition] = useState({});
@@ -59,6 +61,13 @@ const Carousel = ({ data }) => {
         console.log(e);
       });
   };
+
+  function handleCopyClick() {
+    if (inputRef.current) {
+      inputRef.current.select();
+      document.execCommand('copy');
+    }
+  }
 
   const cardStyle = {
     width: "300px",
@@ -114,6 +123,49 @@ const Carousel = ({ data }) => {
                 </Card.Title>
                 <br></br>
                 <Card.Text> {card.datetime}</Card.Text>
+                <Card.Text> Exhibition ID: <Form.Control
+                    ref={inputRef}
+                    readOnly
+                    value={card.exhibitionId}
+                /><span className="copy-btn"  onClick={handleCopyClick}></span>
+                </Card.Text>
+                <Card.Text>
+                  {card.noOfUsers}&nbsp;<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAClklEQVR4nO2Vz2vTYBzGo4KC/8IQVExE/wG9m2DRvNZLKcm0Tc3bbYIb3dxpbVqHIF2yetGTeHFgO3YdpN5Fp6f5B+hVbxvSMUGhX3nfdpbN/HrTruTwfuCB0rTP+zzv+00iCBwOh8PhcDjJAdzUGWirc9BWP4GL9qh6n2fJNSHJwObtCXDRF2gj8NE2+Y2Q2J13A8MPSiTxJICOTWj4nt6hR0LSABd9jlygrW6NN1xLegYtaRdaElA1xV14e+np4QJqJ3IBV+2w+scGWuLWP+OjakofYhVoo5+s/rHo7wwEal1cjjtCwOAft8DgWH0l7vQLzLLexMDgH69AU+qGLtCUuoMXGNqO9BjdyJxm9Y9FpAVagwXoiyy4xKEXGTD6xyggMh8x2V0yImTO6Y1NhT7S7/o7P4w/E+RRFmGBJ0n1p5BHmb/55ffCkMAx+/cWWReXyVHSmaVzK+4MvTNj9Gcik9k4Vag5Vw3LThtVJ09l2en7lfqVWq12Ukgq+aXGdcNyXhoV54dhOeAt+3u+Yr8oWM61sQVTp6bO3tBxWp7EJVk3G1Tk82TxDrlmlFfPGRV7zT+0t/KWs1moPb8Y5h87uHIPX1A0vCZreE/RMXhJxXP7uXL9N2v4A+XKK39Qcf6Xn7+imx1FN9/czE6fZwov6w8WFQ0HGGO4O7NIRiJW8CNjBenpx77r9IvsKxpeCA1ObjJZM18Hm2FAuDSi8E5vnCoOoGIppAQGRTNfCYJwImDnzUaYSSr3EPLllZGFNw7GaakOqdxMaAlZN23vmddMFLoDOobsQnXk4Y2+svPV8FPQcVfWzFv/F9DxtygFRjk6hsf9ECWDoptfvQpE+vPxhXeooubgBYyknQCHw+FwOBxh/PwFIqf2OHYasqwAAAAASUVORK5CYII="/>
+                  <span style={{float:"right"}}>
+                    {card.ticketPrice == 0 ? (
+                        <button
+                            style={{ fontSize: "14px", borderRadius: "10px"}}
+                            className="btn btn-success"
+                            size="sm"
+                            onClick={() =>
+                                GetFreeTicket(
+                                    card.exhibitionId,
+                                    "abc@gmail.com",
+                                    "ATTENDEE",
+                                    0
+                                )
+                            }
+                        >
+                          Join Free
+                        </button>
+                    ) : (
+                        <>
+                          USD&nbsp;{card.ticketPrice}&nbsp;
+                          <button
+                              style={{
+                                fontSize: "14px",
+                                borderRadius: "10px",
+                              }}
+                              className="btn btn-info"
+                              size="sm"
+                              onClick={() => history.push("/login")}
+                          >
+                            Login
+                          </button>
+                        </>
+                    )}</span>
+                </Card.Text>
+                <Card.Text></Card.Text>
                 <Card.Text>
                   <button
                     style={{ fontSize: "14px", padding: "5px 30px" }}
@@ -140,10 +192,8 @@ const Carousel = ({ data }) => {
       <br />
       <br />
 
-      <Modal size="lg" show={showDetails} onHide={() => handleClose()}>
-        <Modal.Header
-          style={{ backgroundColor: "#002D62", color: "white" }}
-        >
+      <Modal size="md" show={showDetails} onHide={() => handleClose()}>
+        <Modal.Header className="bg-primary d-flex justify-content-center align-items-center" style={{color: "white" }} >
                   <Modal.Title>Exhibition Details</Modal.Title>
                   <br></br><br></br>
         </Modal.Header>
@@ -152,69 +202,6 @@ const Carousel = ({ data }) => {
             <div className="card-body">
               <div className="row">
                 <div className="col-lg-12">
-                  <h5
-                    className="card-title"
-                    style={{
-                      textAlign: "center",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {exhibition.exhibitionName}
-                  </h5>
-                  <br></br>
-                  <div className="d-flex flex-column align-items-center text-center">
-                    <img src="https://img.icons8.com/external-smashingstocks-isometric-smashing-stocks/55/null/external-Exhibition-art-and-culture-smashingstocks-isometric-smashing-stocks.png" />
-                  </div>
-                  <hr></hr>
-                  <dl className="d-flex align-items-center">
-                    <dl className="row">
-                      <dt className="col-lg-5">Date</dt>
-                      <dd className="col-lg-7">{exhibition.datetime}</dd>
-                      <hr></hr>
-                      <dt className="col-lg-5">Exhibition ID</dt>
-                      <dd className="col-lg-7">{exhibition.exhibitionId}</dd>
-                      <hr></hr>
-                      <dt className="col-lg-5">Active Users</dt>
-                      <dd className="col-lg-7">{exhibition.noOfUsers}</dd>
-                      <hr></hr>
-                      <dt className="col-lg-5">Join</dt>
-                      <dd className="col-lg-7">
-                        {exhibition.ticketPrice == 0 ? (
-                          <button
-                            style={{ fontSize: "14px", borderRadius: "10px" }}
-                            className="secondary-button"
-                            size="sm"
-                            onClick={() =>
-                              GetFreeTicket(
-                                exhibition.exhibitionId,
-                                "abc@gmail.com",
-                                "ATTENDEE",
-                                0
-                              )
-                            }
-                          >
-                            Free
-                          </button>
-                        ) : (
-                          <>
-                            USD&nbsp;{exhibition.ticketPrice}&nbsp;
-                            <button
-                              style={{
-                                fontSize: "14px",
-                                borderRadius: "10px",
-                              }}
-                              className="secondary-button"
-                              size="sm"
-                              onClick={() => history.push("/login")}
-                            >
-                              Login
-                            </button>
-                          </>
-                        )}
-                        <br></br>
-                      </dd>
-                    </dl>
-                  </dl>
                   <h5
                     className="card-title"
                     style={{
