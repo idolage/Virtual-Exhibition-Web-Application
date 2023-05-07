@@ -282,8 +282,10 @@ export default function GetExhibitions() {
                       <hr></hr>
                       <dt className="col-lg-5">Status</dt>
                       <dd className="col-lg-7">
-                        {exhibition.start ? (
+                        {exhibition.start? (
                           <div>Started</div>
+                        ) : !exhibition.over ? (
+                          <div>Not yet started</div>
                         ) : (
                           <div>Ended</div>
                         )}
@@ -292,8 +294,9 @@ export default function GetExhibitions() {
                       {/*<dt className="col-lg-5">Active Users</dt>*/}
                       {/*<dd className="col-lg-7">{exhibition.noOfUsers}</dd>*/}
                       <dt className="col-lg-5"></dt>
+                      {localStorage.getItem("userRole") === "ATTENDEE" && (
                       <dd className="col-lg-7">
-                        {!exhibition.start ? (
+                        {!exhibition.over ? (
                           <Button
                             style={{ fontSize: "12px", borderRadius: "20px" }}
                             variant="secondary"
@@ -301,7 +304,7 @@ export default function GetExhibitions() {
                           >
                             Ended
                           </Button>
-                        ) : activeUsers == 10 ? (
+                        ) : exhibition.start && activeUsers == 10 ? (
                           <Button
                             style={{ fontSize: "12px", borderRadius: "20px" }}
                             variant="danger"
@@ -344,7 +347,7 @@ export default function GetExhibitions() {
                           </>
                         )}
                         <br></br>
-                      </dd>
+                      </dd>)}
                     </dl>
                   </dl>
                   <h5
@@ -402,7 +405,7 @@ export default function GetExhibitions() {
             Close
           </Button>
           {!showDetails ? null : exhibition.exhibitionOwner.emailAddress ===
-            "exhibitionowner@gmail.com" ? (
+            localStorage.getItem("email") ? (
             <Button
               variant="primary"
               onClick={() =>
