@@ -14,7 +14,6 @@ import {
 
 export default function ViewFeedbacks() {
   const [exhibitions, setExhibitions] = useState([]);
-  const storedEmail = localStorage.getItem("email");
   const [showModal, setShowModal] = useState(false);
   const [feedbacks, setFeedbacks] = useState([]);
 
@@ -25,19 +24,23 @@ export default function ViewFeedbacks() {
   const showFeedbacks = (id) =>
     axios
       .get(`http://localhost:8080/api/feedbacks/exhibition/${id}`)
-      .then((resOne) => {
+      .then((res) => {
+        
+        const filteredFeedbacks = res.data.filter(
+          (item) => item.type === "EXHIBITION"
+        );
         setShowModal(true);
-        setFeedbacks(resOne.data);
-      }).catch((e)=>{
+        setFeedbacks(filteredFeedbacks);
+      })
+      .catch((e) => {
         setShowModal(true);
         setFeedbacks(e);
       });
 
   useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
     axios
-      .get(
-        `http://localhost:8080/api/exhibitions/getByExhibitionOwner/${storedEmail}`
-      ) 
+      .get(`http://localhost:8080/api/exhibitions/user/${storedEmail}`)
       .then((res) => {
         setExhibitions(res.data);
       })
@@ -62,10 +65,14 @@ export default function ViewFeedbacks() {
                   {exhibitions.map((exhibition) => (
                     <>
                       <Button
-                        style={{ marginBottom: "15px" }}
+                        style={{ marginBottom: "15px", minWidth: "100%" }}
                         onClick={() => showFeedbacks(exhibition.exhibitionId)}
                       >
-                        Exhibition ID: {exhibition.exhibitionId}
+                        <span style={{ textAlign: "left" }}>
+                          {exhibition.exhibitionName}
+                          <br />
+                          Exhibition ID: {exhibition.exhibitionId}
+                        </span>
                       </Button>
                       <br />
                     </>

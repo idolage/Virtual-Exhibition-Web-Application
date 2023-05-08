@@ -68,10 +68,14 @@ export default function PlattformFB() {
                   {exhibitions.map((exhibition) => (
                     <>
                       <Button
-                        style={{ marginBottom: "15px" }}
+                        style={{ marginBottom: "15px", minWidth: "100%" }}
                         onClick={() => showFeedbacks(exhibition.exhibitionId)}
                       >
-                        Exhibition ID: {exhibition.exhibitionId}
+                        <span style={{ textAlign: "left" }}>
+                          {exhibition.exhibitionName}
+                          <br />
+                          Exhibition ID: {exhibition.exhibitionId}
+                        </span>
                       </Button>
                       <br />
                     </>
