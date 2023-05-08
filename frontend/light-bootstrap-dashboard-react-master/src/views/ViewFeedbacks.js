@@ -57,7 +57,7 @@ export default function ViewFeedbacks() {
               <Card.Header>
                 <Card.Title as="h4">View Feedback</Card.Title>
                 <p className="card-category">
-                  Click on Exhibition ID to view feedbacks
+                  Click on exhibition name to view feedbacks
                 </p>
               </Card.Header>
               <Card.Body>

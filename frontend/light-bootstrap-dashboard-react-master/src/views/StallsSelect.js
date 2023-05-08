@@ -94,54 +94,63 @@ function StallsSelect() {
     //     });
     //   });}
 
-      fetchDetails();
+    fetchDetails();
   }, [location]);
 
   const fetchDetails = async () => {
     try {
       const storedEmail = localStorage.getItem("email");
-      await axios.get(`http://localhost:8080/api/auth/getExhibitor/${storedEmail}`).then(async (respond)=>{
-        let eID = respond.data.exhibitionId
-        let eoID = respond.data.exhibitionOwnerId
-        const res = await axios.get(`http://localhost:8080/api/stalls/booked/${eID}`).then((res)=>{
-          stallIds.length = 0;
-          res.data.forEach((bookedStall) => {
-            stallIds.push(bookedStall.stallId);
-          });
-          setBookedStalls(stallIds);
-          res.data.forEach((bookedStall) => {
-            let divBookedStall = document.getElementById(bookedStall.stallId);
-            let stall = parseInt(bookedStall.stallId);
-            if (
-              (stall >= 1 && stall < 9) ||
-              stall == 22 ||
-              stall == 23 ||
-              stall == 44 ||
-              (stall >= 37 && stall < 44)
-            ) {
-              divBookedStall.style.backgroundColor = "#0047ab";
-            } else if (
-              stall == 11 ||
-              stall == 15 ||
-              stall == 19 ||
-              stall == 27 ||
-              stall == 31 ||
-              stall == 35
-            ) {
-              divBookedStall.style.backgroundColor = "#ed872d";
-            } else {
-              divBookedStall.style.backgroundColor = "#00a86b";
-            }
-          });
-        })
+      await axios
+        .get(`http://localhost:8080/api/auth/getExhibitor/${storedEmail}`)
+        .then(async (respond) => {
+          let eID = respond.data.exhibitionId;
+          localStorage.setItem("exhibitionId", eID);
+          let eoID = respond.data.exhibitionOwnerId;
 
-        console.log(eID, " ********* ", eoID)
-      });
+          const res = await axios
+            .get(`http://localhost:8080/api/stalls/booked/${eID}`)
+            .then((res) => {
+              console.log(eID);
+              stallIds.length = 0;
+              res.data.forEach((bookedStall) => {
+                stallIds.push(bookedStall.stallId);
+              });
+              setBookedStalls(stallIds);
+              res.data.forEach((bookedStall) => {
+                let divBookedStall = document.getElementById(
+                  bookedStall.stallId
+                );
+                let stall = parseInt(bookedStall.stallId);
+                if (
+                  (stall >= 1 && stall < 9) ||
+                  stall == 22 ||
+                  stall == 23 ||
+                  stall == 44 ||
+                  (stall >= 37 && stall < 44)
+                ) {
+                  divBookedStall.style.backgroundColor = "#0047ab";
+                } else if (
+                  stall == 11 ||
+                  stall == 15 ||
+                  stall == 19 ||
+                  stall == 27 ||
+                  stall == 31 ||
+                  stall == 35
+                ) {
+                  divBookedStall.style.backgroundColor = "#ed872d";
+                } else {
+                  divBookedStall.style.backgroundColor = "#00a86b";
+                }
+              });
+            });
+
+          console.log(eID, " ********* ", eoID);
+        });
     } catch (error) {
       console.error(error);
     }
   };
-  
+
   function handleSelectedState(stall) {
     const divStall = document.getElementById(String(stall));
     setError("");
@@ -501,7 +510,7 @@ function StallsSelect() {
                 <div>{console.log(amount)}</div>
                 <div>
                   <Payments
-                    exhibitionId={"ae9e27ce-4ed0-4749-8eb3-89e23581d54e"}
+                    exhibitionId={localStorage.getItem("exhibitionId")}
                     userId={localStorage.getItem("email")}
                     userType={"EXHIBITOR"}
                     price={parseInt(amount)}

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import Axios from "axios";
+import "./copy.css";
 // react-bootstrap components
 import {
   Badge,
@@ -104,7 +105,7 @@ const Admin = () => {
       try {
         const storedEmail = localStorage.getItem("email");
         const response = await Axios.get(
-          `http://localhost:8080/api/avatars/getAdmin/${storedEmail}`
+          `http://localhost:8080/api/auth/getAdmin/${storedEmail}`
         );
         setEmail(response.data.emailAddress);
         setName(response.data.name);
@@ -352,6 +353,25 @@ const Attendee = () => {
     fetchAvatarDetails();
   }, [avatarIdVal]);
 
+
+  const inputRef = useRef(null);
+  const inputRef1 = useRef(null);
+
+  function handleCopyClick() {
+    if (inputRef.current) {
+      inputRef.current.select();
+      document.execCommand("copy");
+    }
+  }
+
+  function handleCopyClickEx() {
+    if (inputRef1.current) {
+      inputRef1.current.select();
+      document.execCommand("copy");
+    }
+  }
+
+
   return (
     <>
       <Container fluid>
@@ -371,7 +391,16 @@ const Attendee = () => {
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
-                <div className="stats">{ticketId}</div>
+                <Form.Control
+                  ref={inputRef}
+                  ReadOnly
+                  value={ticketId}
+                ></Form.Control>
+                <span
+                  style={{ float: "right" }}
+                  className="copy-btn"
+                  onClick={handleCopyClick}
+                ></span>
               </Card.Footer>
             </Card>
           </Col>
@@ -390,7 +419,18 @@ const Attendee = () => {
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
-                <div className="stats">{exId}</div>
+
+                <Form.Control
+                  ref={inputRef1}
+                  ReadOnly
+                  value={exId}
+                ></Form.Control>
+                <span
+                  style={{ float: "right" }}
+                  className="copy-btn"
+                  onClick={handleCopyClickEx}
+                ></span>
+
               </Card.Footer>
             </Card>
           </Col>
