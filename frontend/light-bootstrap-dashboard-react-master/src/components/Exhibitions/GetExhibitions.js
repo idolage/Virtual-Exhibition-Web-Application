@@ -296,7 +296,7 @@ export default function GetExhibitions() {
                       <dt className="col-lg-5"></dt>
                       {localStorage.getItem("userRole") === "ATTENDEE" && (
                       <dd className="col-lg-7">
-                        {!exhibition.over ? (
+                        {exhibition.over ? (
                           <Button
                             style={{ fontSize: "12px", borderRadius: "20px" }}
                             variant="secondary"

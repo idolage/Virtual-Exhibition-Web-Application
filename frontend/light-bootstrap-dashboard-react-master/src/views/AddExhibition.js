@@ -27,7 +27,7 @@ export default function AddExhibition() {
       exhibitionName: exhibitionName,
       exhibitionOwnerId: localStorage.getItem("email"),
       ticketPrice: parseInt(ticketPrice),
-      datetime: Date(dateTime),
+      datetime: new Date(dateTime),
     })
       .then((res) => {
         console.log(res.data);
@@ -54,35 +54,35 @@ export default function AddExhibition() {
               </Card.Header>
               <Card.Body>
                 <Form>
-                      <Form.Group>
-                        <Form.Label>Exhibition Name</Form.Label>
-                        <Form.Control
-                          value={exhibitionName}
-                          onChange={(e) => setExhibitionName(e.target.value)}
-                          type="text"
-                          placeholder="Enter Exhibition Name"
-                        />
-                      </Form.Group>
-                  
-                      <Form.Group>
-                        <Form.Label>Ticket Price</Form.Label>
-                        <Form.Control
-                          value={ticketPrice}
-                          onChange={(e) => setTicketPrice(e.target.value)}
-                          type="number"
-                          placeholder="Enter Ticket Price"
-                        />
-                      </Form.Group>
-                    
-                      <Form.Group>
-                        <Form.Label>Date & Time</Form.Label>
-                        <Form.Control
-                          value={dateTime}
-                          onChange={(e) => setDateTime(e.target.value)}
-                          type="datetime-local"
-                        />
-                      </Form.Group>
-                    
+                  <Form.Group>
+                    <Form.Label>Exhibition Name</Form.Label>
+                    <Form.Control
+                      value={exhibitionName}
+                      onChange={(e) => setExhibitionName(e.target.value)}
+                      type="text"
+                      placeholder="Enter Exhibition Name"
+                    />
+                  </Form.Group>
+
+                  <Form.Group>
+                    <Form.Label>Ticket Price</Form.Label>
+                    <Form.Control
+                      value={ticketPrice}
+                      onChange={(e) => setTicketPrice(e.target.value)}
+                      type="number"
+                      placeholder="Enter Ticket Price"
+                    />
+                  </Form.Group>
+
+                  <Form.Group>
+                    <Form.Label>Date & Time</Form.Label>
+                    <Form.Control
+                      value={dateTime}
+                      onChange={(e) => setDateTime(e.target.value)}
+                      type="datetime-local"
+                    />
+                  </Form.Group>
+
                   <Form.Group>
                     <button
                       onClick={(e) => add(e)}
@@ -135,7 +135,9 @@ export default function AddExhibition() {
             </Card>
             <br />
           </div>
-          <br/><br/><br/>
+          <br />
+          <br />
+          <br />
           <Footer />
         </div>
       </div>

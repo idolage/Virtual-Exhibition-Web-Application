@@ -54,7 +54,7 @@ export default function ViewFeedbacks() {
               <Card.Header>
                 <Card.Title as="h4">View Feedback</Card.Title>
                 <p className="card-category">
-                  Click on Exhibition ID to view feedbacks
+                  Click on exhibition name to view feedbacks
                 </p>
               </Card.Header>
               <Card.Body>
@@ -65,7 +65,7 @@ export default function ViewFeedbacks() {
                         style={{ marginBottom: "15px" }}
                         onClick={() => showFeedbacks(exhibition.exhibitionId)}
                       >
-                        Exhibition ID: {exhibition.exhibitionId}
+                        Exhibition Name: Virtual Cinema
                       </Button>
                       <br />
                     </>

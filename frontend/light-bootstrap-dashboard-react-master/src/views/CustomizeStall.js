@@ -126,9 +126,9 @@ function CustomizeStall() {
   ) {
     tier = "Platinum";
   } else if (
-    stallId == 11 ||
-    stallId == 15 ||
-    stallId == 19 ||
+    stallId == 10 ||
+    stallId == 14 ||
+    stallId == 18 ||
     stallId == 27 ||
     stallId == 31 ||
     stallId == 35
