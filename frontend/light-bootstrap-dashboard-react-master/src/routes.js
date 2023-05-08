@@ -94,13 +94,7 @@ switch (localStorage.getItem("userRole")) {
         component: Stat,
         layout: "/admin"
       },
-      {
-        path: "/icons",
-        name: "Icons",
-        icon: "nc-icon nc-atom",
-        component: Icons,
-        layout: "/admin"
-      },
+      
     ];
     break;
 
@@ -148,13 +142,7 @@ switch (localStorage.getItem("userRole")) {
         component: ViewFeedbacks,
         layout: "/admin"
       },
-      {
-        path: "/icons",
-        name: "Icons",
-        icon: "nc-icon nc-atom",
-        component: Icons,
-        layout: "/admin"
-      },
+      
     ];
     break;
 
@@ -209,13 +197,7 @@ switch (localStorage.getItem("userRole")) {
         component: SubmitFeedback,
         layout: "/admin"
       },
-      {
-        path: "/icons",
-        name: "Icons",
-        icon: "nc-icon nc-atom",
-        component: Icons,
-        layout: "/admin"
-      },
+      
     ];
     break;
 
@@ -249,13 +231,7 @@ switch (localStorage.getItem("userRole")) {
         component: SubmitFeedback,
         layout: "/admin"
       },
-      {
-        path: "/icons",
-        name: "Icons",
-        icon: "nc-icon nc-atom",
-        component: Icons,
-        layout: "/admin"
-      },
+      
     ];
     break;
   
