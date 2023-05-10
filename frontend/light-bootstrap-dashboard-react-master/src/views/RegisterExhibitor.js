@@ -6,12 +6,7 @@ import Footer from "components/Footer/Footer";
 import Sidebar from "components/Sidebar/Sidebar";
 import routes from "routes.js";
 import sidebarImage from "assets/img/sidebar-3.jpg";
-import {
-  Form,
-  Card,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Form, Card, Row, Col } from "react-bootstrap";
 export default function RegisterExhibitor() {
   const [image, setImage] = React.useState(sidebarImage);
   const [color, setColor] = React.useState("black");

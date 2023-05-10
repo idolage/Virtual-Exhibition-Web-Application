@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Axios from "axios";
 import "./copy.css";
 // react-bootstrap components
@@ -30,7 +30,12 @@ const PurchasedTickets = () => {
 
   useEffect(() => {
     Axios.get(
-      `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`
+      `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      }
     ).then((response) => {
       console.log(response);
       if (response.data != "") {
@@ -79,13 +84,21 @@ const Admin = () => {
     e.preventDefault();
     if (pwd == rePwd) {
       const storedEmail = localStorage.getItem("email");
-      Axios.put(`http://localhost:8080/api/auth/updateAdmin/${storedEmail}`, {
-        emailAddress: email,
-        name: name,
-        contactNo: tel,
-        nic: nic,
-        password: pwd,
-      })
+      Axios.put(
+        `http://localhost:8080/api/auth/updateAdmin/${storedEmail}`,
+        {
+          emailAddress: email,
+          name: name,
+          contactNo: tel,
+          nic: nic,
+          password: pwd,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
+        }
+      )
         .then((res) => {
           console.log(res.data);
           setShowModal(true);
@@ -105,7 +118,12 @@ const Admin = () => {
       try {
         const storedEmail = localStorage.getItem("email");
         const response = await Axios.get(
-          `http://localhost:8080/api/auth/getAdmin/${storedEmail}`
+          `http://localhost:8080/api/auth/getAdmin/${storedEmail}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
         );
         setEmail(response.data.emailAddress);
         setName(response.data.name);
@@ -286,6 +304,11 @@ const Attendee = () => {
           name: name,
           nic: nic,
           password: pwd,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
         }
       )
         .then((res) => {
@@ -307,7 +330,12 @@ const Attendee = () => {
       try {
         const storedEmail = localStorage.getItem("email");
         const response = await Axios.get(
-          `http://localhost:8080/api/auth/getAttendee/${storedEmail}`
+          `http://localhost:8080/api/auth/getAttendee/${storedEmail}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
         );
         setEmail(response.data.emailAddress);
         setName(response.data.name);
@@ -320,7 +348,12 @@ const Attendee = () => {
     const fetchIds = () => {
       const storedEmail = localStorage.getItem("email");
       Axios.get(
-        `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`
+        `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
+        }
       )
         .then((response) => {
           if (!response.data[0].isExpired) {
@@ -342,7 +375,12 @@ const Attendee = () => {
       try {
         const storedEmail = localStorage.getItem("email");
         const response = await Axios.get(
-          `http://localhost:8080/api/avatars/${storedEmail}`
+          `http://localhost:8080/api/avatars/${storedEmail}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
         );
         setAvatarIdVal(response.data.avatarId);
         console.log(response.data.avatarId + "JJ" + avatarIdVal);
@@ -352,7 +390,6 @@ const Attendee = () => {
     };
     fetchAvatarDetails();
   }, [avatarIdVal]);
-
 
   const inputRef = useRef(null);
   const inputRef1 = useRef(null);
@@ -370,7 +407,6 @@ const Attendee = () => {
       document.execCommand("copy");
     }
   }
-
 
   return (
     <>
@@ -430,7 +466,6 @@ const Attendee = () => {
                   className="copy-btn"
                   onClick={handleCopyClickEx}
                 ></span>
-
               </Card.Footer>
             </Card>
           </Col>
@@ -618,6 +653,10 @@ const Exhibitor = () => {
           headers: {
             "Content-type": "application/json; charset=UTF-8",
           },
+
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
         });
         if (!response.ok) {
           throw new Error("Failed to save avatar.");
@@ -638,6 +677,10 @@ const Exhibitor = () => {
           headers: {
             "Content-type": "application/json; charset=UTF-8",
           },
+
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
         });
         if (!response.ok) {
           throw new Error("Failed to save avatar.");
@@ -655,7 +698,12 @@ const Exhibitor = () => {
     const fetchAvatarDetails = async () => {
       try {
         const response = await Axios.get(
-          `http://localhost:8080/api/avatars/${storedEmail}`
+          `http://localhost:8080/api/avatars/${storedEmail}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
         );
         if (response.data.avatarId !== null) {
           setSelectedExhibitor(response.data.avatarId);
@@ -681,6 +729,11 @@ const Exhibitor = () => {
           nic: nic,
           password: pwd,
           company: company,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
         }
       )
         .then((res) => {
@@ -702,7 +755,12 @@ const Exhibitor = () => {
       try {
         const storedEmail = localStorage.getItem("email");
         const response = await Axios.get(
-          `http://localhost:8080/api/auth/getExhibitor/${storedEmail}`
+          `http://localhost:8080/api/auth/getExhibitor/${storedEmail}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
         );
         setEmail(response.data.emailAddress);
         setName(response.data.name);
@@ -717,7 +775,12 @@ const Exhibitor = () => {
     const fetchIds = () => {
       const storedEmail = localStorage.getItem("email");
       Axios.get(
-        `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`
+        `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
+        }
       )
         .then((response) => {
           if (!response.data[0].isExpired) {
@@ -1004,6 +1067,11 @@ const ExhibitionOwner = () => {
           nic: nic,
           password: pwd,
           company: company,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
         }
       )
         .then((res) => {
@@ -1025,7 +1093,15 @@ const ExhibitionOwner = () => {
       try {
         const storedEmail = localStorage.getItem("email");
         const response = await Axios.get(
-          `http://localhost:8080/api/auth/getExhibitionOwner/${storedEmail}`
+          `http://localhost:8080/api/auth/getExhibitionOwner/${storedEmail}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
         );
         setEmail(response.data.emailAddress);
         setName(response.data.name);
@@ -1037,11 +1113,16 @@ const ExhibitionOwner = () => {
       }
     };
 
-    const fetchExhibitiosByOwner = async () =>{
+    const fetchExhibitiosByOwner = async () => {
       try {
         const storedEmail = localStorage.getItem("email");
         const response = await Axios.get(
-          `http://localhost:8080/api/exhibitions/user/${storedEmail}`
+          `http://localhost:8080/api/exhibitions/user/${storedEmail}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
         );
         setCards(response.data);
         console.log(cards);
@@ -1057,7 +1138,13 @@ const ExhibitionOwner = () => {
     <>
       <Container fluid>
         <Row>
-          {cards.length > 0?<><Carousel data={cards}/></>:<></>}
+          {cards.length > 0 ? (
+            <>
+              <Carousel data={cards} />
+            </>
+          ) : (
+            <></>
+          )}
         </Row>
         <Row>
           <Col lg="10">
@@ -1220,16 +1307,13 @@ const Other = () => {
 const User = () => {
   const [userRole, setUserRole] = useState();
 
-
   useEffect(() => {
     const role = localStorage.getItem("userRole");
     if (role) {
       setUserRole(role);
-    }
-    else{
+    } else {
       console.log("hjhjggjhgjhghjgj");
     }
-    
   }, []);
 
   return userRole === "ATTENDEE" ? (

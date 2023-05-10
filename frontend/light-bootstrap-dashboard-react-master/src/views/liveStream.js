@@ -40,7 +40,12 @@ function LiveStream() {
     const fetchStallDetails = async () => {
       try {
         const response = await Axios.get(
-          `http://localhost:8080/api/stalls/${storedEmail}`
+          `http://localhost:8080/api/stalls/${storedEmail}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
         );
         if (response.data[0] !== null) {
           setExhibitionId(response.data[0].exhibitionId);
@@ -121,6 +126,9 @@ function LiveStream() {
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
       });
 
       if (response1.ok) {
@@ -128,6 +136,11 @@ function LiveStream() {
           "http://localhost:8080/api/agora/" + exhibitionId + "/" + stallId,
           {
             method: "GET",
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
           }
         );
         if (!response2.ok) {

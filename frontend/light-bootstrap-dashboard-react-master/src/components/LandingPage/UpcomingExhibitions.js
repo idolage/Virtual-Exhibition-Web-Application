@@ -10,7 +10,11 @@ export default function UpcomingExhibitions() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/exhibitions")
+      .get("http://localhost:8080/api/exhibitions", {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      })
       .then((res) => {
         console.log(res.data);
         const filteredExhibitions = res.data.filter(

@@ -23,13 +23,22 @@ export default function EditSponsorVideos({exhibitionId}) {
          files.forEach((file, index) => {
     formData.append('files', file);
   });
-   Axios.post(`http://localhost:8080/api/exhibitions/video/${exhibitionId}`, formData)
-            .then(res => {
-                console.log(res);
-                setFiles([]);
-            }).catch((e)=>{
-                console.log(e)
-        })
+   Axios.post(
+     `http://localhost:8080/api/exhibitions/video/${exhibitionId}`,
+     formData
+   ),
+     {
+       headers: {
+         Authorization: localStorage.getItem("jwt"),
+       },
+     }
+       .then((res) => {
+         console.log(res);
+         setFiles([]);
+       })
+       .catch((e) => {
+         console.log(e);
+       });
     }
 
     return (

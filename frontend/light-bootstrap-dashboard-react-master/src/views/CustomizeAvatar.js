@@ -39,7 +39,12 @@ function CustomizeAvatar() {
     const fetchAvatarDetails = async () => {
       try {
         const response = await Axios.get(
-          `http://localhost:8080/api/avatars/${storedEmail}`
+          `http://localhost:8080/api/avatars/${storedEmail}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
         );
 
         console.log(response.data.avatarId);
@@ -72,6 +77,11 @@ function CustomizeAvatar() {
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
+         
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      
       });
       if (!response.ok) {
         setErr("Failed to Save the Avatar");

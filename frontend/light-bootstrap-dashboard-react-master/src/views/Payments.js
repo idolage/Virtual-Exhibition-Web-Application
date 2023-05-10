@@ -13,10 +13,18 @@ const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
 
   const onToken = (token) => {
     axios
-      .post("http://localhost:8080/api/payment-gateway/charge", {
-        amount: stripePrice,
-        token,
-      })
+      .post(
+        "http://localhost:8080/api/payment-gateway/charge",
+        {
+          amount: stripePrice,
+          token,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
+        }
+      )
       .then((res) => {
         console.log("kk");
         const newPayment = {
@@ -26,7 +34,11 @@ const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
           amount: price,
         };
         axios
-          .post("http://localhost:8080/api/payments", newPayment)
+          .post("http://localhost:8080/api/payments", newPayment, {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          })
           .then((res) => {
             console.log("done");
             const newStall = {
@@ -37,7 +49,11 @@ const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
               tier: tier,
             };
             axios
-              .post("http://localhost:8080/api/stalls", newStall)
+              .post("http://localhost:8080/api/stalls", newStall, {
+                headers: {
+                  Authorization: localStorage.getItem("jwt"),
+                },
+              })
               .then((res) => {
                 setMsg("Payment Successfull");
                 setShow(true);
@@ -46,18 +62,22 @@ const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
                   stallId: stallId,
                 };
                 if (tier == "Platinum" || tier == "Diamond") {
-                  axios
-                    .post(
-                      "http://localhost:8080/api/agora/liveStreamChannel",
-                      newLiveStreamChannel
-                    )
-                    .then((res) => {})
-                    .catch((e) => {
-                      console.log(e);
-                      setMsg("Sorry! Please try again");
+                  axios.post(
+                    "http://localhost:8080/api/agora/liveStreamChannel",
+                    newLiveStreamChannel
+                  ),
+                    {
+                      headers: {
+                        Authorization: localStorage.getItem("jwt"),
+                      },
+                    }
+                      .then((res) => {})
+                      .catch((e) => {
+                        console.log(e);
+                        setMsg("Sorry! Please try again");
 
-                      setShow(true);
-                    });
+                        setShow(true);
+                      });
                 }
               })
               .catch((e) => {
@@ -131,42 +151,42 @@ const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
         stripeKey={publishKey}
         currency="USD"
       />
-        <Modal
-          style={{ marginTop: "10vh" }}
-          className="modal modal-primary"
-          show={show}
-          onHide={() => setShow(false)}
-        >
-          <Modal.Body className="text-center">
-            {msg == "Payment Successfull" ? (
-              <div className="alert alert-success" role="alert">
-                {msg}
-              </div>
-            ) : (
-              <div className="alert alert-danger" role="alert">
-                {msg}
-              </div>
-            )}
-          </Modal.Body>
-          <div className="modal-footer">
-            <Button
-              className="btn-simple"
-              type="button"
-              variant="link"
-              onClick={() => setShow(false)}
-            >
-              Back
-            </Button>
-            <Button
-              className="btn-simple"
-              type="button"
-              variant="link"
-              onClick={() => setShow(false)}
-            >
-              Close
-            </Button>
-          </div>
-        </Modal>
+      <Modal
+        style={{ marginTop: "10vh" }}
+        className="modal modal-primary"
+        show={show}
+        onHide={() => setShow(false)}
+      >
+        <Modal.Body className="text-center">
+          {msg == "Payment Successfull" ? (
+            <div className="alert alert-success" role="alert">
+              {msg}
+            </div>
+          ) : (
+            <div className="alert alert-danger" role="alert">
+              {msg}
+            </div>
+          )}
+        </Modal.Body>
+        <div className="modal-footer">
+          <Button
+            className="btn-simple"
+            type="button"
+            variant="link"
+            onClick={() => setShow(false)}
+          >
+            Back
+          </Button>
+          <Button
+            className="btn-simple"
+            type="button"
+            variant="link"
+            onClick={() => setShow(false)}
+          >
+            Close
+          </Button>
+        </div>
+      </Modal>
     </>
   );
 };

@@ -15,12 +15,16 @@ export const Attendee = () => {
   function register(e) {
     e.preventDefault();
     if (password === rePassword) {
-      Axios.post(RegisterURL, {
-        emailAddress: email,
-        name: name,
-        nic: nic,
-        password: password,
-      })
+      Axios.post(
+        RegisterURL,
+        {
+          emailAddress: email,
+          name: name,
+          nic: nic,
+          password: password,
+        }
+       
+      )
         .then((res) => {
           console.log(res.data);
           setShowModal(true);

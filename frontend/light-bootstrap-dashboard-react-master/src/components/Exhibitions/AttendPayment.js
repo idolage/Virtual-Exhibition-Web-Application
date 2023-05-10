@@ -10,10 +10,18 @@ const AttendPayment = ({ exhibitionId, userId, userType, price }) => {
   const [show, setShow] = React.useState(false);
   const onToken = (token) => {
     axios
-      .post("http://localhost:8080/api/payment-gateway/charge", {
-        amount: stripePrice,
-        token,
-      })
+      .post(
+        "http://localhost:8080/api/payment-gateway/charge",
+        {
+          amount: stripePrice,
+          token,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
+        }
+      )
       .then((res) => {
         const newPayment = {
           exhibitionId: exhibitionId,
@@ -21,18 +29,22 @@ const AttendPayment = ({ exhibitionId, userId, userType, price }) => {
           userType: userType,
           amount: price,
         };
-        axios
-          .post("http://localhost:8080/api/payments", newPayment)
-          .then((res) => {
-            setMsg("Payment Successfull");
-                setShow(true);
-            console.log("done");
-          })
-          .catch((e) => {
-            console.log(e);
-            setMsg("Sorry! Please try again");
-            setShow(true);
-          });
+        axios.post("http://localhost:8080/api/payments", newPayment),
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
+            .then((res) => {
+              setMsg("Payment Successfull");
+              setShow(true);
+              console.log("done");
+            })
+            .catch((e) => {
+              console.log(e);
+              setMsg("Sorry! Please try again");
+              setShow(true);
+            });
       })
       .catch((e) => {
         console.log(e);
@@ -81,51 +93,51 @@ const AttendPayment = ({ exhibitionId, userId, userType, price }) => {
 
   return (
     <>
-    <StripeCheckout
-      amount={stripePrice}
-      name="Nerambum - නැරඹුම්"
-      label="Pay Now"
-      description={`Your total is USD${price}`}
-      token={onToken}
-      stripeKey={publishKey}
-      currency="USD"
-    />
-    <Modal
-          style={{ marginTop: "10vh" }}
-          className="modal modal-primary"
-          show={show}
-          onHide={() => setShow(false)}
-        >
-          <Modal.Body className="text-center">
-            {msg == "Payment Successfull" ? (
-              <div className="alert alert-success" role="alert">
-                {msg}
-              </div>
-            ) : (
-              <div className="alert alert-danger" role="alert">
-                {msg}
-              </div>
-            )}
-          </Modal.Body>
-          <div className="modal-footer">
-            <Button
-              className="btn-simple"
-              type="button"
-              variant="link"
-              onClick={() => setShow(false)}
-            >
-              Back
-            </Button>
-            <Button
-              className="btn-simple"
-              type="button"
-              variant="link"
-              onClick={() => setShow(false)}
-            >
-              Close
-            </Button>
-          </div>
-        </Modal>
+      <StripeCheckout
+        amount={stripePrice}
+        name="Nerambum - නැරඹුම්"
+        label="Pay Now"
+        description={`Your total is USD${price}`}
+        token={onToken}
+        stripeKey={publishKey}
+        currency="USD"
+      />
+      <Modal
+        style={{ marginTop: "10vh" }}
+        className="modal modal-primary"
+        show={show}
+        onHide={() => setShow(false)}
+      >
+        <Modal.Body className="text-center">
+          {msg == "Payment Successfull" ? (
+            <div className="alert alert-success" role="alert">
+              {msg}
+            </div>
+          ) : (
+            <div className="alert alert-danger" role="alert">
+              {msg}
+            </div>
+          )}
+        </Modal.Body>
+        <div className="modal-footer">
+          <Button
+            className="btn-simple"
+            type="button"
+            variant="link"
+            onClick={() => setShow(false)}
+          >
+            Back
+          </Button>
+          <Button
+            className="btn-simple"
+            type="button"
+            variant="link"
+            onClick={() => setShow(false)}
+          >
+            Close
+          </Button>
+        </div>
+      </Modal>
     </>
   );
 };

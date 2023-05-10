@@ -46,6 +46,11 @@ export const Configurator = () => {
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
+         
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      
       });
       if (!response.ok) {
         setMsg("Failed to Save the Avatar");

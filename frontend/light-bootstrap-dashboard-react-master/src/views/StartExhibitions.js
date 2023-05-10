@@ -50,7 +50,11 @@ const Carousel = ({ data }) => {
 
   function handleStart(id) {
     axios
-      .put(`http://localhost:8080/api/exhibitions/${id}/start?start=true`)
+      .put(`http://localhost:8080/api/exhibitions/${id}/start?start=true`, {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      })
       .then((res) => {
         window.location.reload();
       });
@@ -58,7 +62,11 @@ const Carousel = ({ data }) => {
 
   function handleEnd(id) {
     axios
-      .put(`http://localhost:8080/api/exhibitions/${id}/start?start=false`)
+      .put(`http://localhost:8080/api/exhibitions/${id}/start?start=false`, {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      })
       .then((res) => {
         window.location.reload();
       });

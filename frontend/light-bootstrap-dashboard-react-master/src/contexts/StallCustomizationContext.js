@@ -13,7 +13,12 @@ export const StallCustomizationProvider = ({ children }) => {
     const fetchStallDetails = async () => {
       try {
         const response = await Axios.get(
-          `http://localhost:8080/api/stalls/${storedEmail}`
+          `http://localhost:8080/api/stalls/${storedEmail}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
         );
         if (response.data[0].stallColor !== null) {
           setStallColor(response.data[0].stallColor);

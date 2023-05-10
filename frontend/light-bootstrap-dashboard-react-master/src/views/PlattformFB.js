@@ -22,7 +22,11 @@ export default function PlattformFB() {
 
   const showFeedbacks = (id) =>
     axios
-      .get(`http://localhost:8080/api/feedbacks/exhibition/${id}`)
+      .get(`http://localhost:8080/api/feedbacks/exhibition/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      })
       .then((resOne) => {
         const filteredFeedbacks = resOne.data.filter(
           (item) => item.type === "PLATFORM"
@@ -37,7 +41,11 @@ export default function PlattformFB() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/exhibitions`)
+      .get(`http://localhost:8080/api/exhibitions`, {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      })
       .then((res) => {
         console.log(res.data);
         const filteredExhibitions = res.data.filter(

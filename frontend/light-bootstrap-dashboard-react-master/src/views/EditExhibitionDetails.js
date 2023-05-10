@@ -14,31 +14,44 @@ export default function EditExhibitionDetails({exhibitionId}) {
 
     useEffect(()=>{
         axios
-            .get(`http://localhost:8080/api/exhibitions/${exhibitionId}`)
-            .then((res)=>{
-                setExhibitionName((res.data.exhibitionName));
-                setTicketPrice((res.data.ticketPrice));
-                setDateTime((res.data.datetime));
-            }).catch((e)=>{
+          .get(`http://localhost:8080/api/exhibitions/${exhibitionId}`, {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          })
+          .then((res) => {
+            setExhibitionName(res.data.exhibitionName);
+            setTicketPrice(res.data.ticketPrice);
+            setDateTime(res.data.datetime);
+          })
+          .catch((e) => {
             console.log(e);
-        })
+          });
     },[])
 
     function edit(e) {
         e.preventDefault();
-        Axios.put(`http://localhost:8080/api/exhibitions/${exhibitionId}`, {
+        Axios.put(
+          `http://localhost:8080/api/exhibitions/${exhibitionId}`,
+          {
             exhibitionName: exhibitionName,
             ticketPrice: parseInt(ticketPrice),
             datetime: Date(dateTime),
-        })
-            .then((res) => {
-                console.log(res.data);
-                setShowModal(true);
-                setNotification("Exhibition updated successfully!");
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
+        )
+          .then((res) => {
+            console.log(res.data);
+            setShowModal(true);
+            setNotification("Exhibition updated successfully!");
+          })
+          .catch((e) => {
+            console.log(e);
+          });
     }
 
     return (

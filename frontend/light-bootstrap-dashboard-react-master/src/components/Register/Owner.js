@@ -19,14 +19,18 @@ export const Owner = () => {
   function register(e) {
     e.preventDefault();
     if (password === rePassword) {
-      Axios.post(RegisterURL, {
-        emailAddress: email,
-        name: name,
-        contactNo: tel,
-        nic: nic,
-        password: password,
-        company: company,
-      })
+      Axios.post(
+        RegisterURL,
+        {
+          emailAddress: email,
+          name: name,
+          contactNo: tel,
+          nic: nic,
+          password: password,
+          company: company,
+        }
+      
+      )
         .then((res) => {
           console.log(res.data);
           setShowModal(true);

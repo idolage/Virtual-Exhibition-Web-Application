@@ -23,12 +23,20 @@ export default function AddExhibition() {
 
   function add(e) {
     e.preventDefault();
-    Axios.post(URL, {
-      exhibitionName: exhibitionName,
-      exhibitionOwnerId: localStorage.getItem("email"),
-      ticketPrice: parseInt(ticketPrice),
-      datetime: new Date(dateTime),
-    })
+    Axios.post(
+      URL,
+      {
+        exhibitionName: exhibitionName,
+        exhibitionOwnerId: localStorage.getItem("email"),
+        ticketPrice: parseInt(ticketPrice),
+        datetime: new Date(dateTime),
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      }
+    )
       .then((res) => {
         console.log(res.data);
         setShowModal(true);

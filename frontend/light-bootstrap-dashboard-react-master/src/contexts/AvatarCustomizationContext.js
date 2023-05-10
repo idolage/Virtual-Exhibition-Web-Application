@@ -22,7 +22,12 @@ export const AvatarCustomizationProvider = ({ children }) => {
     const fetchAvatarDetails = async () => {
       try {
         const response = await Axios.get(
-          `http://localhost:8080/api/avatars/${storedEmail}`
+          `http://localhost:8080/api/avatars/${storedEmail}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
         );
         if (response.data.topColor !== null) {
           setShirtColor(response.data.topColor);

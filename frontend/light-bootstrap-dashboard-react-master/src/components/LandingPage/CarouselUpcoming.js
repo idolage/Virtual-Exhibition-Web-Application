@@ -58,15 +58,23 @@ const Carousel = ({ data }) => {
     e.preventDefault();
     if (password === rePassword) {
       axios
-        .post(RegisterURL, {
-          emailAddress: email,
-          name: name,
-          contactNo: tel,
-          nic: nic,
-          password: password,
-          company: company,
-          exhibitionId: exId,
-        })
+        .post(
+          RegisterURL,
+          {
+            emailAddress: email,
+            name: name,
+            contactNo: tel,
+            nic: nic,
+            password: password,
+            company: company,
+            exhibitionId: exId,
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }
+        )
         .then((res) => {
           console.log(res.data);
           setShowModal(true);
@@ -82,10 +90,16 @@ const Carousel = ({ data }) => {
   }
 
   const handleShowExhibition = (id) =>
-    axios.get(`http://localhost:8080/api/exhibitions/${id}`).then((resOne) => {
-      setShowDetails(true);
-      setExhibition(resOne.data);
-    });
+    axios
+      .get(`http://localhost:8080/api/exhibitions/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      })
+      .then((resOne) => {
+        setShowDetails(true);
+        setExhibition(resOne.data);
+      });
 
   const cardStyle = {
     width: "300px",

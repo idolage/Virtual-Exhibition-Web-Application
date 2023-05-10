@@ -21,26 +21,36 @@ export default function GetExhibitions() {
   };
 
   const handleShowExhibition = (id) =>
-    axios.get(`http://localhost:8080/api/exhibitions/${id}`).then((resOne) => {
-      setShowDetails(true);
-      setExhibition(resOne.data);
-    });
+    axios
+      .get(`http://localhost:8080/api/exhibitions/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      })
+      .then((resOne) => {
+        setShowDetails(true);
+        setExhibition(resOne.data);
+      });
 
   useEffect(() => {
     var1 = 0;
-    axios
-      .get("http://localhost:8080/api/exhibitions")
-      .then((res) => {
-        console.log(res.data);
-        setExhibitions(res.data);
-        res.data.map((users) => {
-          var1 = users.noOfUsers + var1;
+    axios.get("http://localhost:8080/api/exhibitions"),
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      }
+        .then((res) => {
+          console.log(res.data);
+          setExhibitions(res.data);
+          res.data.map((users) => {
+            var1 = users.noOfUsers + var1;
+          });
+          setActiveUsers(var1);
+        })
+        .catch((e) => {
+          console.log(e);
         });
-        setActiveUsers(var1);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
   }, [exhibition]);
 
   const BootyPagination = ({
@@ -199,14 +209,18 @@ export default function GetExhibitions() {
 
   function handleSearchArea(e) {
     const searchKey = e.currentTarget.value;
-    axios
-      .get("http://localhost:8080/api/exhibitions")
-      .then((res) => {
-        filterData(res.data, searchKey);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    axios.get("http://localhost:8080/api/exhibitions"),
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      }
+        .then((res) => {
+          filterData(res.data, searchKey);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   }
 
   const SearchExhibition = (
@@ -228,14 +242,18 @@ export default function GetExhibitions() {
       userType: userType,
       amount: price,
     };
-    axios
-      .post("http://localhost:8080/api/payments", newPayment)
-      .then((res) => {
-        console.log("done");
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    axios.post("http://localhost:8080/api/payments", newPayment),
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      }
+        .then((res) => {
+          console.log("done");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
   };
 
   return (
