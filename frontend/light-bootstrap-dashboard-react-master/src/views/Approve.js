@@ -17,25 +17,39 @@ export default function Approve() {
     setShowDetails(false);
   };
 
-  const handleApprove = (id) =>axios.put(`http://localhost:8080/api/exhibitions/approve/${id}`).then((res) => {
-    setShowModal(true);
-    setNotification(res.data);
-  });
+  const handleApprove = (id) =>
+    axios
+      .put(`http://localhost:8080/api/exhibitions/approve/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      })
+      .then((res) => {
+        setShowModal(true);
+        setNotification(res.data);
+      });
 
   const handleShowExhibition = (id) =>
-    axios.get(`http://localhost:8080/api/exhibitions/${id}`).then((resOne) => {
+    axios.get(`http://localhost:8080/api/exhibitions/${id}` ,{
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      }).then((resOne) => {
       setShowDetails(true);
       setExhibition(resOne.data);
     });
 
     useEffect(() => {
         axios
-        .get("http://localhost:8080/api/exhibitions") //
-        .then((res) => {
+          .get("http://localhost:8080/api/exhibitions", {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          }) //
+          .then((res) => {
             console.log(res.data);
             const filteredExhibitions = res.data.filter(
-              (item) =>
-              item.approved === false
+              (item) => item.approved === false
             );
             setExhibitions(filteredExhibitions);
           })
@@ -175,7 +189,11 @@ export default function Approve() {
       function handleSearchArea(e) {
         const searchKey = e.currentTarget.value;
         axios
-          .get("http://localhost:8080/api/exhibitions")
+          .get("http://localhost:8080/api/exhibitions", {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          })
           .then((res) => {
             filterData(res.data, searchKey);
           })

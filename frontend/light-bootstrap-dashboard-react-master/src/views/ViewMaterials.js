@@ -63,7 +63,11 @@ export default function ViewMaterials() {
   };
 
   useEffect(() => {
-    Axios.get(`http://localhost:8080/api/stalls/${storedEmail}`)
+    Axios.get(`http://localhost:8080/api/stalls/${storedEmail}`, {
+      headers: {
+        Authorization: localStorage.getItem("jwt"),
+      },
+    })
       .then((response) => {
         console.log(response.data);
         setMaterials(response.data);

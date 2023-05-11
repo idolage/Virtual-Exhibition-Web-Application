@@ -24,7 +24,11 @@ function ApproveExhibitors() {
   const storedEmail = localStorage.getItem("email");
 
   const handleApproval = (id) =>
-    Axios.put(`http://localhost:8080/api/auth/confirm/${id}`).then((res) => {
+    Axios.put(`http://localhost:8080/api/auth/confirm/${id}`, {
+      headers: {
+        Authorization: localStorage.getItem("jwt"),
+      },
+    }).then((res) => {
       console.log(res);
       setShowModal(true);
       setNotification(res.data);
@@ -34,7 +38,11 @@ function ApproveExhibitors() {
     });
 
   const handleDelete = (id) =>
-    Axios.delete(`http://localhost:8080/api/auth/delete/${id}`).then((res) => {
+    Axios.delete(`http://localhost:8080/api/auth/delete/${id}`, {
+      headers: {
+        Authorization: localStorage.getItem("jwt"),
+      },
+    }).then((res) => {
       console.log(res);
       setShowModal(true);
       setNotification(res.data);
@@ -42,7 +50,12 @@ function ApproveExhibitors() {
 
   useEffect(() => {
     Axios.get(
-      `http://localhost:8080/api/exhibitions/getByExhibitionOwner/${storedEmail}`
+      `http://localhost:8080/api/exhibitions/getByExhibitionOwner/${storedEmail}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      }
     ).then((response) => {
       const allUsers = response.data;
       const approved = allUsers.filter((user) => user.enabled);

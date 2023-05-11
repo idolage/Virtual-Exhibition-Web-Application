@@ -40,10 +40,16 @@ const Carousel = ({ data }) => {
   };
 
   const handleShowExhibition = (id) =>
-    axios.get(`http://localhost:8080/api/exhibitions/${id}`).then((resOne) => {
-      setShowDetails(true);
-      setExhibition(resOne.data);
-    });
+    axios
+      .get(`http://localhost:8080/api/exhibitions/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      })
+      .then((resOne) => {
+        setShowDetails(true);
+        setExhibition(resOne.data);
+      });
 
   const GetFreeTicket = (exhibitionId, userId, userType, price) => {
     const newPayment = {
@@ -52,14 +58,18 @@ const Carousel = ({ data }) => {
       userType: userType,
       amount: price,
     };
-    axios
-      .post("http://localhost:8080/api/payments", newPayment)
-      .then((res) => {
-        console.log("done");
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    axios.post("http://localhost:8080/api/payments", newPayment),
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      }
+        .then((res) => {
+          console.log("done");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
   };
 
   function handleCopyClick() {

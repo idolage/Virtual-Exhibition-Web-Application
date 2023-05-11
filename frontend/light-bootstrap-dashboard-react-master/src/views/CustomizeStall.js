@@ -84,7 +84,11 @@ function CustomizeStall() {
   const storedEmail = localStorage.getItem("email");
 
   console.log(storedEmail);
-  Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`)
+  Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`, {
+    headers: {
+      Authorization: localStorage.getItem("jwt"),
+    },
+  })
     .then((res) => {
       console.log(res.data);
       setIexhibitionId(res.data[0].exhibitionId);
@@ -101,7 +105,14 @@ function CustomizeStall() {
           params.append("stallOwnerId", storedEmail);
 
           const response = await Axios.get(
-            `http://localhost:8080/api/stalls/${exhibitionId}/stall/?${params.toString()}`
+            `http://localhost:8080/api/stalls/${exhibitionId}/stall/?${
+              (params.toString(),
+              {
+                headers: {
+                  Authorization: localStorage.getItem("jwt"),
+                },
+              })
+            }`
           );
           console.log("&&" + response.data);
           setStallId(response.data);
@@ -174,7 +185,11 @@ function CustomizeStall() {
     urlParams.append("stallId", stallId);
     urlParams.append("logo", logo);
     console.log(urlParams);
-    Axios.post(logoUrl, urlParams)
+    Axios.post(logoUrl, urlParams, {
+      headers: {
+        Authorization: localStorage.getItem("jwt"),
+      },
+    })
       .then((res) => {
         setLogo("");
         document.getElementById("logoInput").value = "";
@@ -198,7 +213,11 @@ function CustomizeStall() {
       formData.append("files", file);
     });
     const url = `${bannerUrl}?${urlParams.toString()}`;
-    Axios.post(url, formData)
+    Axios.post(url, formData, {
+      headers: {
+        Authorization: localStorage.getItem("jwt"),
+      },
+    })
       .then((res) => {
         setFiles([]);
         console.log([files]);
@@ -223,7 +242,11 @@ function CustomizeStall() {
     const formData = new FormData();
     formData.append("file", video[0]);
     const url = `${videoUrl}?${urlParams.toString()}`;
-    Axios.post(url, formData)
+    Axios.post(url, formData, {
+      headers: {
+        Authorization: localStorage.getItem("jwt"),
+      },
+    })
       .then((res) => {
         setVideo([]);
         setMsgUploadVideo("Video Uploaded Successfully");
@@ -246,7 +269,11 @@ function CustomizeStall() {
     const formData = new FormData();
     formData.append("file", model[0]);
     const url = `${modelUrl}?${urlParams.toString()}`;
-    Axios.post(url, formData)
+    Axios.post(url, formData, {
+      headers: {
+        Authorization: localStorage.getItem("jwt"),
+      },
+    })
       .then((res) => {
         setVideo([]);
         // alert("Successfully Uploaded");

@@ -23,9 +23,12 @@ export default function ViewFeedbacks() {
 
   const showFeedbacks = (id) =>
     axios
-      .get(`http://localhost:8080/api/feedbacks/exhibition/${id}`)
+      .get(`http://localhost:8080/api/feedbacks/exhibition/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      })
       .then((res) => {
-        
         const filteredFeedbacks = res.data.filter(
           (item) => item.type === "EXHIBITION"
         );
@@ -39,14 +42,18 @@ export default function ViewFeedbacks() {
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
-    axios
-      .get(`http://localhost:8080/api/exhibitions/user/${storedEmail}`)
-      .then((res) => {
-        setExhibitions(res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    axios.get(`http://localhost:8080/api/exhibitions/user/${storedEmail}`),
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      }
+        .then((res) => {
+          setExhibitions(res.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
   }, []);
   return (
     <>

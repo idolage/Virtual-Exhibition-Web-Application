@@ -22,23 +22,38 @@ export default function SubmitFeedback() {
   const [fetch, setFetch]=useState(false);
 
 useEffect(()=>{
-  Axios.get("http://localhost:8080/api/exhibitions").then((res)=>{
-    setExhibitions(res.data);
-    setFetch(true)
-    console.log(res.data)
-  }).catch((e)=>{
-    console.log(e);
+  Axios.get("http://localhost:8080/api/exhibitions", {
+    headers: {
+      Authorization: localStorage.getItem("jwt"),
+    },
   })
+    .then((res) => {
+      setExhibitions(res.data);
+      setFetch(true);
+      console.log(res.data);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 },[fetch])
 
   function submitFeedback(e){
     e.preventDefault();
-    Axios.post(addURL,{
+    Axios.post(
+      addURL,
+      {
         exhibitionId: exID,
-    feedback: feedback,
-    userRole: storedUserRole,
-    type:type
-    }).then((res) => {
+        feedback: feedback,
+        userRole: storedUserRole,
+        type: type,
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      }
+    )
+      .then((res) => {
         console.log(res.data);
         setShowModal(true);
         setNotification("Feedback Submitted!");

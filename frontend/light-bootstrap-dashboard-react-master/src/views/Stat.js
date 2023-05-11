@@ -32,73 +32,110 @@ export default function Stat() {
     let minP = [];
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/exhibitions")
-            .then((res) => {
-                const sumP = [];
-                const avgP = [];
-                const maxP = [];
-                const minP = [];
-                const exhibitionNames = [];
-                const exhibitionUsers = [];
+        axios
+          .get("http://localhost:8080/api/exhibitions", {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          })
+          .then((res) => {
+            const sumP = [];
+            const avgP = [];
+            const maxP = [];
+            const minP = [];
+            const exhibitionNames = [];
+            const exhibitionUsers = [];
 
-                res.data.forEach((ex) => {
-                    exhibitionNames.push(ex.exhibitionName);
-                    exhibitionUsers.push(ex.visitedUsers);
-                    if (ex.over && !ex.start) {
-                        axios.get("http://localhost:8080/api/stats/exhibition/sum/" + ex.id)
-                            .then((response) => {
-                                const tempSum = { id: ex.id, sum: response.data };
-                                sumP.push(tempSum);
-                                setSum(sumP); // Update the state of sum
-                                localStorage.setItem('sum', JSON.stringify(sumP)); // Persist the updated state value in local storage
-                            })
-                            .catch((e) => {
-                                console.log(e)
-                            });
-
-                        axios.get("http://localhost:8080/api/stats/exhibition/avg/" + ex.id)
-                            .then((response) => {
-                                const tempAvg = { id: ex.id, avg: response.data };
-                                avgP.push(tempAvg);
-                                setAvg(avgP); // Update the state of avg
-                                localStorage.setItem('avg', JSON.stringify(avgP)); // Persist the updated state value in local storage
-                            })
-                            .catch((e) => {
-                                console.log(e)
-                            });
-
-                        axios.get("http://localhost:8080/api/stats/exhibition/max/" + ex.id)
-                            .then((response) => {
-                                const tempMax = { id: ex.id, max: response.data };
-                                maxP.push(tempMax);
-                                setMax(maxP); // Update the state of max
-                                localStorage.setItem('max', JSON.stringify(maxP)); // Persist the updated state value in local storage
-                            })
-                            .catch((e) => {
-                                console.log(e)
-                            })
-
-                        axios.get("http://localhost:8080/api/stats/exhibition/min/" + ex.id)
-                            .then((response) => {
-                                const tempMin = { id: ex.id, min: response.data };
-                                minP.push(tempMin);
-                                setMin(minP); // Update the state of min
-                                localStorage.setItem('min', JSON.stringify(minP)); // Persist the updated state value in local storage
-                            })
-                            .catch((e) => {
-                                console.log(e)
-                            })
+            res.data.forEach((ex) => {
+              exhibitionNames.push(ex.exhibitionName);
+              exhibitionUsers.push(ex.visitedUsers);
+              if (ex.over && !ex.start) {
+                axios
+                  .get(
+                    "http://localhost:8080/api/stats/exhibition/sum/" + ex.id,
+                    {
+                      headers: {
+                        Authorization: localStorage.getItem("jwt"),
+                      },
                     }
-                })
+                  )
+                  .then((response) => {
+                    const tempSum = { id: ex.id, sum: response.data };
+                    sumP.push(tempSum);
+                    setSum(sumP); // Update the state of sum
+                    localStorage.setItem("sum", JSON.stringify(sumP)); // Persist the updated state value in local storage
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
 
-                setExhibitions(res.data);
-                setFetch(true);
-                setExhibitionUsers(exhibitionUsers);
-                setExhibitionNames(exhibitionNames);
-            })
-            .catch((e) => {
-                console.log(e);
-            })
+                axios
+                  .get(
+                    "http://localhost:8080/api/stats/exhibition/avg/" + ex.id,
+                    {
+                      headers: {
+                        Authorization: localStorage.getItem("jwt"),
+                      },
+                    }
+                  )
+                  .then((response) => {
+                    const tempAvg = { id: ex.id, avg: response.data };
+                    avgP.push(tempAvg);
+                    setAvg(avgP); // Update the state of avg
+                    localStorage.setItem("avg", JSON.stringify(avgP)); // Persist the updated state value in local storage
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
+
+                axios
+                  .get(
+                    "http://localhost:8080/api/stats/exhibition/max/" + ex.id,
+                    {
+                      headers: {
+                        Authorization: localStorage.getItem("jwt"),
+                      },
+                    }
+                  )
+                  .then((response) => {
+                    const tempMax = { id: ex.id, max: response.data };
+                    maxP.push(tempMax);
+                    setMax(maxP); // Update the state of max
+                    localStorage.setItem("max", JSON.stringify(maxP)); // Persist the updated state value in local storage
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
+
+                axios
+                  .get(
+                    "http://localhost:8080/api/stats/exhibition/min/" + ex.id,
+                    {
+                      headers: {
+                        Authorization: localStorage.getItem("jwt"),
+                      },
+                    }
+                  )
+                  .then((response) => {
+                    const tempMin = { id: ex.id, min: response.data };
+                    minP.push(tempMin);
+                    setMin(minP); // Update the state of min
+                    localStorage.setItem("min", JSON.stringify(minP)); // Persist the updated state value in local storage
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
+              }
+            });
+
+            setExhibitions(res.data);
+            setFetch(true);
+            setExhibitionUsers(exhibitionUsers);
+            setExhibitionNames(exhibitionNames);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
     }, []);
 
 
@@ -354,13 +391,17 @@ export default function Stat() {
     function handleSearchArea(e) {
         const searchKey = e.currentTarget.value;
         axios
-            .get("http://localhost:8080/api/exhibitions")
-            .then((res) => {
-                filterData(res.data, searchKey);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+          .get("http://localhost:8080/api/exhibitions", {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          })
+          .then((res) => {
+            filterData(res.data, searchKey);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     }
 
     const SearchExhibition = (

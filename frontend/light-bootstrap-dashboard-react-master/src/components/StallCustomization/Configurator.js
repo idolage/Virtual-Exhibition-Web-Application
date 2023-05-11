@@ -30,7 +30,12 @@ export const Configurator = ({ Id }) => {
     params.append("stallId", stallId);
     Axios.put(
       `http://localhost:8080/api/stalls/update-stall/${Id}?${params.toString()}`,
-      requestBody
+      requestBody,
+      {
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      }
     )
       .then((res) => {
         setMsgUploadColor("Successfully Saved");

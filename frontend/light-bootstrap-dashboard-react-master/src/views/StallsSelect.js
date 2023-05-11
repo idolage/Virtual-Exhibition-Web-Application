@@ -101,14 +101,22 @@ function StallsSelect() {
     try {
       const storedEmail = localStorage.getItem("email");
       await axios
-        .get(`http://localhost:8080/api/auth/getExhibitor/${storedEmail}`)
+        .get(`http://localhost:8080/api/auth/getExhibitor/${storedEmail}`, {
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
+        })
         .then(async (respond) => {
           let eID = respond.data.exhibitionId;
           localStorage.setItem("exhibitionId", eID);
           let eoID = respond.data.exhibitionOwnerId;
 
           const res = await axios
-            .get(`http://localhost:8080/api/stalls/booked/${eID}`)
+            .get(`http://localhost:8080/api/stalls/booked/${eID}`, {
+              headers: {
+                Authorization: localStorage.getItem("jwt"),
+              },
+            })
             .then((res) => {
               console.log(eID);
               stallIds.length = 0;
