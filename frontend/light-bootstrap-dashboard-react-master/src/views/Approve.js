@@ -155,9 +155,9 @@ export default function Approve() {
             name: "Details",
             selector: (row) => (
               <button
-                style={{ fontSize: "12px", borderRadius: "20px" }}
-                className="secondary-button"
-                size="sm"
+              style={{ fontSize: "12px", borderRadius: "20px", paddingTop:'7px', paddingBottom:'7px' }}
+              className="secondary-button"
+              size="sm"
                 onClick={() => handleShowExhibition(row.id)}
               >
                 View
@@ -168,7 +168,7 @@ export default function Approve() {
             name: "Action",
             selector: (row) => (
               <button
-                style={{ fontSize: "12px", borderRadius: "20px" }}
+                style={{ fontSize: "12px", borderRadius: "20px", paddingTop:'7px', paddingBottom:'7px' }}
                 className="secondary-button"
                 size="sm"
                 onClick={() => handleApprove(row.exhibitionId)}
