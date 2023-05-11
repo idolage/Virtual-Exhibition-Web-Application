@@ -11,8 +11,7 @@ services:
       - "8761:8761"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - api-network
+
 
   api-gateway:
     platform: linux/amd64
@@ -26,8 +25,7 @@ services:
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
     depends_on:
       - discovery-server
-    networks:
-      - api-network
+
 
   ## Agora Token-Service Docker Compose Config
   agora-token-server:
@@ -77,6 +75,17 @@ services:
       - discovery-server
       - api-gateway
 
+  ## Payment-Service Docker Compose Config
+  payment-gateway:
+    platform: linux/amd64
+    container_name: payment-gateway
+    pull_policy: always
+    image: hanzjk/payment-gateway:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - discovery-server
+      - api-gateway
   ## Stats-Service Docker Compose Config
   stats:
     platform: linux/amd64
@@ -92,8 +101,8 @@ services:
   ## Auth-Service Docker Compose Config
   auth:
     platform: linux/amd64
-    pull_policy: always
     container_name: auth
+    pull_policy: always
     image: hanzjk/auth:latest
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -137,7 +146,4 @@ services:
       - discovery-server
       - api-gateway
 
-networks:
-  api-network:
-    driver: bridge
 
