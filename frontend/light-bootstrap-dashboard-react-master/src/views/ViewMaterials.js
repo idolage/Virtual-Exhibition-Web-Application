@@ -19,6 +19,7 @@ import {
 export default function ViewMaterials() {
   const storedEmail = localStorage.getItem("email");
   const [materials, setMaterials] = useState([]);
+  const [exhibitionId, setIexhibitionId] = useState("");
 
   const handleDownload = async (val, e) => {
     e.preventDefault();
@@ -62,20 +63,42 @@ export default function ViewMaterials() {
     link.click();
   };
 
-  useEffect(() => {
-    Axios.get(`http://localhost:8080/api/stalls/${storedEmail}`, {
-      headers: {
-        Authorization: localStorage.getItem("jwt"),
-      },
+ 
+  Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`, {
+    headers: {
+      Authorization: localStorage.getItem("jwt"),
+    },
+  })
+    .then((res) => {
+      console.log(res.data);
+      setIexhibitionId(res.data[0].exhibitionId);
+      console.log(exhibitionId);
     })
-      .then((response) => {
-        console.log(response.data);
-        setMaterials(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, []);
+    .catch((e) => {
+      console.log(e);
+    });
+
+    useEffect(() => {
+      const fetchMaterials = async () => {
+        try {
+          if (exhibitionId) {
+          const params = new URLSearchParams();
+          params.append("stallOwnerId", storedEmail);
+          const url = `http://localhost:8080/api/stalls/${exhibitionId}/stallOwner?${params.toString()}`;
+          const response = await Axios.get(url, {
+            headers: {
+              Authorization: localStorage.getItem("jwt"),
+            },
+          });
+          console.log(response.data);
+          setMaterials(response.data);
+        }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchMaterials();
+    }, [exhibitionId]);
 
   return (
     <>
