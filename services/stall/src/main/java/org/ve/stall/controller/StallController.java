@@ -52,10 +52,10 @@ public class StallController {
     public ResponseEntity<String> upload3DModel(@PathVariable String exhibitionId, @RequestParam String stallId,@RequestParam("file") MultipartFile file,String stallOwnerId, String tier) throws Exception {
         return stallService.upload3DModel(file, stallId,stallOwnerId,exhibitionId,tier);
     }
-    @GetMapping ("/{stallOwnerId}")
+    @GetMapping ("/{exhibitionId}/stallOwner")
     @ResponseStatus(HttpStatus.OK)
-    public List<Stall> getStallsByOwner(@PathVariable String stallOwnerId) throws InterruptedException, ExecutionException{
-        return stallService.getStallsByOwner(stallOwnerId);}
+    public List<Stall> getStallsByOwner(@PathVariable String exhibitionId,  @RequestParam String stallOwnerId) throws InterruptedException, ExecutionException{
+        return stallService.getStallsByOwner(exhibitionId,stallOwnerId);}
     @GetMapping ("/{exhibitionId}/stallId")
     @ResponseStatus(HttpStatus.OK)
     public Stall getStallsByExhibition(@PathVariable String exhibitionId, @RequestParam String stallId) throws InterruptedException, ExecutionException{

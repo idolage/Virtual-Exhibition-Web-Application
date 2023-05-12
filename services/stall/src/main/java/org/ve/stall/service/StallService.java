@@ -223,14 +223,12 @@ public class StallService {
         return null;
     }
 
-    public List<Stall> getStallsByOwner(String stallOwnerId) throws CancellationException, ExecutionException, InterruptedException {
+    public List<Stall> getStallsByOwner(String exhibitionId,String stallOwnerId) throws CancellationException, ExecutionException, InterruptedException {
         Firestore firestore = FirestoreClient.getFirestore();
-        // asynchronously retrieve multiple documents
-        ApiFuture<QuerySnapshot> future = firestore.collection("stalls").whereEqualTo("stallOwnerId", stallOwnerId).get();
-// future.get() blocks on response
-        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        List<QueryDocumentSnapshot> documents = firestore.collection("stalls")
+                .whereEqualTo("exhibitionId",exhibitionId).whereEqualTo("stallOwnerId",stallOwnerId).get().get().getDocuments();
         List<Stall> stalls = new ArrayList<>();
-        if (!documents.isEmpty()) {
+        if(!documents.isEmpty()){
             documents.forEach((element) -> {
                 if (element.exists()) {
                     stalls.add(element.toObject(Stall.class));
@@ -238,6 +236,7 @@ public class StallService {
             });
             return stalls;
         }
+
         return null;
     }
 
