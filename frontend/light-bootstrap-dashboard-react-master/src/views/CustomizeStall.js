@@ -80,7 +80,6 @@ function CustomizeStall() {
     }
   }, [location]);
 
-
   const storedEmail = localStorage.getItem("email");
 
   console.log(storedEmail);
@@ -105,14 +104,12 @@ function CustomizeStall() {
           params.append("stallOwnerId", storedEmail);
 
           const response = await Axios.get(
-            `http://localhost:8080/api/stalls/${exhibitionId}/stall/?${
-              (params.toString(),
-              {
-                headers: {
-                  Authorization: localStorage.getItem("jwt"),
-                },
-              })
-            }`
+            `http://localhost:8080/api/stalls/${exhibitionId}/stall/?${params.toString()}`,
+            {
+              headers: {
+                Authorization: localStorage.getItem("jwt"),
+              },
+            }
           );
           console.log("&&" + response.data);
           setStallId(response.data);

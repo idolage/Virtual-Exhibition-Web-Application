@@ -29,22 +29,23 @@ const AttendPayment = ({ exhibitionId, userId, userType, price }) => {
           userType: userType,
           amount: price,
         };
-        axios.post("http://localhost:8080/api/payments", newPayment),
-          {
+        axios
+          .post("http://localhost:8080/api/payments", newPayment, {
             headers: {
               Authorization: localStorage.getItem("jwt"),
             },
-          }
-            .then((res) => {
-              setMsg("Payment Successfull");
-              setShow(true);
-              console.log("done");
-            })
-            .catch((e) => {
-              console.log(e);
-              setMsg("Sorry! Please try again");
-              setShow(true);
-            });
+          })
+
+          .then((res) => {
+            setMsg("Payment Successfull");
+            setShow(true);
+            console.log("done");
+          })
+          .catch((e) => {
+            console.log(e);
+            setMsg("Sorry! Please try again");
+            setShow(true);
+          });
       })
       .catch((e) => {
         console.log(e);
