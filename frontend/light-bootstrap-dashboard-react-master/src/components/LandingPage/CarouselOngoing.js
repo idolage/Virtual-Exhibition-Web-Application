@@ -161,6 +161,19 @@ const Carousel = ({ data }) => {
                     ) : (
                         <>
                           USD&nbsp;{card.ticketPrice}&nbsp;
+                          {(localStorage.getItem("userLoggedIn") && localStorage.getItem("userRole") == "ATTENDEE")?<>
+                            <button
+                              style={{
+                                fontSize: "12px",
+                                borderRadius: "10px",
+                              }}
+                              className="btn btn-info"
+                              size="sm"
+                              onClick={() => history.push("/admin/exhibitions")}
+                          >
+                            Navigate to exhibitions
+                          </button>
+                          </>:<>
                           <button
                               style={{
                                 fontSize: "14px",
@@ -172,6 +185,7 @@ const Carousel = ({ data }) => {
                           >
                             Login
                           </button>
+                          </>}
                         </>
                     )}</span>
                 </Card.Text>

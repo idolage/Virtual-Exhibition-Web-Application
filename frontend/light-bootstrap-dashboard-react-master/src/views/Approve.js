@@ -27,6 +27,9 @@ export default function Approve() {
       .then((res) => {
         setShowModal(true);
         setNotification(res.data);
+        setTimeout(() => {
+        window.location.reload();
+      }, 2000);
       });
 
   const handleShowExhibition = (id) =>

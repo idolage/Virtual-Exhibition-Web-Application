@@ -93,6 +93,15 @@ function Header() {
               </Dropdown.Menu>
             </Dropdown>
             <Nav.Item>
+              {localStorage.getItem("userLoggedIn")?<>
+              <Nav.Link
+                className="m-0"
+                href="/admin/user"
+                Component={Login}
+              >
+                <span className="no-icon">Profile</span>
+              </Nav.Link>
+              </>:<>
               <Nav.Link
                 className="m-0"
                 href="/login"
@@ -100,6 +109,7 @@ function Header() {
               >
                 <span className="no-icon">Sign in</span>
               </Nav.Link>
+              </>}
             </Nav.Item>
           </Nav>
         </Navbar.Collapse>

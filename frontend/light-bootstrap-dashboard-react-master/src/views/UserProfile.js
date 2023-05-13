@@ -136,6 +136,9 @@ const Admin = () => {
     fetchAdminDetails();
   }, []);
 
+  //   useEffect(() => {
+  //   window.location.reload();
+  // }, [])
   return (
     <>
       <Container fluid>
@@ -1307,9 +1310,15 @@ const User = () => {
     if (role) {
       setUserRole(role);
     } else {
-      console.log("hjhjggjhgjhghjgj");
+      console.log(localStorage.getItem("userRole"));
     }
+
   }, []);
+
+  // useEffect(() => {
+  //   window.location.reload();
+  // }, [])
+  
 
   return userRole === "ATTENDEE" ? (
     <div>
