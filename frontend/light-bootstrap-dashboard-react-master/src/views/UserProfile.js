@@ -638,6 +638,7 @@ const Exhibitor = () => {
 
   const [exId, setExId] = useState("No records to show");
   const [ticketId, setTicketId] = useState("No records to show");
+  const [exName, setExName] = useState("Exhibition Name");
 
   const [selectedExhibitor, setSelectedExhibitor] = useState();
   const [ExhibitorAvatar, setExhibitorAvatar] = useState(false);
@@ -751,52 +752,70 @@ const Exhibitor = () => {
     }
   }
 
-  useEffect(() => {
-    const fetchExhibitorDetails = async () => {
-      try {
-        const storedEmail = localStorage.getItem("email");
-        const response = await Axios.get(
-          `http://localhost:8080/api/auth/getExhibitor/${storedEmail}`,
-          {
-            headers: {
-              Authorization: localStorage.getItem("jwt"),
-            },
-          }
-        );
-        setEmail(response.data.emailAddress);
-        setName(response.data.name);
-        setNIC(response.data.nic);
-        setTel(response.data.contactNo);
-        setCompany(response.data.company);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    const fetchIds = () => {
+  const fetchExhibitorDetails = async () => {
+    try {
       const storedEmail = localStorage.getItem("email");
-      Axios.get(
-        `http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`,
+      const response = await Axios.get(
+        `http://localhost:8080/api/auth/getExhibitor/${storedEmail}`,
         {
           headers: {
             Authorization: localStorage.getItem("jwt"),
           },
         }
-      )
-        .then((response) => {
-          if (!response.data[0].isExpired) {
-            setExId(response.data[0].exhibitionId);
-            setTicketId(response.data[0].ticketId);
-          }
-        })
-        .catch((e) => {
-          console.error(e);
-        });
-    };
+      );
+      setEmail(response.data.emailAddress);
+      setName(response.data.name);
+      setNIC(response.data.nic);
+      setTel(response.data.contactNo);
+      setCompany(response.data.company);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
+const fetchIds = async () => {
+const storedEmail = localStorage.getItem("email");
+try {
+  const response = await Axios.get(`http://localhost:8080/api/tickets/getTicketInfo/${storedEmail}`, {
+    headers: {
+      Authorization: localStorage.getItem("jwt"),
+    },
+  });
+  if (!response.data[0].isExpired) {
+    setExId(response.data[0].exhibitionId);
+    localStorage.setItem("exId", response.data[0].exhibitionId);
+    setTicketId(response.data[0].ticketId);
+    await fetchName();
+  }
+} catch (error) {
+  console.error(error);
+}
+};
+
+const fetchName = async () => {
+  try {
+    const response = await Axios.get(`http://localhost:8080/api/exhibitions/exhibition/${localStorage.getItem("exId")}`, {
+      headers: {
+        Authorization: localStorage.getItem("jwt"),
+      },
+    });
+    
+    setExName(response.data.exhibitionName);
+
+    
+  } catch (error) {
+    console.error("fetchName: ", error);
+  }
+};
+
+  useEffect(() => {
+    
     fetchExhibitorDetails();
     fetchIds();
+ 
   }, []);
+
+
 
   return (
     <>
@@ -830,13 +849,15 @@ const Exhibitor = () => {
                       className="nc-icon nc-album-2 text-primary"
                       style={{ fontSize: "28px" }}
                     ></i>
-                    <Card.Title as="h5">Exhibition ID</Card.Title>
+                    <Card.Title as="h5">
+                      {exName}
+                      </Card.Title>
                   </div>
                 </Row>
               </Card.Body>
               <Card.Footer>
                 <hr></hr>
-                <div className="stats">{exId}</div>
+                <div className="stats"><strong>Exhibition ID: </strong>&nbsp; &nbsp;{exId}</div>
               </Card.Footer>
             </Card>
           </Col>
