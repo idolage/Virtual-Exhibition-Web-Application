@@ -96,31 +96,29 @@ function CustomizeStall() {
       console.log(e);
     });
 
-  useEffect(() => {
-    const fetchStallId = async () => {
-      try {
-        if (exhibitionId) {
-          const params = new URLSearchParams();
-          params.append("stallOwnerId", storedEmail);
 
-          const response = await Axios.get(
-            `http://localhost:8080/api/stalls/${exhibitionId}/stall/?${params.toString()}`,
-            {
+    useEffect(() => {
+      const fetchStallId = async () => {
+        try {
+          if (exhibitionId) {
+            const params = new URLSearchParams();
+            params.append("stallOwnerId", storedEmail);
+            const url = `http://localhost:8080/api/stalls/${exhibitionId}/stall?${params.toString()}`;
+            const response = await Axios.get(url, {
               headers: {
                 Authorization: localStorage.getItem("jwt"),
               },
-            }
-          );
-          console.log("&&" + response.data);
-          setStallId(response.data);
-          localStorage.setItem("stallId", response.data);
+            });
+            console.log("&&" + response.data);
+            setStallId(response.data);
+            localStorage.setItem("stallId", response.data);
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchStallId();
-  }, [exhibitionId]);
+      };
+      fetchStallId();
+    }, [exhibitionId]);
 
   console.log("***" + stallId);
   if (stallId == null) {
