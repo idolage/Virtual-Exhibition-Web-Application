@@ -652,11 +652,9 @@ const Exhibitor = () => {
           }),
           headers: {
             "Content-type": "application/json; charset=UTF-8",
-          },
-
-          headers: {
             Authorization: localStorage.getItem("jwt"),
           },
+
         });
         if (!response.ok) {
           throw new Error("Failed to save avatar.");
@@ -1097,10 +1095,7 @@ const ExhibitionOwner = () => {
           {
             headers: {
               Authorization: localStorage.getItem("jwt"),
-            },
-            headers: {
-              Authorization: localStorage.getItem("jwt"),
-            },
+            }
           }
         );
         setEmail(response.data.emailAddress);

@@ -80,7 +80,6 @@ function CustomizeStall() {
     }
   }, [location]);
 
-
   const storedEmail = localStorage.getItem("email");
 
   console.log(storedEmail);
@@ -96,6 +95,7 @@ function CustomizeStall() {
     .catch((e) => {
       console.log(e);
     });
+
 
     useEffect(() => {
       const fetchStallId = async () => {

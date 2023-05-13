@@ -62,22 +62,24 @@ const Payments = ({ exhibitionId, userId, userType, price, stallId, tier }) => {
                   stallId: stallId,
                 };
                 if (tier == "Platinum" || tier == "Diamond") {
-                  axios.post(
-                    "http://localhost:8080/api/agora/liveStreamChannel",
-                    newLiveStreamChannel
-                  ),
-                    {
-                      headers: {
-                        Authorization: localStorage.getItem("jwt"),
-                      },
-                    }
-                      .then((res) => {})
-                      .catch((e) => {
-                        console.log(e);
-                        setMsg("Sorry! Please try again");
+                  axios
+                    .post(
+                      "http://localhost:8080/api/agora/liveStreamChannel",
+                      newLiveStreamChannel,
+                      {
+                        headers: {
+                          Authorization: localStorage.getItem("jwt"),
+                        },
+                      }
+                    )
 
-                        setShow(true);
-                      });
+                    .then((res) => {})
+                    .catch((e) => {
+                      console.log(e);
+                      setMsg("Sorry! Live Stream Channel Creation Failed");
+
+                      setShow(true);
+                    });
                 }
               })
               .catch((e) => {

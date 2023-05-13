@@ -19,7 +19,7 @@ import React, { Component } from "react";
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
-import Logo from '../../assets/img/logo.png'
+import Logo from "../../assets/img/logo.png";
 import routes from "routes.js";
 
 function Header() {
@@ -43,6 +43,8 @@ function Header() {
     localStorage.removeItem("userRole");
     localStorage.removeItem("email");
     localStorage.removeItem("avatarId");
+    localStorage.removeItem("stallId");
+    localStorage.removeItem("exhibitionId");
 
     history.push("/login");
   }
@@ -56,7 +58,6 @@ function Header() {
     return "";
   };
 
-  
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -207,10 +208,7 @@ function Header() {
               </Dropdown.Menu>
             </Dropdown> */}
             <Nav.Item>
-              <Nav.Link
-                className="m-0"
-                onClick={handleLogout}
-              >
+              <Nav.Link className="m-0" onClick={handleLogout}>
                 <span className="no-icon">Log out</span>
               </Nav.Link>
             </Nav.Item>

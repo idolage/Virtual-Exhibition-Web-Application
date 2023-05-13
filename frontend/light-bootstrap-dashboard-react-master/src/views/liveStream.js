@@ -124,11 +124,9 @@ function LiveStream() {
           exhibitionId: exhibitionId,
         }),
         headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-        headers: {
           Authorization: localStorage.getItem("jwt"),
-        },
+          "Content-type": "application/json; charset=UTF-8",
+        }
       });
 
       if (response1.ok) {
@@ -136,12 +134,11 @@ function LiveStream() {
           "http://localhost:8080/api/agora/" + exhibitionId + "/" + stallId,
           {
             method: "GET",
-          },
-          {
             headers: {
               Authorization: localStorage.getItem("jwt"),
             },
-          }
+          },
+          
         );
         if (!response2.ok) {
           throw new Error("Failed to join channel.");

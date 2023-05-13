@@ -34,12 +34,12 @@ export default function GetExhibitions() {
 
   useEffect(() => {
     var1 = 0;
-    axios.get("http://localhost:8080/api/exhibitions"),
-      {
+    axios.get("http://localhost:8080/api/exhibitions", {
         headers: {
           Authorization: localStorage.getItem("jwt"),
         },
-      }
+      })
+     
         .then((res) => {
           console.log(res.data);
           setExhibitions(res.data);

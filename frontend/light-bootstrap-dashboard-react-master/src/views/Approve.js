@@ -19,7 +19,7 @@ export default function Approve() {
 
   const handleApprove = (id) =>
     axios
-      .put(`http://localhost:8080/api/exhibitions/approve/${id}`, {
+      .put(`http://localhost:8080/api/exhibitions/approve/${id}`, {},{
         headers: {
           Authorization: localStorage.getItem("jwt"),
         },

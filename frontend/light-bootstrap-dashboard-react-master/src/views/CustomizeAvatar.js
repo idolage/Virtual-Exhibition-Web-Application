@@ -75,13 +75,10 @@ function CustomizeAvatar() {
           userType: localStorage.getItem("userRole"),
         }),
         headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-         
-        headers: {
           Authorization: localStorage.getItem("jwt"),
-        },
-      
+          "Content-type": "application/json; charset=UTF-8",
+        }
+
       });
       if (!response.ok) {
         setErr("Failed to Save the Avatar");

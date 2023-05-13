@@ -29,7 +29,16 @@ export default function AddExhibition() {
         exhibitionName: exhibitionName,
         exhibitionOwnerId: localStorage.getItem("email"),
         ticketPrice: parseInt(ticketPrice),
-        datetime: new Date(dateTime),
+        datetime: new Date(dateTime).toLocaleString("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          timeZoneName: "short",
+        }),
       },
       {
         headers: {

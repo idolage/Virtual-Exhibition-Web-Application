@@ -42,18 +42,19 @@ export default function ViewFeedbacks() {
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
-    axios.get(`http://localhost:8080/api/exhibitions/user/${storedEmail}`),
-      {
+    axios
+      .get(`http://localhost:8080/api/exhibitions/user/${storedEmail}`, {
         headers: {
           Authorization: localStorage.getItem("jwt"),
         },
-      }
-        .then((res) => {
-          setExhibitions(res.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      })
+
+      .then((res) => {
+        setExhibitions(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }, []);
   return (
     <>
@@ -73,7 +74,7 @@ export default function ViewFeedbacks() {
                     <>
                       <Button
                         style={{ marginBottom: "15px", minWidth: "100%" }}
-                        onClick={() => showFeedbacks(exhibition.exhibitionId)}
+                        onClick={() => showFeedbacks(exhibition.id)}
                       >
                         <span style={{ textAlign: "left" }}>
                           {exhibition.exhibitionName}
